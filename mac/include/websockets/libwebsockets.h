@@ -114,14 +114,24 @@ struct sockaddr_in;
 #include <stddef.h>
 #include <stdint.h>
 #include <basetsd.h>
+#ifndef _WIN32_WCE
 #include <fcntl.h>
+#else
+#define _O_RDONLY	0x0000
+#define O_RDONLY	_O_RDONLY
+#endif
 
+#ifdef _WIN32_WCE
+#define strcasecmp _stricmp
+#else
 #define strcasecmp stricmp
+#endif
 #define getdtablesize() 30000
 
 #define LWS_INLINE __inline
 #define LWS_VISIBLE
 #define LWS_WARN_UNUSED_RESULT
+#define LWS_WARN_DEPRECATED
 
 #ifdef LWS_DLL
 #ifdef LWS_INTERNAL
@@ -139,6 +149,10 @@ struct sockaddr_in;
 #else /* NOT WIN32 */
 #include <unistd.h>
 
+#if defined(__NetBSD__)
+#include <netinet/in.h>
+#endif
+
 #define LWS_INLINE inline
 #define LWS_O_RDONLY O_RDONLY
 
@@ -154,13 +168,16 @@ struct sockaddr_in;
 #if defined(__GNUC__)
 #define LWS_VISIBLE __attribute__((visibility("default")))
 #define LWS_WARN_UNUSED_RESULT __attribute__ ((warn_unused_result))
+#define LWS_WARN_DEPRECATED __attribute__ ((deprecated))
 #else
 #define LWS_VISIBLE
 #define LWS_WARN_UNUSED_RESULT
+#define LWS_WARN_DEPRECATED
 #endif
 
 #if defined(__ANDROID__)
-#define getdtablesize() 1024
+#include <unistd.h>
+#define getdtablesize() sysconf(_SC_OPEN_MAX)
 #endif
 
 #endif
@@ -168,6 +185,9 @@ struct sockaddr_in;
 #ifdef LWS_USE_LIBEV
 #include <ev.h>
 #endif /* LWS_USE_LIBEV */
+#ifdef LWS_USE_LIBUV
+#include <uv.h>
+#endif /* LWS_USE_LIBUV */
 
 #ifndef LWS_EXTERN
 #define LWS_EXTERN extern
@@ -277,6 +297,7 @@ enum lws_context_options {
 	LWS_SERVER_OPTION_PEER_CERT_NOT_REQUIRED		= (1 << 7),
 	LWS_SERVER_OPTION_VALIDATE_UTF8				= (1 << 8),
 	LWS_SERVER_OPTION_SSL_ECDH				= (1 << 9),
+	LWS_SERVER_OPTION_LIBUV					= (1 << 10),
 
 	/****** add new things just above ---^ ******/
 };
@@ -415,7 +436,7 @@ struct lws_plat_file_ops {
 		     unsigned char *buf, unsigned long len);
 
 	/* Add new things just above here ---^
-	 * This is part of the ABI, don't needlessly break compatibilty */
+	 * This is part of the ABI, don't needlessly break compatibility */
 };
 
 /*
@@ -430,7 +451,7 @@ enum lws_extension_callback_reasons {
 	LWS_EXT_CB_CONSTRUCT				=  4,
 	LWS_EXT_CB_CLIENT_CONSTRUCT			=  5,
 	LWS_EXT_CB_CHECK_OK_TO_REALLY_CLOSE		=  6,
-	LWS_EXT_CB_CHECK_OK_TO_PROPOSE_EXTENSION		=  7,
+	LWS_EXT_CB_CHECK_OK_TO_PROPOSE_EXTENSION	=  7,
 	LWS_EXT_CB_DESTROY				=  8,
 	LWS_EXT_CB_DESTROY_ANY_WSI_CLOSING		=  9,
 	LWS_EXT_CB_ANY_WSI_ESTABLISHED			= 10,
@@ -502,8 +523,6 @@ struct lws_tokens {
 };
 
 /*
- * don't forget to update test server header dump accordingly
- *
  * these have to be kept in sync with lextable.h / minilex.c
  *
  * NOTE: These public enums are part of the abi.  If you want to add one,
@@ -585,28 +604,30 @@ enum lws_token_indexes {
 	WSI_TOKEN_HTTP_VARY					= 70,
 	WSI_TOKEN_HTTP_VIA					= 71,
 	WSI_TOKEN_HTTP_WWW_AUTHENTICATE				= 72,
-	WSI_TOKEN_PROXY,
 
 	WSI_TOKEN_PATCH_URI					= 73,
 	WSI_TOKEN_PUT_URI					= 74,
 	WSI_TOKEN_DELETE_URI					= 75,
 
 	WSI_TOKEN_HTTP_URI_ARGS					= 76,
-
-	/* use token storage to stash these */
-
-	_WSI_TOKEN_CLIENT_SENT_PROTOCOLS			= 77,
-	_WSI_TOKEN_CLIENT_PEER_ADDRESS				= 78,
-	_WSI_TOKEN_CLIENT_URI					= 79,
-	_WSI_TOKEN_CLIENT_HOST					= 80,
-	_WSI_TOKEN_CLIENT_ORIGIN				= 81,
+	WSI_TOKEN_PROXY						= 77,
+	WSI_TOKEN_HTTP_X_REAL_IP				= 78,
 
 	/****** add new things just above ---^ ******/
+
+	/* use token storage to stash these internally, not for
+	 * user use */
+
+	_WSI_TOKEN_CLIENT_SENT_PROTOCOLS,
+	_WSI_TOKEN_CLIENT_PEER_ADDRESS,
+	_WSI_TOKEN_CLIENT_URI,
+	_WSI_TOKEN_CLIENT_HOST,
+	_WSI_TOKEN_CLIENT_ORIGIN,
 
 	/* always last real token index*/
 	WSI_TOKEN_COUNT,
 
-	/* parser state additions */
+	/* parser state additions, no storage associated */
 	WSI_TOKEN_NAME_PART,
 	WSI_TOKEN_SKIPPING,
 	WSI_TOKEN_SKIPPING_SAW_CR,
@@ -1182,7 +1203,7 @@ struct lws_protocols {
 	void *user;
 
 	/* Add new things just above here ---^
-	 * This is part of the ABI, don't needlessly break compatibilty */
+	 * This is part of the ABI, don't needlessly break compatibility */
 };
 
 enum lws_ext_options_types {
@@ -1191,7 +1212,7 @@ enum lws_ext_options_types {
 	EXTARG_OPT_DEC
 
 	/* Add new things just above here ---^
-	 * This is part of the ABI, don't needlessly break compatibilty */
+	 * This is part of the ABI, don't needlessly break compatibility */
 };
 
 /**
@@ -1208,7 +1229,7 @@ struct lws_ext_options {
 	enum lws_ext_options_types type;
 
 	/* Add new things just above here ---^
-	 * This is part of the ABI, don't needlessly break compatibilty */
+	 * This is part of the ABI, don't needlessly break compatibility */
 };
 
 struct lws_ext_option_arg {
@@ -1231,12 +1252,12 @@ struct lws_extension {
 	const char *client_offer;
 
 	/* Add new things just above here ---^
-	 * This is part of the ABI, don't needlessly break compatibilty */
+	 * This is part of the ABI, don't needlessly break compatibility */
 };
 
 /*
  * The internal exts are part of the public abi
- * If we add more extensions, publish the callback here
+ * If we add more extensions, publish the callback here  ------v
  */
 
 extern int lws_extension_callback_pm_deflate(
@@ -1307,7 +1328,10 @@ extern int lws_extension_callback_pm_deflate(
  * @fd_limit_per_thread: nonzero means restrict each service thread to this
  *		many fds, 0 means the default which is divide the process fd
  *		limit by the number of threads.
- *
+ * @timeout_secs: various processes involving network roundtrips in the
+ *		library are protected from hanging forever by timeouts.  If
+ *		nonzero, this member lets you set the timeout used in seconds.
+ *		Otherwise a default timeout is used.
  */
 
 struct lws_context_creation_info {
@@ -1341,6 +1365,7 @@ struct lws_context_creation_info {
 
 	unsigned int count_threads;
 	unsigned int fd_limit_per_thread;
+	unsigned int timeout_secs;
 
 	/* Add new things just above here ---^
 	 * This is part of the ABI, don't needlessly break compatibility
@@ -1453,18 +1478,41 @@ LWS_VISIBLE LWS_EXTERN int LWS_WARN_UNUSED_RESULT
 lws_http_transaction_completed(struct lws *wsi);
 
 #ifdef LWS_USE_LIBEV
-typedef void (lws_ev_signal_cb)(EV_P_ struct ev_signal *w, int revents);
+typedef void (lws_ev_signal_cb_t)(EV_P_ struct ev_signal *w, int revents);
 
 LWS_VISIBLE LWS_EXTERN int
-lws_sigint_cfg(struct lws_context *context, int use_ev_sigint,
-	       lws_ev_signal_cb *cb);
+lws_ev_sigint_cfg(struct lws_context *context, int use_ev_sigint,
+		  lws_ev_signal_cb_t *cb);
 
 LWS_VISIBLE LWS_EXTERN int
-lws_initloop(struct lws_context *context, struct ev_loop *loop);
+lws_ev_initloop(struct lws_context *context, struct ev_loop *loop, int tsi);
 
 LWS_VISIBLE void
-lws_sigint_cb(struct ev_loop *loop, struct ev_signal *watcher, int revents);
+lws_ev_sigint_cb(struct ev_loop *loop, struct ev_signal *watcher, int revents);
 #endif /* LWS_USE_LIBEV */
+
+#ifdef LWS_USE_LIBUV
+typedef void (lws_uv_signal_cb_t)(uv_loop_t *l, uv_signal_t *w, int revents);
+
+LWS_VISIBLE LWS_EXTERN int
+lws_uv_sigint_cfg(struct lws_context *context, int use_uv_sigint,
+		  lws_uv_signal_cb_t *cb);
+
+LWS_VISIBLE LWS_EXTERN void
+lws_libuv_run(const struct lws_context *context, int tsi);
+
+LWS_VISIBLE void
+lws_libuv_stop(struct lws_context *context);
+
+LWS_VISIBLE LWS_EXTERN int
+lws_uv_initloop(struct lws_context *context, uv_loop_t *loop, uv_signal_cb cb, int tsi);
+
+LWS_VISIBLE LWS_EXTERN uv_loop_t *
+lws_uv_getloop(struct lws_context *context, int tsi);
+
+LWS_VISIBLE void
+lws_uv_sigint_cb(uv_loop_t *loop, uv_signal_t *watcher, int revents);
+#endif /* LWS_USE_LIBUV */
 
 LWS_VISIBLE LWS_EXTERN int
 lws_service_fd(struct lws_context *context, struct lws_pollfd *pollfd);
@@ -1497,6 +1545,7 @@ enum pending_timeout {
 	PENDING_TIMEOUT_HTTP_CONTENT				= 10,
 	PENDING_TIMEOUT_AWAITING_CLIENT_HS_SEND			= 11,
 	PENDING_FLUSH_STORED_SEND_BEFORE_CLOSE			= 12,
+	PENDING_TIMEOUT_SHUTDOWN_FLUSH				= 13,
 
 	/****** add new things just above ---^ ******/
 };
@@ -1660,17 +1709,20 @@ LWS_VISIBLE LWS_EXTERN struct lws * LWS_WARN_UNUSED_RESULT
 lws_client_connect(struct lws_context *clients, const char *address,
 		   int port, int ssl_connection, const char *path,
 		   const char *host, const char *origin, const char *protocol,
-		   int ietf_version_or_minus_one);
+		   int ietf_version_or_minus_one) LWS_WARN_DEPRECATED;
 /* deprecated, use lws_client_connect_via_info() */
 LWS_VISIBLE LWS_EXTERN struct lws * LWS_WARN_UNUSED_RESULT
 lws_client_connect_extended(struct lws_context *clients, const char *address,
 			    int port, int ssl_connection, const char *path,
 			    const char *host, const char *origin,
 			    const char *protocol, int ietf_version_or_minus_one,
-			    void *userdata);
+			    void *userdata) LWS_WARN_DEPRECATED;
 
 LWS_VISIBLE LWS_EXTERN struct lws * LWS_WARN_UNUSED_RESULT
 lws_client_connect_via_info(struct lws_client_connect_info * ccinfo);
+
+LWS_VISIBLE LWS_EXTERN struct lws *
+lws_adopt_socket(struct lws_context *context, lws_sockfd_type accept_fd);
 
 LWS_VISIBLE LWS_EXTERN const char * LWS_WARN_UNUSED_RESULT
 lws_canonical_hostname(struct lws_context *context);
@@ -1828,11 +1880,18 @@ LWS_VISIBLE LWS_EXTERN int
 lws_read(struct lws *wsi, unsigned char *buf, size_t len);
 
 #ifndef LWS_NO_EXTENSIONS
-/* deprecated */
-#define lws_get_internal_extensions() NULL
+/* Deprecated
+ *
+ * There is no longer a set internal extensions table.  The table is provided
+ * by user code along with application-specific settings.  See the test
+ * client and server for how to do.
+ */
+static LWS_INLINE LWS_WARN_DEPRECATED const struct lws_extension *
+lws_get_internal_extensions() { return NULL; }
 LWS_VISIBLE LWS_EXTERN int LWS_WARN_UNUSED_RESULT
 lws_ext_parse_options(const struct lws_extension *ext, struct lws *wsi,
-		       void *ext_user, const struct lws_ext_options *opts, const char *o, int len);
+		       void *ext_user, const struct lws_ext_options *opts,
+		       const char *o, int len);
 #endif
 
 /*
