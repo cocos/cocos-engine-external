@@ -15,16 +15,16 @@
 /* #undef USE_OLD_CYASSL */
 
 /* The Libwebsocket version */
-#define LWS_LIBRARY_VERSION "1.7.4"
+#define LWS_LIBRARY_VERSION "1.7.8"
 
 #define LWS_LIBRARY_VERSION_MAJOR 1
 #define LWS_LIBRARY_VERSION_MINOR 7
-#define LWS_LIBRARY_VERSION_PATCH 4
+#define LWS_LIBRARY_VERSION_PATCH 8
 /* LWS_LIBRARY_VERSION_NUMBER looks like 1005001 for e.g. version 1.5.1 */
 #define LWS_LIBRARY_VERSION_NUMBER (LWS_LIBRARY_VERSION_MAJOR*1000000)+(LWS_LIBRARY_VERSION_MINOR*1000)+LWS_LIBRARY_VERSION_PATCH
 
 /* The current git commit hash that we're building from */
-#define LWS_BUILD_HASH "linwenhai@LindeMacBook-Pro.local-v3.4-47-g7179094"
+#define LWS_BUILD_HASH "linwenhai@LindeMacBook-Pro.local-v3.4-49-g9369eea"
 
 /* Build with OpenSSL support */
 /* #undef LWS_OPENSSL_SUPPORT */
@@ -45,7 +45,7 @@
 /* #undef LWS_USE_LIBUV */
 
 /* Build with support for ipv6 */
-/* #undef LWS_USE_IPV6 */
+#define LWS_USE_IPV6
 
 /* Build with support for HTTP2 */
 /* #undef LWS_USE_HTTP2 */
