@@ -95,4 +95,15 @@ LOCAL_EXPORT_CPPFLAGS := -D__STDC_LIMIT_MACROS=1 -Wno-invalid-offsetof
 include $(PREBUILT_STATIC_LIBRARY)
 
 #======================================
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := PluginProtocolStatic
+LOCAL_MODULE_FILENAME := libPluginProtocolStatic
+LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libPluginProtocolStatic.a
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/anysdk
+LOCAL_EXPORT_LDLIBS += -llog
+LOCAL_EXPORT_LDLIBS += -lz
+
+include $(PREBUILT_STATIC_LIBRARY)
+#======================================
 #$(call import-module,android/cpufeatures)
