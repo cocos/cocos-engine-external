@@ -45,3 +45,9 @@ spider monkey
     win32: v33
     ios: v33
     android: v33
+
+anysdk
+    mac: --
+    win32: --
+    android 2.2.1
+    ios 2.2.1
