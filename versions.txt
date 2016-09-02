@@ -29,10 +29,10 @@ freetype2
     android: 2.6.3
 
 chipmunk
-    mac: 6.2.2
-    win32: 6.2.1
-    ios: 6.2.2
-    android: 6.2.2
+    mac: 7.0.1
+    win32: 7.0.1
+    ios: 7.0.1
+    android: 7.0.1
 
 libz
     mac: 1.2.8
