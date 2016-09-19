@@ -31,6 +31,7 @@ typedef enum
     ACTION_RET_ACCOUNTSWITCH_FAIL,/**< enum value is callback of failing to switch account. */
     ACTION_RET_OPENSHOP,/**< enum value is callback of open the shop. */
     ACTION_RET_ACCOUNTSWITCH_CANCEL,/**< enum value is callback of canceling to switch account. */
+    ACTION_RET_GAME_EXIT_PAGE,/**< enum value is callback of no channel exit page. */
     ACTION_RET_USEREXTENSION = 50000 /**< enum value is  extension code . */
     
 } USER_RET_CODE;
