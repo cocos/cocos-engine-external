@@ -55,20 +55,20 @@ LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libtiff.a
 include $(PREBUILT_STATIC_LIBRARY)
 
 #======================================
-#include $(CLEAR_VARS)
-#
-#LOCAL_MODULE := cocos_webp_static
-#LOCAL_MODULE_FILENAME := webp
-#LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libwebp.a
-#
-#LOCAL_WHOLE_STATIC_LIBRARIES := cpufeatures
-#
-#ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
-#    LOCAL_CFLAGS := -DHAVE_NEON=1
-#endif
-#
-#include $(PREBUILT_STATIC_LIBRARY)
-#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := cocos_webp_static
+LOCAL_MODULE_FILENAME := webp
+LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libwebp.a
+
+LOCAL_WHOLE_STATIC_LIBRARIES := cpufeatures
+
+ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+   LOCAL_CFLAGS := -DHAVE_NEON=1
+endif
+
+include $(PREBUILT_STATIC_LIBRARY)
+
 #======================================
 include $(CLEAR_VARS)
 
