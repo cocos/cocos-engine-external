@@ -49,5 +49,5 @@ spider monkey
 anysdk
     mac: --
     win32: --
-    android 2.2.3
-    ios 2.2.3
+    android 2.2.5
+    ios 2.2.5
