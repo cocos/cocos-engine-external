@@ -40,7 +40,7 @@ libz
     ios: --
     android: 1.2.8
 
-spider monkey
+spidermonkey
     mac: v33
     win32: v33
     ios: v33
@@ -51,3 +51,9 @@ anysdk
     win32: --
     android 2.2.5
     ios 2.2.5
+
+rapidjson
+    mac: 1.1.0
+    win32: 1.1.0
+    ios: 1.1.0
+    android: 1.1.0
