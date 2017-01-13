@@ -49,11 +49,17 @@ spidermonkey
 anysdk
     mac: --
     win32: --
-    android 2.2.5
-    ios 2.2.5
+    android: 2.2.5
+    ios: 2.2.5
 
 rapidjson
     mac: 1.1.0
     win32: 1.1.0
     ios: 1.1.0
     android: 1.1.0
+
+tinydir
+    mac: 1.2.1
+    win32: 1.2.1
+    android: 1.2.1
+    ios: 1.2.1
