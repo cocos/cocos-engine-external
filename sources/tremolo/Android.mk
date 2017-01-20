@@ -16,21 +16,22 @@ LOCAL_SRC_FILES = \
 	Tremolo/treminfo.c \
 	Tremolo/vorbisfile.c
 
-ifeq ($(TARGET_ARCH),arm)
-LOCAL_SRC_FILES += \
-	Tremolo/bitwiseARM.s \
-	Tremolo/dpen.s \
-	Tremolo/floor1ARM.s \
-	Tremolo/mdctARM.s
-LOCAL_CFLAGS += \
-    -D_ARM_ASSEM_
-# Assembly code in asm_arm.h does not compile with Clang.
-LOCAL_CLANG_ASFLAGS_arm += \
-    -no-integrated-as
-else
+# Disable arm optimization which will cause the issue https://github.com/cocos2d/cocos2d-x/issues/17148
+# ifeq ($(TARGET_ARCH),arm)
+# LOCAL_SRC_FILES += \
+# 	Tremolo/bitwiseARM.s \
+# 	Tremolo/dpen.s \
+# 	Tremolo/floor1ARM.s \
+# 	Tremolo/mdctARM.s
+# LOCAL_CFLAGS += \
+#     -D_ARM_ASSEM_
+# # Assembly code in asm_arm.h does not compile with Clang.
+# LOCAL_CLANG_ASFLAGS_arm += \
+#     -no-integrated-as
+# else
 LOCAL_CFLAGS += \
     -DONLY_C
-endif
+# endif
 LOCAL_CFLAGS+= -O2
 
 LOCAL_C_INCLUDES:= \
