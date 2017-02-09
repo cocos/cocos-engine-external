@@ -1,8 +1,18 @@
 websockets
-    mac: 1.7.8
-    win32: 
-    ios: 1.7.8
-    android: 1.7.8
+    mac: 2.1.0
+    win32: 2.1.0 
+    ios: 2.1.0
+    android: 2.1.0
+
+openssl
+    mac: 1.1.0c
+    win32: 1.1.0c
+    ios: 1.1.0c
+    android: 1.1.0c
+    
+curl
+    mac: 7.52.1
+    win32: 7.52.1
 
 png
     mac: 1.6.21
