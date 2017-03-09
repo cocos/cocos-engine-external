@@ -1139,6 +1139,8 @@ void b2World::DrawDebugData()
 		return;
 	}
 
+    g_debugDraw->ClearDraw();
+    
 	uint32 flags = g_debugDraw->GetFlags();
 
 	if (flags & b2Draw::e_shapeBit)

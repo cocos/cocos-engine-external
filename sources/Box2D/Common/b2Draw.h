@@ -79,6 +79,8 @@ public:
 	/// @param xf a transform.
 	virtual void DrawTransform(const b2Transform& xf) = 0;
 
+    /// Clear draw commands
+    virtual void ClearDraw() = 0;
 protected:
 	uint32 m_drawFlags;
 };
