@@ -15,7 +15,6 @@
 #include "mozilla/ArrayUtils.h"
 #include "mozilla/Assertions.h"
 #include "mozilla/Attributes.h"
-#include "mozilla/NullPtr.h"
 
 #include <stdint.h>
 
@@ -49,9 +48,6 @@ class RangedPtr
   T* const mRangeStart;
   T* const mRangeEnd;
 #endif
-
-  typedef void (RangedPtr::* ConvertibleToBool)();
-  void nonNull() {}
 
   void checkSanity()
   {
@@ -108,7 +104,7 @@ public:
 
   /* Equivalent to RangedPtr(aArr, aArr, N). */
   template<size_t N>
-  RangedPtr(T (&aArr)[N])
+  explicit RangedPtr(T (&aArr)[N])
     : mPtr(aArr)
 #ifdef DEBUG
     , mRangeStart(aArr), mRangeEnd(aArr + N)
@@ -119,7 +115,13 @@ public:
 
   T* get() const { return mPtr; }
 
-  operator ConvertibleToBool() const { return mPtr ? &RangedPtr::nonNull : 0; }
+  explicit operator bool() const { return mPtr != nullptr; }
+
+  void checkIdenticalRange(const RangedPtr<T>& aOther) const
+  {
+    MOZ_ASSERT(mRangeStart == aOther.mRangeStart);
+    MOZ_ASSERT(mRangeEnd == aOther.mRangeEnd);
+  }
 
   /*
    * You can only assign one RangedPtr into another if the two pointers have
@@ -133,21 +135,20 @@ public:
    */
   RangedPtr<T>& operator=(const RangedPtr<T>& aOther)
   {
-    MOZ_ASSERT(mRangeStart == aOther.mRangeStart);
-    MOZ_ASSERT(mRangeEnd == aOther.mRangeEnd);
+    checkIdenticalRange(aOther);
     mPtr = aOther.mPtr;
     checkSanity();
     return *this;
   }
 
-  RangedPtr<T> operator+(size_t aInc)
+  RangedPtr<T> operator+(size_t aInc) const
   {
     MOZ_ASSERT(aInc <= size_t(-1) / sizeof(T));
     MOZ_ASSERT(asUintptr() + aInc * sizeof(T) >= asUintptr());
     return create(mPtr + aInc);
   }
 
-  RangedPtr<T> operator-(size_t aDec)
+  RangedPtr<T> operator-(size_t aDec) const
   {
     MOZ_ASSERT(aDec <= size_t(-1) / sizeof(T));
     MOZ_ASSERT(asUintptr() - aDec * sizeof(T) <= asUintptr());
@@ -224,6 +225,13 @@ public:
     return *mPtr;
   }
 
+  T* operator->() const
+  {
+    MOZ_ASSERT(mPtr >= mRangeStart);
+    MOZ_ASSERT(mPtr < mRangeEnd);
+    return mPtr;
+  }
+
   template <typename U>
   bool operator==(const RangedPtr<U>& aOther) const
   {
@@ -275,8 +283,8 @@ public:
   }
 
 private:
-  RangedPtr() MOZ_DELETE;
-  T* operator&() MOZ_DELETE;
+  RangedPtr() = delete;
+  T* operator&() = delete;
 };
 
 } /* namespace mozilla */
