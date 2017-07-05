@@ -49,10 +49,10 @@
 /* #undef JS_CRASH_DIAGNOSTICS */
 
 /* Define to 1 if SpiderMonkey is in NUNBOX32 mode. */
-#define JS_NUNBOX32 1
+/* #undef JS_NUNBOX32 */
 
 /* Define to 1 if SpiderMonkey is in PUNBOX64 mode. */
-/* #undef JS_PUNBOX64 */
+#define JS_PUNBOX64 1
 
 /* MOZILLA JSAPI version number components */
 #define MOZJS_MAJOR_VERSION 52
