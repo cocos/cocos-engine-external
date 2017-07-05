@@ -55,6 +55,11 @@
 
 #include <stdint.h>
 
+/* Define UINT64_C */
+#ifndef UINT64_C
+#define UINT64_C(value) __CONCAT(value,ULL)
+#endif
+
 #ifdef __cplusplus
 namespace mozilla {
 

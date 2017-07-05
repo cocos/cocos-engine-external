@@ -7,10 +7,6 @@
 #ifndef js_HashTable_h
 #define js_HashTable_h
 
-#ifndef UINT64_C
-#define UINT64_C(value) __CONCAT(value, ULL)
-#endif
-
 #include "mozilla/Alignment.h"
 #include "mozilla/Assertions.h"
 #include "mozilla/Attributes.h"
