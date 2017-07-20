@@ -234,11 +234,11 @@
         [self _openConnection];
         return;
     }
-    __weak __typeof__(self) wself = self;
+    __weak __typeof(self) wself = self;
     NSURLRequest *request = [NSURLRequest requestWithURL:PACurl];
     NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        __strong __typeof__(wself) sself = wself;
+        __strong __typeof(wself) sself = wself;
         if (!error) {
             NSString *script = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             [sself _runPACScript:script withProxySettings:proxySettings];
@@ -454,9 +454,9 @@ static NSTimeInterval const SRProxyConnectWriteTimeout = 5.0;
 {
     const uint8_t * bytes = data.bytes;
     __block NSInteger timeout = (NSInteger)(SRProxyConnectWriteTimeout * 1000000); // wait timeout before giving up
-    __weak __typeof__(self) wself = self;
+    __weak __typeof(self) wself = self;
     dispatch_async(_writeQueue, ^{
-        __strong __typeof__(wself) sself = self;
+        __strong __typeof(wself) sself = self;
         if (!sself) {
             return;
         }
