@@ -33,11 +33,7 @@ typedef void(^SRDelegateBlock)(id<SRWebSocketDelegate> _Nullable delegate, SRDel
 @property (nonatomic, weak) id<SRWebSocketDelegate> delegate;
 @property (atomic, readonly) SRDelegateAvailableMethods availableDelegateMethods;
 
-#if OS_OBJECT_USE_OBJC
 @property (nullable, nonatomic, strong) dispatch_queue_t dispatchQueue;
-#else
-@property (nullable, nonatomic, assign) dispatch_queue_t dispatchQueue;
-#endif
 @property (nullable, nonatomic, strong) NSOperationQueue *operationQueue;
 
 ///--------------------------------------
