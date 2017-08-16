@@ -32,6 +32,7 @@
 #include <Box2D/Collision/b2TimeOfImpact.h>
 #include <Box2D/Common/b2Draw.h>
 #include <Box2D/Common/b2Timer.h>
+#include <Box2D/b2ObjectDestroyNotifier.h>
 #include <new>
 
 b2World::b2World(const b2Vec2& gravity)
@@ -205,6 +206,7 @@ void b2World::DestroyBody(b2Body* b)
 	}
 
 	--m_bodyCount;
+    b2NotifyObjectDestroyed(b, "b2Body");
 	b->~b2Body();
 	m_blockAllocator.Free(b, sizeof(b2Body));
 }
