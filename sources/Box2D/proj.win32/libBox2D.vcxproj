@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\cocos2d-x-lite-external\sources\Box2D\b2ObjectDestroyNotifier.cpp" />
     <ClCompile Include="..\Collision\b2BroadPhase.cpp" />
     <ClCompile Include="..\Collision\b2CollideCircle.cpp" />
     <ClCompile Include="..\Collision\b2CollideEdge.cpp" />
@@ -59,6 +60,7 @@
     <ClCompile Include="..\Rope\b2Rope.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\cocos2d-x-lite-external\sources\Box2D\b2ObjectDestroyNotifier.h" />
     <ClInclude Include="..\Box2D.h" />
     <ClInclude Include="..\Collision\b2BroadPhase.h" />
     <ClInclude Include="..\Collision\b2Collision.h" />
