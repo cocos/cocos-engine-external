@@ -128,7 +128,7 @@ b2Joint* b2Joint::Create(const b2JointDef* def, b2BlockAllocator* allocator)
 
 void b2Joint::Destroy(b2Joint* joint, b2BlockAllocator* allocator)
 {
-    b2NotifyObjectDestroyed(joint, typeid(*joint).name());
+    b2NotifyObjectDestroyed(joint, b2ObjectType::JOIN, typeid(*joint).name());
 	joint->~b2Joint();
 	switch (joint->m_type)
 	{

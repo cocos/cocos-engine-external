@@ -120,7 +120,7 @@ void b2Contact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 	b2Assert(0 <= typeA && typeB < b2Shape::e_typeCount);
 	b2Assert(0 <= typeA && typeB < b2Shape::e_typeCount);
 
-    b2NotifyObjectDestroyed(contact, typeid(*contact).name());
+    b2NotifyObjectDestroyed(contact, b2ObjectType::CONTACT, typeid(*contact).name());
 	b2ContactDestroyFcn* destroyFcn = s_registers[typeA][typeB].destroyFcn;
 	destroyFcn(contact, allocator);
 }

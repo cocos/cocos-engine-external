@@ -1,16 +1,16 @@
 #include "b2ObjectDestroyNotifier.h"
 
-static b2ObjectDestroyNotifer __objectDestroyNotifier = NULL;
+static b2ObjectDestroyNotifer __objectDestroyNotifier = nullptr;
 
 void b2SetObjectDestroyNotifier(b2ObjectDestroyNotifer notifier)
 {
     __objectDestroyNotifier = notifier;
 }
 
-void b2NotifyObjectDestroyed(void* obj, const char* typeName /* = NULL */)
+void b2NotifyObjectDestroyed(void* obj, b2ObjectType type, const char* typeName)
 {
-    if (__objectDestroyNotifier != NULL)
+    if (__objectDestroyNotifier != nullptr)
     {
-        __objectDestroyNotifier(obj, typeName);
+        __objectDestroyNotifier(obj, type, typeName);
     }
 }
