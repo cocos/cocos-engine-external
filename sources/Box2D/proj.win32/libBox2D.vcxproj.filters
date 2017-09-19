@@ -173,8 +173,8 @@
     <ClCompile Include="..\Rope\b2Rope.cpp">
       <Filter>Source Files\Box2D\Rope</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\cocos2d-x-lite-external\sources\Box2D\b2ObjectDestroyNotifier.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\b2ObjectDestroyNotifier.cpp">
+      <Filter>Source Files\Box2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,8 +319,8 @@
     <ClInclude Include="..\Box2D.h">
       <Filter>Source Files\Box2D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\cocos2d-x-lite-external\sources\Box2D\b2ObjectDestroyNotifier.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\b2ObjectDestroyNotifier.h">
+      <Filter>Source Files\Box2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
