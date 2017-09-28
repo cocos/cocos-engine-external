@@ -51,10 +51,10 @@ libz
     android: 1.2.8
 
 spidermonkey
-    mac: v33
-    win32: v33
-    ios: v33
-    android: v33
+    mac: v52
+    win32: v52
+    ios: v52
+    android: v52
 
 anysdk
     mac: --

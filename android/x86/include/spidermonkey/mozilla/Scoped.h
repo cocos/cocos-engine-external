@@ -4,29 +4,27 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/* A number of structures to simplify scope-based RAII management. */
+/* DEPRECATED: Use UniquePtr.h instead. */
 
 #ifndef mozilla_Scoped_h
 #define mozilla_Scoped_h
 
 /*
+ * DEPRECATED: Use UniquePtr.h instead.
+ *
  * Resource Acquisition Is Initialization is a programming idiom used
  * to write robust code that is able to deallocate resources properly,
  * even in presence of execution errors or exceptions that need to be
- * propagated.  The Scoped* classes defined in this header perform the
+ * propagated.  The Scoped* classes defined via the |SCOPED_TEMPLATE|
+ * and |MOZ_TYPE_SPECIFIC_SCOPED_POINTER_TEMPLTE| macros perform the
  * deallocation of the resource they hold once program execution
  * reaches the end of the scope for which they have been defined.
+ * These macros have been used to automatically close file
+ * descriptors/file handles when reaching the end of the scope,
+ * graphics contexts, etc.
  *
- * This header provides the following RAII classes:
- *
- * - |ScopedFreePtr| - a container for a pointer, that automatically calls
- *   |free()| at the end of the scope;
- * - |ScopedDeletePtr| - a container for a pointer, that automatically calls
- *   |delete| at the end of the scope;
- * - |ScopedDeleteArray| - a container for a pointer to an array, that
- *   automatically calls |delete[]| at the end of the scope.
- *
- * The general scenario for each of the RAII classes is the following:
+ * The general scenario for RAII classes created by the above macros
+ * is the following:
  *
  * ScopedClass foo(create_value());
  * // ... In this scope, |foo| is defined. Use |foo.get()| or |foo.rwget()|
@@ -42,21 +40,12 @@
  *   the end of the scope;
  * - if |forget()| has been called, any control on the resource is unbound
  *   and the resource is not deallocated by the class.
- *
- * Extension:
- *
- * In addition, this header provides class |Scoped| and macros |SCOPED_TEMPLATE|
- * and |MOZ_TYPE_SPECIFIC_SCOPED_POINTER_TEMPLATE|  to simplify the definition
- * of RAII classes for other scenarios. These macros have been used to
- * automatically close file descriptors/file handles when reaching the end of
- * the scope, graphics contexts, etc.
  */
 
 #include "mozilla/Assertions.h"
 #include "mozilla/Attributes.h"
 #include "mozilla/GuardObjects.h"
 #include "mozilla/Move.h"
-#include "mozilla/NullPtr.h"
 
 namespace mozilla {
 
@@ -76,7 +65,7 @@ namespace mozilla {
  *   }
  */
 template<typename Traits>
-class Scoped
+class MOZ_NON_TEMPORARY_CLASS Scoped
 {
 public:
   typedef typename Traits::type Resource;
@@ -95,8 +84,8 @@ public:
   }
 
   /* Move constructor. */
-  explicit Scoped(Scoped&& aOther
-                  MOZ_GUARD_OBJECT_NOTIFIER_PARAM)
+  Scoped(Scoped&& aOther
+         MOZ_GUARD_OBJECT_NOTIFIER_PARAM)
     : mValue(Move(aOther.mValue))
   {
     MOZ_GUARD_OBJECT_NOTIFIER_INIT;
@@ -168,8 +157,8 @@ public:
   }
 
 private:
-  explicit Scoped(const Scoped& aValue) MOZ_DELETE;
-  Scoped& operator=(const Scoped& aValue) MOZ_DELETE;
+  explicit Scoped(const Scoped& aValue) = delete;
+  Scoped& operator=(const Scoped& aValue) = delete;
 
 private:
   Resource mValue;
@@ -186,7 +175,7 @@ private:
  */
 #define SCOPED_TEMPLATE(name, Traits)                                         \
 template<typename Type>                                                       \
-struct name : public mozilla::Scoped<Traits<Type> >                           \
+struct MOZ_NON_TEMPORARY_CLASS name : public mozilla::Scoped<Traits<Type> >   \
 {                                                                             \
   typedef mozilla::Scoped<Traits<Type> > Super;                               \
   typedef typename Super::Resource Resource;                                  \
@@ -208,57 +197,15 @@ struct name : public mozilla::Scoped<Traits<Type> >                           \
     : Super(aRhs                                                              \
             MOZ_GUARD_OBJECT_NOTIFIER_PARAM_TO_PARENT)                        \
   {}                                                                          \
-  explicit name(name&& aRhs                                                   \
-                MOZ_GUARD_OBJECT_NOTIFIER_PARAM)                              \
+  name(name&& aRhs                                                            \
+       MOZ_GUARD_OBJECT_NOTIFIER_PARAM)                                       \
     : Super(Move(aRhs)                                                        \
             MOZ_GUARD_OBJECT_NOTIFIER_PARAM_TO_PARENT)                        \
   {}                                                                          \
 private:                                                                      \
-  explicit name(name&) MOZ_DELETE;                                            \
-  name& operator=(name&) MOZ_DELETE;                                          \
+  explicit name(name&) = delete;                                              \
+  name& operator=(name&) = delete;                                            \
 };
-
-/*
- * ScopedFreePtr is a RAII wrapper for pointers that need to be free()d.
- *
- *   struct S { ... };
- *   ScopedFreePtr<S> foo = malloc(sizeof(S));
- *   ScopedFreePtr<char> bar = strdup(str);
- */
-template<typename T>
-struct ScopedFreePtrTraits
-{
-  typedef T* type;
-  static T* empty() { return nullptr; }
-  static void release(T* aPtr) { free(aPtr); }
-};
-SCOPED_TEMPLATE(ScopedFreePtr, ScopedFreePtrTraits)
-
-/*
- * ScopedDeletePtr is a RAII wrapper for pointers that need to be deleted.
- *
- *   struct S { ... };
- *   ScopedDeletePtr<S> foo = new S();
- */
-template<typename T>
-struct ScopedDeletePtrTraits : public ScopedFreePtrTraits<T>
-{
-  static void release(T* aPtr) { delete aPtr; }
-};
-SCOPED_TEMPLATE(ScopedDeletePtr, ScopedDeletePtrTraits)
-
-/*
- * ScopedDeleteArray is a RAII wrapper for pointers that need to be delete[]ed.
- *
- *   struct S { ... };
- *   ScopedDeleteArray<S> foo = new S[42];
- */
-template<typename T>
-struct ScopedDeleteArrayTraits : public ScopedFreePtrTraits<T>
-{
-  static void release(T* aPtr) { delete [] aPtr; }
-};
-SCOPED_TEMPLATE(ScopedDeleteArray, ScopedDeleteArrayTraits)
 
 /*
  * MOZ_TYPE_SPECIFIC_SCOPED_POINTER_TEMPLATE makes it easy to create scoped
