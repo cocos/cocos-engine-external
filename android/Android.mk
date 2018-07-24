@@ -98,27 +98,6 @@ include $(PREBUILT_STATIC_LIBRARY)
 
 #======================================
 include $(CLEAR_VARS)
-
-LOCAL_MODULE := cocos_mozglue_static
-LOCAL_MODULE_FILENAME := mozglue
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libmozglue.a
-include $(PREBUILT_STATIC_LIBRARY)
-
-#======================================
-include $(CLEAR_VARS)
-
-LOCAL_MODULE := spidermonkey_static
-LOCAL_MODULE_FILENAME := js_static
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libjs_static.a
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/spidermonkey
-
-LOCAL_CPPFLAGS := -D__STDC_LIMIT_MACROS=1 -Wno-invalid-offsetof
-LOCAL_EXPORT_CPPFLAGS := -D__STDC_LIMIT_MACROS=1 -Wno-invalid-offsetof
-LOCAL_STATIC_LIBRARIES += cocos_mozglue_static
-include $(PREBUILT_STATIC_LIBRARY)
-
-#======================================
-include $(CLEAR_VARS)
 LOCAL_MODULE := v8_builtins_generators
 LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libv8_builtins_generators.a
 include $(PREBUILT_STATIC_LIBRARY)
