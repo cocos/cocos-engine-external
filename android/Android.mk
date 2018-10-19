@@ -11,16 +11,6 @@ include $(PREBUILT_STATIC_LIBRARY)
 #======================================
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := cocos_freetype2_static
-LOCAL_MODULE_FILENAME := freetype2
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libfreetype.a
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/freetype
-
-include $(PREBUILT_STATIC_LIBRARY)
-
-#======================================
-include $(CLEAR_VARS)
-
 LOCAL_MODULE := cocos_jpeg_static
 LOCAL_MODULE_FILENAME := jpeg
 LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libjpeg.a
@@ -33,15 +23,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := cocos_png_static
 LOCAL_MODULE_FILENAME := png
 LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libpng.a
-
-include $(PREBUILT_STATIC_LIBRARY)
-
-#======================================
-include $(CLEAR_VARS)
-
-LOCAL_MODULE := cocos_chipmunk_static
-LOCAL_MODULE_FILENAME := chipmunk
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libchipmunk.a
 
 include $(PREBUILT_STATIC_LIBRARY)
 
@@ -145,7 +126,7 @@ LOCAL_MODULE := v8_static
 LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libv8_base.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/v8
 
-LOCAL_WHOLE_STATIC_LIBRARIES += v8_builtins_generators v8_builtins_setup v8_libbase v8_libplatform v8_libsampler v8_nosnapshot v8_inspector
+LOCAL_WHOLE_STATIC_LIBRARIES += v8_builtins_generators v8_builtins_setup v8_libbase v8_libplatform v8_libsampler v8_nosnapshot
 
 include $(PREBUILT_STATIC_LIBRARY)
 
