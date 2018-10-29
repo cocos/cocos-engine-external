@@ -29,11 +29,10 @@ include $(PREBUILT_STATIC_LIBRARY)
 #======================================
 include $(CLEAR_VARS)
 
+ifeq ($(USE_TIFF),1)
 LOCAL_MODULE := cocos_tiff_static
 LOCAL_MODULE_FILENAME := tiff
 LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libtiff.a
-
-ifeq ($(USE_TIFF),1)
 include $(PREBUILT_STATIC_LIBRARY)
 endif
 
