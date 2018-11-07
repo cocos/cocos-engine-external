@@ -1,39 +1,19 @@
-/************************************************************************
- * Copyright (C) 2002-2009, Xiph.org Foundation
- * Copyright (C) 2010, Robin Watts for Pinknoise Productions Ltd
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the names of the Xiph.org Foundation nor Pinknoise
- * Productions Ltd nor the names of its contributors may be used to
- * endorse or promote products derived from this software without
- * specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- ************************************************************************
+/********************************************************************
+ *                                                                  *
+ * THIS FILE IS PART OF THE OggVorbis 'TREMOR' CODEC SOURCE CODE.   *
+ *                                                                  *
+ * USE, DISTRIBUTION AND REPRODUCTION OF THIS LIBRARY SOURCE IS     *
+ * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
+ * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
+ *                                                                  *
+ * THE OggVorbis 'TREMOR' SOURCE CODE IS (C) COPYRIGHT 1994-2003    *
+ * BY THE Xiph.Org FOUNDATION http://www.xiph.org/                  *
+ *                                                                  *
+ ********************************************************************
 
  function: maintain the info structure, info <-> header packets
 
- ************************************************************************/
+ ********************************************************************/
 
 /* general handling of the header and the vorbis_info structure (and
    substructures) */
@@ -51,7 +31,7 @@
 /* helpers */
 static void _v_readstring(oggpack_buffer *o,char *buf,int bytes){
   while(bytes--){
-    *buf++=(char)oggpack_read(o,8);
+    *buf++=oggpack_read(o,8);
   }
 }
 
@@ -79,7 +59,7 @@ char *vorbis_comment_query(vorbis_comment *vc, char *tag, int count){
 
   strcpy(fulltag, tag);
   strcat(fulltag, "=");
-
+  
   for(i=0;i<vc->comments;i++){
     if(!tagcompare(vc->user_comments[i], fulltag, taglen)){
       if(count == found)
@@ -167,7 +147,7 @@ void vorbis_info_clear(vorbis_info *vi){
 	vorbis_book_clear(ci->book_param+i);
       _ogg_free(ci->book_param);
     }
-
+    
     _ogg_free(ci);
   }
 
@@ -176,7 +156,7 @@ void vorbis_info_clear(vorbis_info *vi){
 
 /* Header packing/unpacking ********************************************/
 
-int _vorbis_unpack_info(vorbis_info *vi,oggpack_buffer *opb){
+static int _vorbis_unpack_info(vorbis_info *vi,oggpack_buffer *opb){
   codec_setup_info     *ci=(codec_setup_info *)vi->codec_setup;
   if(!ci)return(OV_EFAULT);
 
@@ -192,7 +172,7 @@ int _vorbis_unpack_info(vorbis_info *vi,oggpack_buffer *opb){
 
   ci->blocksizes[0]=1<<oggpack_read(opb,4);
   ci->blocksizes[1]=1<<oggpack_read(opb,4);
-
+  
 #ifdef LIMIT_TO_64kHz
   if(vi->rate>=64000 || ci->blocksizes[1]>4096)goto err_out;
 #else
@@ -201,10 +181,10 @@ int _vorbis_unpack_info(vorbis_info *vi,oggpack_buffer *opb){
 
   if(vi->rate<1)goto err_out;
   if(vi->channels<1)goto err_out;
-  if(ci->blocksizes[0]<64)goto err_out;
+  if(ci->blocksizes[0]<64)goto err_out; 
   if(ci->blocksizes[1]<ci->blocksizes[0])goto err_out;
   if(ci->blocksizes[1]>8192)goto err_out;
-
+  
   if(oggpack_read(opb,1)!=1)goto err_out; /* EOP check */
 
   return(0);
@@ -213,31 +193,24 @@ int _vorbis_unpack_info(vorbis_info *vi,oggpack_buffer *opb){
   return(OV_EBADHEADER);
 }
 
-int _vorbis_unpack_comment(vorbis_comment *vc,oggpack_buffer *opb){
+static int _vorbis_unpack_comment(vorbis_comment *vc,oggpack_buffer *opb){
   int i;
   int vendorlen=oggpack_read(opb,32);
   if(vendorlen<0)goto err_out;
   vc->vendor=(char *)_ogg_calloc(vendorlen+1,1);
-  if(!vc->vendor)goto err_out;
   _v_readstring(opb,vc->vendor,vendorlen);
   vc->comments=oggpack_read(opb,32);
   if(vc->comments<0)goto err_out;
   vc->user_comments=(char **)_ogg_calloc(vc->comments+1,sizeof(*vc->user_comments));
-  if (!vc->user_comments){
-      vc->comments=0;
-      goto err_out;
-  }
   vc->comment_lengths=(int *)_ogg_calloc(vc->comments+1, sizeof(*vc->comment_lengths));
-  if (!vc->comment_lengths)goto err_out;
-
+	    
   for(i=0;i<vc->comments;i++){
     int len=oggpack_read(opb,32);
     if(len<0)goto err_out;
 	vc->comment_lengths[i]=len;
     vc->user_comments[i]=(char *)_ogg_calloc(len+1,1);
-    if(!vc->user_comments[i])goto err_out;
     _v_readstring(opb,vc->user_comments[i],len);
-  }
+  }	  
   if(oggpack_read(opb,1)!=1)goto err_out; /* EOP check */
 
   return(0);
@@ -248,7 +221,7 @@ int _vorbis_unpack_comment(vorbis_comment *vc,oggpack_buffer *opb){
 
 /* all of the real encoding details are here.  The modes, books,
    everything */
-int _vorbis_unpack_books(vorbis_info *vi,oggpack_buffer *opb){
+static int _vorbis_unpack_books(vorbis_info *vi,oggpack_buffer *opb){
   codec_setup_info     *ci=(codec_setup_info *)vi->codec_setup;
   int i;
   if(!ci)return(OV_EFAULT);
@@ -256,10 +229,6 @@ int _vorbis_unpack_books(vorbis_info *vi,oggpack_buffer *opb){
   /* codebooks */
   ci->books=oggpack_read(opb,8)+1;
   ci->book_param=(codebook *)_ogg_calloc(ci->books,sizeof(*ci->book_param));
-  if(!ci->book_param){
-    ci->books=0;
-    goto err_out;
-  }
   for(i=0;i<ci->books;i++)
     if(vorbis_book_unpack(opb,ci->book_param+i))goto err_out;
 
@@ -270,14 +239,10 @@ int _vorbis_unpack_books(vorbis_info *vi,oggpack_buffer *opb){
 
   /* floor backend settings */
   ci->floors=oggpack_read(opb,6)+1;
-  ci->floor_param=_ogg_calloc(ci->floors, sizeof(*ci->floor_param));
-  ci->floor_type=_ogg_calloc(ci->floors, sizeof(*ci->floor_type));
-  if(!ci->floor_param || !ci->floor_type){
-    ci->floors=0;
-    goto err_out;
-  }
+  ci->floor_param=_ogg_malloc(sizeof(*ci->floor_param)*ci->floors);
+  ci->floor_type=_ogg_malloc(sizeof(*ci->floor_type)*ci->floors);
   for(i=0;i<ci->floors;i++){
-    ci->floor_type[i]=(char)oggpack_read(opb,16);
+    ci->floor_type[i]=oggpack_read(opb,16);
     if(ci->floor_type[i]<0 || ci->floor_type[i]>=VI_FLOORB)goto err_out;
     if(ci->floor_type[i])
       ci->floor_param[i]=floor1_info_unpack(vi,opb);
@@ -288,42 +253,30 @@ int _vorbis_unpack_books(vorbis_info *vi,oggpack_buffer *opb){
 
   /* residue backend settings */
   ci->residues=oggpack_read(opb,6)+1;
-  ci->residue_param=_ogg_calloc(ci->residues, sizeof(*ci->residue_param));
-  if (!ci->residue_param){
-    ci->residues=0;
-    goto err_out;
-  }
+  ci->residue_param=_ogg_malloc(sizeof(*ci->residue_param)*ci->residues);
   for(i=0;i<ci->residues;i++)
     if(res_unpack(ci->residue_param+i,vi,opb))goto err_out;
 
   /* map backend settings */
   ci->maps=oggpack_read(opb,6)+1;
-  ci->map_param=_ogg_calloc(ci->maps, sizeof(*ci->map_param));
-  if (!ci->map_param){
-    ci->maps=0;
-    goto err_out;
-  }
+  ci->map_param=_ogg_malloc(sizeof(*ci->map_param)*ci->maps);
   for(i=0;i<ci->maps;i++){
     if(oggpack_read(opb,16)!=0)goto err_out;
     if(mapping_info_unpack(ci->map_param+i,vi,opb))goto err_out;
   }
-
+  
   /* mode settings */
   ci->modes=oggpack_read(opb,6)+1;
   ci->mode_param=
-    (vorbis_info_mode *)_ogg_calloc(ci->modes, sizeof(*ci->mode_param));
-  if (!ci->mode_param){
-    ci->modes=0;
-    goto err_out;
-  }
+    (vorbis_info_mode *)_ogg_malloc(ci->modes*sizeof(*ci->mode_param));
   for(i=0;i<ci->modes;i++){
-    ci->mode_param[i].blockflag=(unsigned char)oggpack_read(opb,1);
+    ci->mode_param[i].blockflag=oggpack_read(opb,1);
     if(oggpack_read(opb,16))goto err_out;
     if(oggpack_read(opb,16))goto err_out;
-    ci->mode_param[i].mapping=(unsigned char)oggpack_read(opb,8);
+    ci->mode_param[i].mapping=oggpack_read(opb,8);
     if(ci->mode_param[i].mapping>=ci->maps)goto err_out;
   }
-
+  
   if(oggpack_read(opb,1)!=1)goto err_out; /* top level EOP check */
 
   return(0);
@@ -339,7 +292,7 @@ int _vorbis_unpack_books(vorbis_info *vi,oggpack_buffer *opb){
 
 int vorbis_dsp_headerin(vorbis_info *vi,vorbis_comment *vc,ogg_packet *op){
   oggpack_buffer opb;
-
+  
   if(op){
     oggpack_readinit(&opb,op->packet);
 
