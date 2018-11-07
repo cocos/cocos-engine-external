@@ -14,8 +14,7 @@ LOCAL_SRC_FILES = \
     Tremolo/mdct.c \
     Tremolo/misc.c \
     Tremolo/res012.c \
-    Tremolo/vorbisfile.c \
-    Tremolo/speed.c
+    Tremolo/vorbisfile.c
 
 # Disable arm optimization which will cause the issue https://github.com/cocos2d/cocos2d-x/issues/17148
 # ifeq ($(TARGET_ARCH),arm)
