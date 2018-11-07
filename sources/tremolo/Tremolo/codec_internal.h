@@ -1,39 +1,19 @@
-/************************************************************************
- * Copyright (C) 2002-2009, Xiph.org Foundation
- * Copyright (C) 2010, Robin Watts for Pinknoise Productions Ltd
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the names of the Xiph.org Foundation nor Pinknoise
- * Productions Ltd nor the names of its contributors may be used to
- * endorse or promote products derived from this software without
- * specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- ************************************************************************
+/********************************************************************
+ *                                                                  *
+ * THIS FILE IS PART OF THE OggVorbis 'TREMOR' CODEC SOURCE CODE.   *
+ *                                                                  *
+ * USE, DISTRIBUTION AND REPRODUCTION OF THIS LIBRARY SOURCE IS     *
+ * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
+ * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
+ *                                                                  *
+ * THE OggVorbis 'TREMOR' SOURCE CODE IS (C) COPYRIGHT 1994-2003    *
+ * BY THE Xiph.Org FOUNDATION http://www.xiph.org/                  *
+ *                                                                  *
+ ********************************************************************
 
  function: libvorbis codec headers
 
- ************************************************************************/
+ ********************************************************************/
 
 #ifndef _V_CODECI_H_
 #define _V_CODECI_H_
@@ -110,19 +90,19 @@ typedef struct{
   char  class_subs;       /* 0,1,2,3 (bits: 1<<n poss) */
   unsigned char  class_book;       /* subs ^ dim entries */
   unsigned char  class_subbook[8]; /* [VIF_CLASS][subs] */
-} floor1class;
+} floor1class;  
 
 typedef struct{
-  floor1class  *klass;          /* [VIF_CLASS] */
-  ogg_uint8_t  *partitionclass; /* [VIF_PARTS]; 0 to 15 */
-  ogg_uint16_t *postlist;       /* [VIF_POSIT+2]; first two implicit */
-  ogg_uint8_t  *forward_index;  /* [VIF_POSIT+2]; */
-  ogg_uint8_t  *hineighbor;     /* [VIF_POSIT]; */
-  ogg_uint8_t  *loneighbor;     /* [VIF_POSIT]; */
+  floor1class  *class;          /* [VIF_CLASS] */
+  char         *partitionclass; /* [VIF_PARTS]; 0 to 15 */
+  ogg_uint16_t *postlist;       /* [VIF_POSIT+2]; first two implicit */ 
+  char         *forward_index;  /* [VIF_POSIT+2]; */
+  char         *hineighbor;     /* [VIF_POSIT]; */
+  char         *loneighbor;     /* [VIF_POSIT]; */
 
   int          partitions;    /* 0 to 31 */
   int          posts;
-  int          mult;          /* 1 2 3 or 4 */
+  int          mult;          /* 1 2 3 or 4 */ 
 
 } vorbis_info_floor1;
 
@@ -168,8 +148,8 @@ typedef struct submap{
 } submap;
 
 typedef struct vorbis_info_mapping{
-  int            submaps;
-
+  int            submaps; 
+  
   unsigned char *chmuxlist;
   submap        *submaplist;
 
@@ -185,7 +165,7 @@ extern int mapping_inverse(struct vorbis_dsp_state *,vorbis_info_mapping *);
 /* codec_setup_info contains all the setup information specific to the
    specific compression/decompression mode in progress (eg,
    psychoacoustic settings, channel setup, options, codebook
-   etc).
+   etc).  
 *********************************************************************/
 
 typedef struct codec_setup_info {
@@ -215,8 +195,6 @@ typedef struct codec_setup_info {
 
 } codec_setup_info;
 
-extern int      vorbis_dsp_init(vorbis_dsp_state *v, vorbis_info *vi);
-extern void     vorbis_dsp_clear(vorbis_dsp_state *v);
 extern vorbis_dsp_state *vorbis_dsp_create(vorbis_info *vi);
 extern void     vorbis_dsp_destroy(vorbis_dsp_state *v);
 extern int      vorbis_dsp_headerin(vorbis_info *vi,vorbis_comment *vc,
