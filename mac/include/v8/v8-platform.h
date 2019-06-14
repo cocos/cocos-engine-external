@@ -109,6 +109,7 @@ class TaskRunner {
   TaskRunner() = default;
   virtual ~TaskRunner() = default;
 
+ private:
   TaskRunner(const TaskRunner&) = delete;
   TaskRunner& operator=(const TaskRunner&) = delete;
 };
