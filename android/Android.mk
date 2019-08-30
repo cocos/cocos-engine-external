@@ -110,19 +110,6 @@ include $(PREBUILT_STATIC_LIBRARY)
 
 #======================================
 include $(CLEAR_VARS)
-LOCAL_MODULE := v8_libcxx
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/v8/libc++.a
-include $(PREBUILT_STATIC_LIBRARY)
-
-#======================================
-include $(CLEAR_VARS)
-LOCAL_MODULE := custom_libcxx
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/v8/libc++abi.a
-LOCAL_WHOLE_STATIC_LIBRARIES += v8_libcxx
-include $(PREBUILT_STATIC_LIBRARY)
-
-#======================================
-include $(CLEAR_VARS)
 LOCAL_MODULE := v8_compiler
 LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/v8/libv8_compiler.a
 include $(PREBUILT_STATIC_LIBRARY)
@@ -132,9 +119,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := v8_static
 LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/v8/libv8_base_without_compiler.a
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/v8 \
-$(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/v8/libc++
-
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/v8
 LOCAL_WHOLE_STATIC_LIBRARIES += v8_libbase v8_libplatform v8_libsampler v8_snapshot v8_compiler
 
 include $(PREBUILT_STATIC_LIBRARY)
