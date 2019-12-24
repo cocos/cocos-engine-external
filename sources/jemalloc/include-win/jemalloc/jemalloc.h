@@ -82,7 +82,11 @@ extern "C" {
 #include <stdbool.h>
 #include <stdint.h>
 #include <limits.h>
-#include <strings.h>
+#ifdef _WIN32
+#  include <string.h>
+#else
+#  include <strings.h>
+#endif
 
 #define	JEMALLOC_VERSION "0.0.0-0-g0000000000000000000000000000000000000000"
 #define	JEMALLOC_VERSION_MAJOR 0
