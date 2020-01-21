@@ -133,5 +133,11 @@ LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libuv.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/uv
 include $(PREBUILT_STATIC_LIBRARY)
 
+LOCAL_MODULE := cocos_freetype_static
+LOCAL_MODULE_FILENAME := libfreetype
+LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libfreetype.a
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/freetype
+include $(PREBUILT_STATIC_LIBRARY)
+
 #======================================
 #$(call import-module,android/cpufeatures)
