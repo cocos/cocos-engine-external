@@ -215,7 +215,6 @@ if(USE_SE_V8)
 
     set_target_properties(v8 PROPERTIES 
       INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/v8
-      INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/v8
     )
 
     set(se_libs_name v8)
