@@ -264,6 +264,18 @@ typedef enum { FALSE = 0, TRUE = 1 } boolean;
 #endif
 
 
+#if _WIN32
+
+#  ifdef FALSE			/* in case these macros already exist */
+#    undef FALSE			/* values of boolean */
+#  endif
+#  ifdef TRUE
+#    undef TRUE	
+#  endif
+
+typedef enum { FALSE = 0, TRUE = 1 } boolean;
+#endif
+
 /*
  * The remaining options affect code selection within the JPEG library,
  * but they don't need to be visible to most applications using the library.
