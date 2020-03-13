@@ -17,19 +17,19 @@ set_target_properties(glew32 PROPERTIES
   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/glew32.lib
 )
 
-add_library(glfw3-2015 STATIC IMPORTED GLOBAL)
+# add_library(glfw3-2015 STATIC IMPORTED GLOBAL)
 
-set_target_properties(glfw3-2015 PROPERTIES
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/glfw3-2015.lib
-)
+# set_target_properties(glfw3-2015 PROPERTIES
+#   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/glfw3-2015.lib
+# )
 
-add_library(glfw3 STATIC IMPORTED GLOBAL)
+# add_library(glfw3 STATIC IMPORTED GLOBAL)
 
-set_target_properties(glfw3 PROPERTIES
-  #IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glfw3.lib
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glfw3-2015.lib
-  #IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/glfw3-2015.lib
-)
+# set_target_properties(glfw3 PROPERTIES
+#   #IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glfw3.lib
+#   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glfw3-2015.lib
+#   #IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/glfw3-2015.lib
+# )
 
 add_library(iconv SHARED IMPORTED GLOBAL)
 
@@ -154,6 +154,7 @@ add_library(OpenAL32 SHARED IMPORTED GLOBAL)
 set_target_properties(OpenAL32 PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/OpenAL32.dll
   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/OpenAL32.lib
+  INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/OpenalSoft
 )
 
 add_library(sqlite3 SHARED IMPORTED GLOBAL)
@@ -163,6 +164,31 @@ set_target_properties(sqlite3 PROPERTIES
   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/sqlite3.lib
 )
 
+
+add_library(SDL2 SHARED IMPORTED GLOBAL)
+set_target_properties(SDL2 PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/SDL2.dll
+  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/SDL2.lib
+)
+
+add_library(EGL SHARED IMPORTED GLOBAL)
+set_target_properties(EGL PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libEGL.dll
+  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libEGL.lib
+)
+
+add_library(GLESv2 SHARED IMPORTED GLOBAL)
+set_target_properties(GLESv2 PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libGLESv2.dll
+  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libGLESv2.lib
+)
+
+
+add_library(GLES_CM SHARED IMPORTED GLOBAL)
+set_target_properties(GLES_CM PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libGLES_CM.dll
+  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libGLES_CM.lib
+)
 set(se_libs_name)
 
 if(USE_SE_V8)
@@ -188,6 +214,7 @@ if(USE_SE_V8)
     target_link_libraries(v8 INTERFACE v8_libbase v8_libplatform)
 
     set_target_properties(v8 PROPERTIES 
+      INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/v8
       INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/v8
     )
 
@@ -226,7 +253,6 @@ endif()
 list(APPEND CC_EXTERNAL_LIBS
     freetype
     glew32
-    glfw3
     iconv
     crypto
     curl
@@ -245,6 +271,10 @@ list(APPEND CC_EXTERNAL_LIBS
     ${se_libs_name}
     zlib
     websockets
+    SDL2
+    GLESv2
+    EGL
+    GLES_CM
 )
 
 list(APPEND CC_EXTERNAL_INCLUDES
