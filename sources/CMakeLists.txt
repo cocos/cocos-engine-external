@@ -20,6 +20,37 @@ set(CC_EXTERNAL_SROUCES
   ${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTF.c
   ${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTF.h
   ${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTFWrapper.cpp
+
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommy.c
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommy.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyalloc.c
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyalloc.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyarray.c
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyarray.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyarrayblk.c
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyarrayblk.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyarrayblkof.c
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyarrayblkof.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyarrayof.c
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyarrayof.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommychain.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyhash.c
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyhash.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyhashdyn.c
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyhashdyn.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyhashlin.c
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyhashlin.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyhashtbl.c
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommyhashtbl.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommylist.c
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommylist.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommytree.c
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommytree.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommytrie.c
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommytrie.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommytrieinp.c
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommytrieinp.h
+  ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommytypes.h
 )
 
 if(ANDROID)
@@ -31,16 +62,7 @@ if(ANDROID)
     pvmp3dec
     vorbisidec
   )
-
-  if(ANDROID_NDK)
-    list(APPEND CC_EXTERNAL_SROUCES
-      ${ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c
-    )
-    list(APPEND CC_EXTERNAL_INCLUDES
-      ${ANDROID_NDK}/sources/android/cpufeatures
-    )
-  endif()
-
+  
 elseif(WINDOWS)
   set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTF.c PROPERTIES
     LANGUAGE C
