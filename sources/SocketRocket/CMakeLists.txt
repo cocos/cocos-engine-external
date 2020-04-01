@@ -46,8 +46,12 @@ set(SOCKET_ROCKET_SOURCES
 )
 
 add_library(SocketRocket ${SOCKET_ROCKET_SOURCES})
-
-cocos_mark_code_files(SocketRocket)
+if(IOS)
+    set_property(TARGET SocketRocket PROPERTY XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET ${TARGET_IOS_VERSION})
+    set_property(TARGET SocketRocket PROPERTY XCODE_ATTRIBUTE_ENABLE_BITCODE "NO")
+    set_property(TARGET SocketRocket PROPERTY XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH "YES")
+endif()
+source_group(TREE ${CMAKE_CURRENT_LIST_DIR} PREFIX "Source Files" FILES ${SOCKET_ROCKET_SOURCES})
 
 target_include_directories(SocketRocket 
     PUBLIC ${CMAKE_CURRENT_LIST_DIR}

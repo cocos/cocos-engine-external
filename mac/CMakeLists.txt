@@ -84,6 +84,16 @@ set_target_properties(mozglue PROPERTIES
     IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libmozglue.a
 )
 
+add_library(EGL SHARED IMPORTED GLOBAL)
+set_target_properties(EGL PROPERTIES
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libEGL.dylib
+)
+
+add_library(GLESv2 SHARED IMPORTED GLOBAL)
+set_target_properties(GLESv2 PROPERTIES
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libGLESv2.dylib
+)
+
 set(se_libs_name)
 
 if(USE_SE_V8)
@@ -123,7 +133,8 @@ endif()
 
 list(APPEND CC_EXTERNAL_LIBS
     freetype
-    glfw3
+    EGL
+    GLESv2
     jpeg
     png
     webp

@@ -17,20 +17,6 @@ set_target_properties(glew32 PROPERTIES
   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/glew32.lib
 )
 
-# add_library(glfw3-2015 STATIC IMPORTED GLOBAL)
-
-# set_target_properties(glfw3-2015 PROPERTIES
-#   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/glfw3-2015.lib
-# )
-
-# add_library(glfw3 STATIC IMPORTED GLOBAL)
-
-# set_target_properties(glfw3 PROPERTIES
-#   #IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glfw3.lib
-#   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glfw3-2015.lib
-#   #IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/glfw3-2015.lib
-# )
-
 add_library(iconv SHARED IMPORTED GLOBAL)
 
 set_target_properties(iconv PROPERTIES
