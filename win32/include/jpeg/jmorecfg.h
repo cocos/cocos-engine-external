@@ -263,7 +263,6 @@ typedef void noreturn_t;
 typedef enum { FALSE = 0, TRUE = 1 } boolean;
 #endif
 
-
 /*
  * The remaining options affect code selection within the JPEG library,
  * but they don't need to be visible to most applications using the library.

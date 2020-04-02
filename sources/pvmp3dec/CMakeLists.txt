@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 
 
-
 set(PVMP3SOURCE 
     ${CMAKE_CURRENT_LIST_DIR}/src/pvmp3_normalize.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/pvmp3_alias_reduction.cpp
@@ -31,10 +30,6 @@ set(PVMP3SOURCE
 )
 
 
-
-
-message(STATUS "-------------------abi for pvmp3:${ANDROID_ABI}------------------------------")
-
 if("${ANDROID_ABI}" MATCHES "armeabi.*")
     message(STATUS "pvmp3dec compile with asm")
     set(PVMP3SOURCE_ASM
@@ -56,9 +51,6 @@ else()
     )
 endif()
 
-message(STATUS "pvmp3dec source list ->")
-message(STATUS "${PVMP3SOURCE}")
-
 add_library(pvmp3dec ${PVMP3SOURCE})
 
 target_include_directories(pvmp3dec PUBLIC 
@@ -66,18 +58,10 @@ target_include_directories(pvmp3dec PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/include
 )
 
-# set_target_properties(pvmp3dec 
-#     PROPERTIES LINK_LANGUAGE ASM
-# )
-
-file(WRITE ${CMAKE_CURRENT_LIST_DIR}/def.h "#pragma once\n#define OSCL_UNUSED_ARG(x) (void)(x)")
-
-# target_compile_definitions(pvmp3dec PRIVATE
-#     OSCL_UNUSED_ARG(x)=(void)(x)
-# )
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/pvmp3dec_tmp_def.h "#pragma once\n#define OSCL_UNUSED_ARG(x) (void)(x)")
 
 target_compile_options(pvmp3dec PRIVATE 
     #-fsanitize=signed-integer-overflow
-    -include ${CMAKE_CURRENT_LIST_DIR}/def.h
+    -include ${CMAKE_CURRENT_BINARY_DIR}/pvmp3dec_tmp_def.h
    #
 )
