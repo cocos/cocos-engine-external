@@ -180,6 +180,7 @@ list(APPEND CC_EXTERNAL_LIBS
     png
     uv
     webp
+    OpenSLES
     ${se_libs_name}
     z
     android_platform
