@@ -51,6 +51,14 @@ set_target_properties(z PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/zlib
 )
 
+add_library(android_platform
+  ${CMAKE_ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c
+  ${CMAKE_ANDROID_NDK}/sources/android/native_app_glue/android_native_app_glue.c
+)
+target_include_directories(android_platform PUBLIC 
+  ${CMAKE_ANDROID_NDK}/sources/android/cpufeatures
+  ${CMAKE_ANDROID_NDK}/sources/android/native_app_glue
+)
 
 set(se_libs_name)
 
@@ -165,6 +173,7 @@ if(USE_SE_V8 AND USE_V8_DEBUGGER)
     )
 endif()
 
+
 list(APPEND CC_EXTERNAL_LIBS
     freetype
     jpeg
@@ -174,9 +183,13 @@ list(APPEND CC_EXTERNAL_LIBS
     OpenSLES
     ${se_libs_name}
     z
+    android_platform
 )
 
 
 list(APPEND CC_EXTERNAL_INCLUDES
   ${platform_spec_path}/include
+  ${platform_spec_path}/include/v8
+  ${platform_spec_path}/include/uv
+  ${CMAKE_ANDROID_NDK}/sources/android/native_app_glue
 )
