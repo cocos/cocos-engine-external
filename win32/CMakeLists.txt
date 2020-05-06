@@ -236,6 +236,25 @@ if(USE_SE_SM)
 
 endif()
 
+add_library(glslang STATIC IMPORTED GLOBAL)
+set_target_properties(glslang PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslang.lib
+)
+add_library(OGLCompiler STATIC IMPORTED GLOBAL)
+set_target_properties(OGLCompiler PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OGLCompiler.lib
+)
+add_library(OSDependent STATIC IMPORTED GLOBAL)
+set_target_properties(OSDependent PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OSDependent.lib
+)
+add_library(SPIRV STATIC IMPORTED GLOBAL)
+set_target_properties(SPIRV PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRV.lib
+)
+list(APPEND CC_EXTERNAL_INCLUDES ${CMAKE_CURRENT_LIST_DIR}/include/glslang)
+set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV)
+
 list(APPEND CC_EXTERNAL_LIBS
     freetype
     glew32
@@ -261,6 +280,7 @@ list(APPEND CC_EXTERNAL_LIBS
     GLESv2
     EGL
     GLES_CM
+    ${glslang_libs_name}
 )
 
 list(APPEND CC_EXTERNAL_INCLUDES

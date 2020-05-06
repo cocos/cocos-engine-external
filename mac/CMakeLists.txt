@@ -131,6 +131,38 @@ if(USE_TIFF)
     )
 endif()
 
+add_library(glslang STATIC IMPORTED GLOBAL)
+set_target_properties(glslang PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang.lib
+)
+add_library(OGLCompiler STATIC IMPORTED GLOBAL)
+set_target_properties(OGLCompiler PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/OGLCompiler.lib
+)
+add_library(OSDependent STATIC IMPORTED GLOBAL)
+set_target_properties(OSDependent PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/OSDependent.lib
+)
+add_library(SPIRV STATIC IMPORTED GLOBAL)
+set_target_properties(SPIRV PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/SPIRV.lib
+)
+set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV)
+
+add_library(spirv-cross-core STATIC IMPORTED GLOBAL)
+set_target_properties(spirv-cross-core PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libspirv-cross-core.lib
+)
+add_library(spirv-cross-msl STATIC IMPORTED GLOBAL)
+set_target_properties(spirv-cross-msl PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libspirv-cross-msl.lib
+)
+add_library(spirv-cross-glsl STATIC IMPORTED GLOBAL)
+set_target_properties(spirv-cross-glsl PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libspirv-cross-glsl.lib
+)
+set(spirv-cross_libs_name spirv-cross-core spirv-cross-glsl spirv-cross-msl)
+
 list(APPEND CC_EXTERNAL_LIBS
     freetype
     EGL
@@ -143,6 +175,8 @@ list(APPEND CC_EXTERNAL_LIBS
     crypto
     ssl
     z
+    ${glslang_libs_name}
+    ${spirv-cross_libs_name}
 )
 
 list(APPEND CC_EXTERNAL_INCLUDES
