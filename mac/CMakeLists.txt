@@ -133,19 +133,19 @@ endif()
 
 add_library(glslang STATIC IMPORTED GLOBAL)
 set_target_properties(glslang PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang.lib
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libglslang.lib
 )
 add_library(OGLCompiler STATIC IMPORTED GLOBAL)
 set_target_properties(OGLCompiler PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/OGLCompiler.lib
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libOGLCompiler.lib
 )
 add_library(OSDependent STATIC IMPORTED GLOBAL)
 set_target_properties(OSDependent PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/OSDependent.lib
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libOSDependent.lib
 )
 add_library(SPIRV STATIC IMPORTED GLOBAL)
 set_target_properties(SPIRV PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/SPIRV.lib
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libSPIRV.lib
 )
 set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV)
 
