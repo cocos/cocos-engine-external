@@ -173,6 +173,24 @@ if(USE_SE_V8 AND USE_V8_DEBUGGER)
     )
 endif()
 
+add_library(glslang STATIC IMPORTED GLOBAL)
+set_target_properties(glslang PROPERTIES
+  IMPORTED_LOCATION ${platform_spec_path}/glslang/glslang.lib
+)
+add_library(OGLCompiler STATIC IMPORTED GLOBAL)
+set_target_properties(OGLCompiler PROPERTIES
+  IMPORTED_LOCATION ${platform_spec_path}/glslang/OGLCompiler.lib
+)
+add_library(OSDependent STATIC IMPORTED GLOBAL)
+set_target_properties(OSDependent PROPERTIES
+  IMPORTED_LOCATION ${platform_spec_path}/glslang/OSDependent.lib
+)
+add_library(SPIRV STATIC IMPORTED GLOBAL)
+set_target_properties(SPIRV PROPERTIES
+  IMPORTED_LOCATION ${platform_spec_path}/glslang/SPIRV.lib
+)
+set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV)
+
 
 list(APPEND CC_EXTERNAL_LIBS
     freetype
@@ -183,6 +201,7 @@ list(APPEND CC_EXTERNAL_LIBS
     ${se_libs_name}
     z
     android_platform
+    ${glslang_libs_name}
 )
 
 
@@ -190,5 +209,6 @@ list(APPEND CC_EXTERNAL_INCLUDES
   ${platform_spec_path}/include
   ${platform_spec_path}/include/v8
   ${platform_spec_path}/include/uv
+  ${platform_spec_path}/include/glslang
   ${CMAKE_ANDROID_NDK}/sources/android/native_app_glue
 )
