@@ -175,19 +175,19 @@ endif()
 
 add_library(glslang STATIC IMPORTED GLOBAL)
 set_target_properties(glslang PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/glslang/libglslang.lib
+  IMPORTED_LOCATION ${platform_spec_path}/glslang/libglslang.a
 )
 add_library(OGLCompiler STATIC IMPORTED GLOBAL)
 set_target_properties(OGLCompiler PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/glslang/libOGLCompiler.lib
+  IMPORTED_LOCATION ${platform_spec_path}/glslang/libOGLCompiler.a
 )
 add_library(OSDependent STATIC IMPORTED GLOBAL)
 set_target_properties(OSDependent PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/glslang/libOSDependent.lib
+  IMPORTED_LOCATION ${platform_spec_path}/glslang/libOSDependent.a
 )
 add_library(SPIRV STATIC IMPORTED GLOBAL)
 set_target_properties(SPIRV PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/glslang/libSPIRV.lib
+  IMPORTED_LOCATION ${platform_spec_path}/glslang/libSPIRV.a
 )
 set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV)
 
