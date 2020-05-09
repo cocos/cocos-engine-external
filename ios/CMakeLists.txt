@@ -97,33 +97,33 @@ endif()
 if(CC_USE_METAL)
   add_library(glslang STATIC IMPORTED GLOBAL)
   set_target_properties(glslang PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libglslang.lib
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libglslang.a
   )
   add_library(OGLCompiler STATIC IMPORTED GLOBAL)
   set_target_properties(OGLCompiler PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libOGLCompiler.lib
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libOGLCompiler.a
   )
   add_library(OSDependent STATIC IMPORTED GLOBAL)
   set_target_properties(OSDependent PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libOSDependent.lib
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libOSDependent.a
   )
   add_library(SPIRV STATIC IMPORTED GLOBAL)
   set_target_properties(SPIRV PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libSPIRV.lib
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libSPIRV.a
   )
   set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV)
 
   add_library(spirv-cross-core STATIC IMPORTED GLOBAL)
   set_target_properties(spirv-cross-core PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libspirv-cross-core.lib
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libspirv-cross-core.a
   )
   add_library(spirv-cross-msl STATIC IMPORTED GLOBAL)
   set_target_properties(spirv-cross-msl PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libspirv-cross-msl.lib
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libspirv-cross-msl.a
   )
   add_library(spirv-cross-glsl STATIC IMPORTED GLOBAL)
   set_target_properties(spirv-cross-glsl PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libspirv-cross-glsl.lib
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libspirv-cross-glsl.a
   )
   set(spirv-cross_libs_name spirv-cross-core spirv-cross-glsl spirv-cross-msl)
   list(APPEND CC_EXTERNAL_LIBS 
