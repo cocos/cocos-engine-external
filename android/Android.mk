@@ -80,48 +80,19 @@ include $(PREBUILT_STATIC_LIBRARY)
 
 #======================================
 include $(CLEAR_VARS)
-LOCAL_MODULE := v8_libbase
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/v8/libv8_libbase.a
-include $(PREBUILT_STATIC_LIBRARY)
-
-#======================================
-include $(CLEAR_VARS)
-LOCAL_MODULE := v8_libplatform
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/v8/libv8_libplatform.a
-include $(PREBUILT_STATIC_LIBRARY)
-
-#======================================
-include $(CLEAR_VARS)
-LOCAL_MODULE := v8_libsampler
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/v8/libv8_libsampler.a
-include $(PREBUILT_STATIC_LIBRARY)
-
-#======================================
-include $(CLEAR_VARS)
-LOCAL_MODULE := v8_snapshot
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/v8/libv8_snapshot.a
-include $(PREBUILT_STATIC_LIBRARY)
-
-#======================================
-include $(CLEAR_VARS)
 LOCAL_MODULE := v8_inspector
 LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/v8/libinspector.a
 include $(PREBUILT_STATIC_LIBRARY)
 
 #======================================
 include $(CLEAR_VARS)
-LOCAL_MODULE := v8_compiler
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/v8/libv8_compiler.a
-include $(PREBUILT_STATIC_LIBRARY)
-
-#======================================
-include $(CLEAR_VARS)
-
 LOCAL_MODULE := v8_static
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/v8/libv8_base_without_compiler.a
+LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/v8/libv8_monolith.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/v8
-LOCAL_WHOLE_STATIC_LIBRARIES += v8_libbase v8_libplatform v8_libsampler v8_snapshot v8_compiler
-
+ifeq ($(TARGET_ARCH),arm64)
+   LOCAL_EXPORT_CPPFLAGS := -DV8_COMPRESS_POINTERS
+   LOCAL_EXPORT_CFLAGS := -DV8_COMPRESS_POINTERS
+endif
 include $(PREBUILT_STATIC_LIBRARY)
 
 #======================================
