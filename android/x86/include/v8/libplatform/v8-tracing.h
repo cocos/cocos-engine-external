@@ -14,6 +14,10 @@
 #include "libplatform/libplatform-export.h"
 #include "v8-platform.h"  // NOLINT(build/include)
 
+namespace perfetto {
+class TracingSession;
+}
+
 namespace v8 {
 
 namespace base {
@@ -23,12 +27,15 @@ class Mutex;
 namespace platform {
 namespace tracing {
 
+class TraceEventListener;
+class JSONTraceEventListener;
+
 const int kTraceMaxNumArgs = 2;
 
 class V8_PLATFORM_EXPORT TraceObject {
  public:
   union ArgValue {
-    bool as_bool;
+    V8_DEPRECATED("use as_uint ? true : false") bool as_bool;
     uint64_t as_uint;
     int64_t as_int;
     double as_double;
@@ -237,7 +244,17 @@ class V8_PLATFORM_EXPORT TracingController
 
   TracingController();
   ~TracingController() override;
+
+  // Takes ownership of |trace_buffer|.
   void Initialize(TraceBuffer* trace_buffer);
+#ifdef V8_USE_PERFETTO
+  // Must be called before StartTracing() if V8_USE_PERFETTO is true. Provides
+  // the output stream for the JSON trace data.
+  void InitializeForPerfetto(std::ostream* output_stream);
+  // Provide an optional listener for testing that will receive trace events.
+  // Must be called before StartTracing().
+  void SetTraceEventListenerForTesting(TraceEventListener* listener);
+#endif
 
   // v8::TracingController implementation.
   const uint8_t* GetCategoryGroupEnabled(const char* category_group) override;
@@ -280,6 +297,12 @@ class V8_PLATFORM_EXPORT TracingController
   std::unique_ptr<base::Mutex> mutex_;
   std::unordered_set<v8::TracingController::TraceStateObserver*> observers_;
   std::atomic_bool recording_{false};
+#ifdef V8_USE_PERFETTO
+  std::ostream* output_stream_ = nullptr;
+  std::unique_ptr<JSONTraceEventListener> json_listener_;
+  TraceEventListener* listener_for_testing_ = nullptr;
+  std::unique_ptr<perfetto::TracingSession> tracing_session_;
+#endif
 
   // Disallow copy and assign
   TracingController(const TracingController&) = delete;
