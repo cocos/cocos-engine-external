@@ -74,9 +74,12 @@ if(USE_SE_V8)
       IMPORTED_LOCATION ${platform_spec_path}/v8/libv8_monolith.a
       INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/v8
     )
+    
+    if(ANDROID_ABI STREQUAL "arm64-v8a" OR ANDROID_ABI STREQUAL "x86_64")
+      set_property(TARGET v8_monolith  APPEND PROPERTY INTERFACE_COMPILE_DEFINITIONS V8_COMPRESS_POINTERS)
+    endif()
 
     set(se_libs_name v8_monolith)
-
 endif()
 
 if(USE_SOCKET)
