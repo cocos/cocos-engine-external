@@ -59,20 +59,12 @@ target_include_directories(android_platform PUBLIC
   ${CMAKE_ANDROID_NDK}/sources/android/cpufeatures
   ${CMAKE_ANDROID_NDK}/sources/android/native_app_glue
 )
-set_target_properties(android_platform PROPERTIES
-  LANGUAGE C
-  APPEND_STRING PROPERTY LINK_FLAGS -uANativeActivity_onCreate
-)
 
-#target_link_options(android_platform PUBLIC 
-#  -uANativeActivity_onCreate
-#)
-set_property(TARGET android_platform APPEND_STRING PROPERTY LINK_FLAGS "-u ANativeActivity_onCreate")
-
-
-target_link_libraries(android_platform PUBLIC 
-  android log dl
-)
+## Settings from  ${CMAKE_ANDROID_NDK}/sources/android/native_app_glue/Android.mk
+# set_property(TARGET android_platform APPEND_STRING PROPERTY LINK_FLAGS "-u ANativeActivity_onCreate")
+# target_link_libraries(android_platform PUBLIC 
+#   android log dl
+# )
 
 set(se_libs_name)
 
