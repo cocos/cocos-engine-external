@@ -236,36 +236,38 @@ if(USE_SE_SM)
 
 endif()
 
-if (CMAKE_BUILD_TYPE EQUAL "DEBUG")
-set(GLSLANG_SUFFIX "d")
-endif()
-
 add_library(glslang STATIC IMPORTED GLOBAL)
 set_target_properties(glslang PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslang${GLSLANG_SUFFIX}.lib
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslangd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslang.lib
 )
 add_library(HLSL STATIC IMPORTED GLOBAL)
 set_target_properties(HLSL PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/HLSL${GLSLANG_SUFFIX}.lib
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/HLSLd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/HLSL.lib
 )
 add_library(OGLCompiler STATIC IMPORTED GLOBAL)
 set_target_properties(OGLCompiler PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OGLCompiler${GLSLANG_SUFFIX}.lib
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OGLCompilerd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OGLCompiler.lib
 )
 add_library(OSDependent STATIC IMPORTED GLOBAL)
 set_target_properties(OSDependent PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OSDependent${GLSLANG_SUFFIX}.lib
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OSDependentd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OSDependent.lib
 )
 add_library(SPIRV STATIC IMPORTED GLOBAL)
 set_target_properties(SPIRV PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRV${GLSLANG_SUFFIX}.lib
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRVd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRV.lib
 )
 add_library(SPIRVRemapper STATIC IMPORTED GLOBAL)
 set_target_properties(SPIRVRemapper PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRVRemapper${GLSLANG_SUFFIX}.lib
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRVRemapperd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRVRemapper.lib
 )
 list(APPEND CC_EXTERNAL_INCLUDES ${CMAKE_CURRENT_LIST_DIR}/include/glslang)
-set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV)
+set(glslang_libs_name glslang HLSL OGLCompiler OSDependent SPIRV SPIRVRemapper)
 
 list(APPEND CC_EXTERNAL_LIBS
     freetype
