@@ -261,13 +261,13 @@ set_target_properties(SPIRV PROPERTIES
   IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRVd.lib
   IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRV.lib
 )
-add_library(SPIRVRemapper STATIC IMPORTED GLOBAL)
-set_target_properties(SPIRVRemapper PROPERTIES
-  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRVRemapperd.lib
-  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRVRemapper.lib
+add_library(SPVRemapper STATIC IMPORTED GLOBAL)
+set_target_properties(SPVRemapper PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPVRemapperd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPVRemapper.lib
 )
 list(APPEND CC_EXTERNAL_INCLUDES ${CMAKE_CURRENT_LIST_DIR}/include/glslang)
-set(glslang_libs_name glslang HLSL OGLCompiler OSDependent SPIRV SPIRVRemapper)
+set(glslang_libs_name glslang HLSL OGLCompiler OSDependent SPIRV SPVRemapper)
 
 list(APPEND CC_EXTERNAL_LIBS
     freetype
