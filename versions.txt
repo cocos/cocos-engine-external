@@ -26,12 +26,6 @@ jpeg
     ios: --
     android: v9
 
-tiff
-    mac: 4.0.6
-    win32: 4.0.3
-    ios: 4.0.6
-    android: 4.0.6
-
 freetype2
     mac: 2.6.3
     win32: 2.5.5

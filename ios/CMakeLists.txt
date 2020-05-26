@@ -24,11 +24,6 @@ set_target_properties(ssl PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libssl.a
 )
 
-add_library(tiff STATIC IMPORTED GLOBAL)
-set_target_properties(tiff PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libtiff.a
-)
-
 add_library(uv STATIC IMPORTED GLOBAL)
 set_target_properties(uv PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libuv_a.a
@@ -94,24 +89,9 @@ if(USE_SE_V8)
 #    endif()
 endif()
 
-if(USE_SE_SM)
-    list(APPEND se_libs_name 
-        js_static
-        mozglue
-    )
-
-endif()
-
 if(USE_SE_JSC)
     find_library(JAVASCRIPT_CORE_LIBRARY JavaScriptCore REQUIRED)
     set(se_libs_name ${JAVASCRIPT_CORE_LIBRARY})
-endif()
-
-
-if(USE_TIFF)
-    list(APPEND CC_EXTERNAL_LIBS 
-        tiff
-    )
 endif()
 
 list(APPEND CC_EXTERNAL_INCLUDES 

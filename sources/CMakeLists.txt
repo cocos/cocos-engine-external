@@ -70,9 +70,6 @@ elseif(WINDOWS)
 elseif(APPLE)
   if(USE_SOCKET)
       include(${CMAKE_CURRENT_LIST_DIR}/SocketRocket/CMakeLists.txt)
-      list(APPEND CC_EXTERNAL_LIBS
-          SocketRocket
-      )
   endif()
 endif()
 
