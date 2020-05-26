@@ -77,20 +77,6 @@ set_target_properties(ssl PROPERTIES
   #IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libssl-1_1.dll
 )
 
-# add_library(tiff-2015 STATIC IMPORTED GLOBAL)
-
-# set_target_properties(tiff-2015 PROPERTIES
-#   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libtiff-2015.lib
-# )
-
-add_library(tiff SHARED IMPORTED GLOBAL)
-
-set_target_properties(tiff PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libtiff.dll
-  #IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libtiff.lib
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libtiff-2015.lib
-)
-
 add_library(uv STATIC IMPORTED GLOBAL)
 
 set_target_properties(uv PROPERTIES
@@ -205,35 +191,8 @@ if(USE_SE_V8)
     )
 
     set(se_libs_name v8)
-    
-endif()
-
-
-if(USE_SE_SM)
-    add_library(mozglue STATIC IMPORTED GLOBAL)
-
-    set_target_properties(mozglue PROPERTIES
-      IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/mozglue.lib
-      # IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/Debug/mozglue.lib
-    )
-
-    add_library(mozjs SHARED IMPORTED GLOBAL)
-
-    set_target_properties(mozjs PROPERTIES
-      IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/Debug/mozjs-52.dll
-      IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/Debug/mozjs-52.lib
-      #IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/mozjs-52.dll
-      #IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/mozjs-52.lib
-      INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/spidermonkey
-    )
-
-    # add_library(nspr4 SHARED IMPORTED GLOBAL)
-    # set_target_properties(nspr4 PROPERTIES
-    #   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/nspr4.dll
-    # )
-
-    set(se_libs_name mozglue mozjs)
-
+else()
+   message(FATAL_ERROR "Only V8 is supported!")
 endif()
 
 add_library(glslang STATIC IMPORTED GLOBAL)
@@ -280,7 +239,6 @@ list(APPEND CC_EXTERNAL_LIBS
     ogg
     png
     ssl
-    tiff
     uv
     vorbis
     vorbisfile
@@ -296,6 +254,7 @@ list(APPEND CC_EXTERNAL_LIBS
     GLES_CM
     ${glslang_libs_name}
 )
+
 
 list(APPEND CC_EXTERNAL_INCLUDES
   ${CMAKE_CURRENT_LIST_DIR}/include

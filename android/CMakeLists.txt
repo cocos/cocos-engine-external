@@ -24,11 +24,6 @@ set_target_properties(ssl PROPERTIES
   IMPORTED_LOCATION ${platform_spec_path}/libssl.a
 )
 
-add_library(tiff STATIC IMPORTED GLOBAL)
-set_target_properties(tiff PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/libtiff.a
-)
-
 add_library(uv STATIC IMPORTED GLOBAL)
 set_target_properties(uv PROPERTIES
   IMPORTED_LOCATION ${platform_spec_path}/libuv.a
@@ -94,12 +89,6 @@ if(USE_SOCKET)
         websockets
         ssl
         crypto
-    )
-endif()
-
-if(USE_TIFF)
-    list(APPEND CC_EXTERNAL_LIBS
-        tiff
     )
 endif()
 
