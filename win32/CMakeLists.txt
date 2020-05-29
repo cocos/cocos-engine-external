@@ -143,6 +143,11 @@ set_target_properties(SDL2 PROPERTIES
   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/SDL2.lib
 )
 
+add_library(SDL2Main SHARED IMPORTED GLOBAL)
+set_target_properties(SDL2Main PROPERTIES
+  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/SDL2Main.lib
+)
+
 add_library(EGL SHARED IMPORTED GLOBAL)
 set_target_properties(EGL PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libEGL.dll
@@ -249,6 +254,7 @@ list(APPEND CC_EXTERNAL_LIBS
     zlib
     websockets
     SDL2
+    SDL2Main
     GLESv2
     EGL
     GLES_CM
