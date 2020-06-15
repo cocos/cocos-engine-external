@@ -52,7 +52,7 @@
 // Don't maintain an ordinal set of enums (0,1,2,3...) to avoid all possible
 // defects from mixing the two different forms.
 //
-typedef enum {
+typedef enum : unsigned {
     EBadProfile           = 0,
     ENoProfile            = (1 << 0), // only for desktop, before profiles showed up
     ECoreProfile          = (1 << 1),
@@ -157,6 +157,7 @@ const char* const E_GL_ARB_shader_image_size            = "GL_ARB_shader_image_s
 const char* const E_GL_ARB_shader_storage_buffer_object = "GL_ARB_shader_storage_buffer_object";
 const char* const E_GL_ARB_shading_language_packing     = "GL_ARB_shading_language_packing";
 const char* const E_GL_ARB_texture_query_lod            = "GL_ARB_texture_query_lod";
+const char* const E_GL_ARB_vertex_attrib_64bit          = "GL_ARB_vertex_attrib_64bit";
 
 const char* const E_GL_KHR_shader_subgroup_basic            = "GL_KHR_shader_subgroup_basic";
 const char* const E_GL_KHR_shader_subgroup_vote             = "GL_KHR_shader_subgroup_vote";
@@ -195,6 +196,8 @@ const char* const E_GL_EXT_debug_printf                     = "GL_EXT_debug_prin
 const char* const E_GL_EXT_ray_tracing                      = "GL_EXT_ray_tracing";
 const char* const E_GL_EXT_ray_query                        = "GL_EXT_ray_query";
 const char* const E_GL_EXT_ray_flags_primitive_culling      = "GL_EXT_ray_flags_primitive_culling";
+const char* const E_GL_EXT_blend_func_extended              = "GL_EXT_blend_func_extended";
+const char* const E_GL_EXT_shader_implicit_conversions      = "GL_EXT_shader_implicit_conversions";
 
 // Arrays of extensions for the above viewportEXTs duplications
 
@@ -266,6 +269,7 @@ const char* const E_GL_EXT_tessellation_shader                  = "GL_EXT_tessel
 const char* const E_GL_EXT_tessellation_point_size              = "GL_EXT_tessellation_point_size";
 const char* const E_GL_EXT_texture_buffer                       = "GL_EXT_texture_buffer";
 const char* const E_GL_EXT_texture_cube_map_array               = "GL_EXT_texture_cube_map_array";
+const char* const E_GL_EXT_shader_integer_mix                   = "GL_EXT_shader_integer_mix"; 
 
 // OES matching AEP
 const char* const E_GL_OES_geometry_shader                      = "GL_OES_geometry_shader";

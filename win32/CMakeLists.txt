@@ -190,7 +190,7 @@ if(USE_SE_V8)
 
     target_link_libraries(v8 INTERFACE v8_libbase v8_libplatform)
 
-    set_target_properties(v8 PROPERTIES 
+    set_target_properties(v8 PROPERTIES
       INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/v8
       INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/v8
     )
@@ -204,11 +204,6 @@ add_library(glslang STATIC IMPORTED GLOBAL)
 set_target_properties(glslang PROPERTIES
   IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslangd.lib
   IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslang.lib
-)
-add_library(HLSL STATIC IMPORTED GLOBAL)
-set_target_properties(HLSL PROPERTIES
-  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/HLSLd.lib
-  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/HLSL.lib
 )
 add_library(OGLCompiler STATIC IMPORTED GLOBAL)
 set_target_properties(OGLCompiler PROPERTIES
@@ -225,13 +220,14 @@ set_target_properties(SPIRV PROPERTIES
   IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRVd.lib
   IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRV.lib
 )
-add_library(SPVRemapper STATIC IMPORTED GLOBAL)
-set_target_properties(SPVRemapper PROPERTIES
-  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPVRemapperd.lib
-  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPVRemapper.lib
+add_library(glslang-default-resource-limits STATIC IMPORTED GLOBAL)
+set_target_properties(glslang-default-resource-limits PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslang-default-resource-limitsd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslang-default-resource-limits.lib
 )
+
 list(APPEND CC_EXTERNAL_INCLUDES ${CMAKE_CURRENT_LIST_DIR}/include/glslang)
-set(glslang_libs_name glslang HLSL OGLCompiler OSDependent SPIRV SPVRemapper)
+set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits)
 
 list(APPEND CC_EXTERNAL_LIBS
     freetype
