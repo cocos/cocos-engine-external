@@ -99,21 +99,25 @@ endif()
 
 add_library(glslang STATIC IMPORTED GLOBAL)
 set_target_properties(glslang PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libglslang.a
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libglslang.a
 )
 add_library(OGLCompiler STATIC IMPORTED GLOBAL)
 set_target_properties(OGLCompiler PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libOGLCompiler.a
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libOGLCompiler.a
 )
 add_library(OSDependent STATIC IMPORTED GLOBAL)
 set_target_properties(OSDependent PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libOSDependent.a
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libOSDependent.a
 )
 add_library(SPIRV STATIC IMPORTED GLOBAL)
 set_target_properties(SPIRV PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libSPIRV.a
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libSPIRV.a
 )
-set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV)
+add_library(glslang-default-resource-limits STATIC IMPORTED GLOBAL)
+set_target_properties(glslang-default-resource-limits PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libglslang-default-resource-limits.a
+)
+set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits)
 
 add_library(spirv-cross-core STATIC IMPORTED GLOBAL)
 set_target_properties(spirv-cross-core PROPERTIES
