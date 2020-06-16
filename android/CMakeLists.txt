@@ -114,7 +114,11 @@ add_library(SPIRV STATIC IMPORTED GLOBAL)
 set_target_properties(SPIRV PROPERTIES
   IMPORTED_LOCATION ${platform_spec_path}/glslang/libSPIRV.a
 )
-set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV)
+add_library(glslang-default-resource-limits STATIC IMPORTED GLOBAL)
+set_target_properties(glslang-default-resource-limits PROPERTIES
+  IMPORTED_LOCATION ${platform_spec_path}/glslang/libglslang-default-resource-limits.a
+)
+set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits)
 
 
 list(APPEND CC_EXTERNAL_LIBS
