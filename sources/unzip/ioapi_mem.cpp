@@ -32,7 +32,7 @@
 
 #endif
 
-namespace cocos2d {
+namespace cc {
 
     voidpf ZCALLBACK fopen_mem_func (voidpf opaque,
                                      const char* filename,
@@ -228,4 +228,4 @@ namespace cocos2d {
         pzlib_filefunc_def->zfile_func64.opaque = NULL;
     }
     
-}; // namespace cocos2d
+}; // namespace cc

@@ -78,7 +78,7 @@ typedef voidp unzFile;
 #define UNZ_INTERNALERROR               (-104)
 #define UNZ_CRCERROR                    (-105)
 
-namespace cocos2d {
+namespace cc {
 
 /* tm_unz contain date/time info */
 typedef struct tm_unz_s
@@ -451,6 +451,6 @@ uLong CC_DLL unzGetOffset (unzFile file);
 int CC_DLL unzSetOffset64 (unzFile file, ZPOS64_T pos);
 int CC_DLL unzSetOffset (unzFile file, uLong pos);
 
-} // end of namespace cocos2d
+}
 
 #endif /* _unz64_H */
