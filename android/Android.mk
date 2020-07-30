@@ -104,11 +104,20 @@ LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libuv.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/uv
 include $(PREBUILT_STATIC_LIBRARY)
 
+#======================================
+include $(CLEAR_VARS)
 LOCAL_MODULE := cocos_freetype_static
 LOCAL_MODULE_FILENAME := libfreetype
 LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libfreetype.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/freetype
 include $(PREBUILT_STATIC_LIBRARY)
 
+#======================================
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := cocos2djni
+LOCAL_MODULE_FILENAME := libcocos2djni
+LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libcocos2djni.a
+include $(PREBUILT_STATIC_LIBRARY)
 #======================================
 #$(call import-module,android/cpufeatures)
