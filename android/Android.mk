@@ -127,11 +127,13 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/freetype
 include $(PREBUILT_STATIC_LIBRARY)
 
 #======================================
-include $(CLEAR_VARS)
+ifneq ($(TARGET_ARCH),x86_64)
+   include $(CLEAR_VARS)
 
-LOCAL_MODULE := cocos2djni
-LOCAL_MODULE_FILENAME := libcocos2djni
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libcocos2djni.a
-include $(PREBUILT_STATIC_LIBRARY)
+   LOCAL_MODULE := cocos2djni
+   LOCAL_MODULE_FILENAME := libcocos2djni
+   LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libcocos2djni.a
+   include $(PREBUILT_STATIC_LIBRARY)
+endif
 #======================================
 #$(call import-module,android/cpufeatures)
