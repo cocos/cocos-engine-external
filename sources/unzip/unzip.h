@@ -43,7 +43,7 @@
 #ifndef _unz64_H
 #define _unz64_H
 
-#include "base/ccMacros.h"
+#include "base/Macros.h"
 
 #ifndef _ZLIB_H
 #include "zlib.h"
