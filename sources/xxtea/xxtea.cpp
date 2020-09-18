@@ -20,6 +20,10 @@
 #include <memory.h>
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 static void xxtea_long_encrypt(xxtea_long *v, xxtea_long len, xxtea_long *k)
 {
     xxtea_long n = len - 1;
@@ -174,3 +178,8 @@ unsigned char *xxtea_decrypt(unsigned char *data, xxtea_long data_len, unsigned 
 }
 
 /* }}} */
+
+#ifdef __cplusplus
+}
+#endif
+

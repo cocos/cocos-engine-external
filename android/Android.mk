@@ -11,16 +11,6 @@ include $(PREBUILT_STATIC_LIBRARY)
 #======================================
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := cocos_freetype2_static
-LOCAL_MODULE_FILENAME := freetype2
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libfreetype.a
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/freetype
-
-include $(PREBUILT_STATIC_LIBRARY)
-
-#======================================
-include $(CLEAR_VARS)
-
 LOCAL_MODULE := cocos_jpeg_static
 LOCAL_MODULE_FILENAME := jpeg
 LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libjpeg.a
@@ -39,20 +29,12 @@ include $(PREBUILT_STATIC_LIBRARY)
 #======================================
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := cocos_chipmunk_static
-LOCAL_MODULE_FILENAME := chipmunk
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libchipmunk.a
-
-include $(PREBUILT_STATIC_LIBRARY)
-
-#======================================
-include $(CLEAR_VARS)
-
+ifeq ($(USE_TIFF),1)
 LOCAL_MODULE := cocos_tiff_static
 LOCAL_MODULE_FILENAME := tiff
 LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libtiff.a
-
 include $(PREBUILT_STATIC_LIBRARY)
+endif
 
 #======================================
 include $(CLEAR_VARS)
@@ -98,35 +80,60 @@ include $(PREBUILT_STATIC_LIBRARY)
 
 #======================================
 include $(CLEAR_VARS)
+LOCAL_MODULE := v8_inspector
+LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/v8/libinspector.a
+include $(PREBUILT_STATIC_LIBRARY)
 
-LOCAL_MODULE := cocos_mozglue_static
-LOCAL_MODULE_FILENAME := mozglue
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libmozglue.a
+#======================================
+include $(CLEAR_VARS)
+LOCAL_MODULE := v8_static
+LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/v8/libv8_monolith.a
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/v8
+ifeq ($(TARGET_ARCH),arm64)
+   LOCAL_EXPORT_CPPFLAGS := -DV8_COMPRESS_POINTERS
+   LOCAL_EXPORT_CFLAGS := -DV8_COMPRESS_POINTERS
+endif
+ifeq ($(TARGET_ARCH),x86_64)
+   LOCAL_EXPORT_CPPFLAGS := \
+   -DV8_COMPRESS_POINTERS \
+   -DV8_TARGET_ARCH_X64 \
+   -DV8_HAVE_TARGET_OS \
+   -DV8_TARGET_OS_ANDROID
+
+   LOCAL_EXPORT_CFLAGS := \
+   -DV8_COMPRESS_POINTERS \
+   -DV8_TARGET_ARCH_X64 \
+   -DV8_HAVE_TARGET_OS \
+   -DV8_TARGET_OS_ANDROID
+endif
+
 include $(PREBUILT_STATIC_LIBRARY)
 
 #======================================
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := spidermonkey_static
-LOCAL_MODULE_FILENAME := js_static
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libjs_static.a
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/spidermonkey
-
-LOCAL_CPPFLAGS := -D__STDC_LIMIT_MACROS=1 -Wno-invalid-offsetof
-LOCAL_EXPORT_CPPFLAGS := -D__STDC_LIMIT_MACROS=1 -Wno-invalid-offsetof
-LOCAL_STATIC_LIBRARIES += cocos_mozglue_static
+LOCAL_MODULE := uv_static
+LOCAL_MODULE_FILENAME := libuv
+LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libuv.a
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/uv
 include $(PREBUILT_STATIC_LIBRARY)
 
 #======================================
 include $(CLEAR_VARS)
-
-LOCAL_MODULE := PluginProtocolStatic
-LOCAL_MODULE_FILENAME := libPluginProtocolStatic
-LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libPluginProtocolStatic.a
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/anysdk
-LOCAL_EXPORT_LDLIBS += -llog
-LOCAL_EXPORT_LDLIBS += -lz
-
+LOCAL_MODULE := cocos_freetype_static
+LOCAL_MODULE_FILENAME := libfreetype
+LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libfreetype.a
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/$(TARGET_ARCH_ABI)/include/freetype
 include $(PREBUILT_STATIC_LIBRARY)
+
+#======================================
+ifneq ($(TARGET_ARCH),x86_64)
+   include $(CLEAR_VARS)
+
+   LOCAL_MODULE := cocos2djni
+   LOCAL_MODULE_FILENAME := libcocos2djni
+   LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libcocos2djni.a
+   include $(PREBUILT_STATIC_LIBRARY)
+endif
 #======================================
 #$(call import-module,android/cpufeatures)

@@ -26,6 +26,7 @@
 #include <Box2D/Collision/b2BroadPhase.h>
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Common/b2BlockAllocator.h>
+#include <Box2D/b2ObjectDestroyNotifier.h>
 
 b2Fixture::b2Fixture()
 {
@@ -82,6 +83,7 @@ void b2Fixture::Destroy(b2BlockAllocator* allocator)
 	case b2Shape::e_circle:
 		{
 			b2CircleShape* s = (b2CircleShape*)m_shape;
+            b2NotifyObjectDestroyed(s, b2ObjectType::CIRCLE_SHAPE, "b2CircleShape");
 			s->~b2CircleShape();
 			allocator->Free(s, sizeof(b2CircleShape));
 		}
@@ -90,6 +92,7 @@ void b2Fixture::Destroy(b2BlockAllocator* allocator)
 	case b2Shape::e_edge:
 		{
 			b2EdgeShape* s = (b2EdgeShape*)m_shape;
+            b2NotifyObjectDestroyed(s, b2ObjectType::EDGE_SHAPE, "b2EdgeShape");
 			s->~b2EdgeShape();
 			allocator->Free(s, sizeof(b2EdgeShape));
 		}
@@ -98,6 +101,7 @@ void b2Fixture::Destroy(b2BlockAllocator* allocator)
 	case b2Shape::e_polygon:
 		{
 			b2PolygonShape* s = (b2PolygonShape*)m_shape;
+            b2NotifyObjectDestroyed(s, b2ObjectType::POLYGON_SHAPE, "b2PolygonShape");
 			s->~b2PolygonShape();
 			allocator->Free(s, sizeof(b2PolygonShape));
 		}
@@ -106,6 +110,7 @@ void b2Fixture::Destroy(b2BlockAllocator* allocator)
 	case b2Shape::e_chain:
 		{
 			b2ChainShape* s = (b2ChainShape*)m_shape;
+            b2NotifyObjectDestroyed(s, b2ObjectType::CHAIN_SHAPE, "b2ChainShape");
 			s->~b2ChainShape();
 			allocator->Free(s, sizeof(b2ChainShape));
 		}
@@ -117,6 +122,8 @@ void b2Fixture::Destroy(b2BlockAllocator* allocator)
 	}
 
 	m_shape = NULL;
+
+    b2NotifyObjectDestroyed(this, b2ObjectType::FIXTURE, "b2Fixture");
 }
 
 void b2Fixture::CreateProxies(b2BroadPhase* broadPhase, const b2Transform& xf)
