@@ -26,23 +26,11 @@ jpeg
     ios: --
     android: v9
 
-tiff
-    mac: 4.0.6
-    win32: 4.0.3
-    ios: 4.0.6
-    android: 4.0.6
-
 freetype2
     mac: 2.6.3
     win32: 2.5.5
     ios: 2.6.3
     android: 2.6.3
-
-chipmunk
-    mac: 7.0.1
-    win32: 7.0.1
-    ios: 7.0.1
-    android: 7.0.1
 
 libz
     mac: 1.2.8
@@ -73,3 +61,11 @@ tinydir
     win32: 1.2.1
     android: 1.2.1
     ios: 1.2.1
+
+v8
+    win32: 6.0.286.52
+    android: 6.0.286.52
+
+libuv
+    win32: 1.13.1
+    android: 1.13.1

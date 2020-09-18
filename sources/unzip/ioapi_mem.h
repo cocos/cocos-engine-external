@@ -5,7 +5,7 @@
 #include "ioapi.h"
 
 
-namespace cocos2d {
+namespace cc {
     voidpf ZCALLBACK fopen_mem_func OF((
                                         voidpf opaque,
                                         const char* filename,

@@ -1,39 +1,19 @@
-/************************************************************************
- * Copyright (C) 2002-2009, Xiph.org Foundation
- * Copyright (C) 2010, Robin Watts for Pinknoise Productions Ltd
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the names of the Xiph.org Foundation nor Pinknoise
- * Productions Ltd nor the names of its contributors may be used to
- * endorse or promote products derived from this software without
- * specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- ************************************************************************
+/********************************************************************
+ *                                                                  *
+ * THIS FILE IS PART OF THE OggVorbis 'TREMOR' CODEC SOURCE CODE.   *
+ *                                                                  *
+ * USE, DISTRIBUTION AND REPRODUCTION OF THIS LIBRARY SOURCE IS     *
+ * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
+ * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
+ *                                                                  *
+ * THE OggVorbis 'TREMOR' SOURCE CODE IS (C) COPYRIGHT 1994-2003    *
+ * BY THE Xiph.Org FOUNDATION http://www.xiph.org/                  *
+ *                                                                  *
+ ********************************************************************
 
  function: floor backend 1 implementation
 
- ************************************************************************/
+ ********************************************************************/
 
 #include <stdlib.h>
 #include <string.h>
@@ -53,7 +33,7 @@ extern const ogg_int32_t FLOOR_fromdB_LOOKUP[];
 void floor1_free_info(vorbis_info_floor *i){
   vorbis_info_floor1 *info=(vorbis_info_floor1 *)i;
   if(info){
-    if(info->klass)_ogg_free(info->klass);
+    if(info->class)_ogg_free(info->class);
     if(info->partitionclass)_ogg_free(info->partitionclass);
     if(info->postlist)_ogg_free(info->postlist);
     if(info->forward_index)_ogg_free(info->forward_index);
@@ -73,9 +53,9 @@ static int ilog(unsigned int v){
   return(ret);
 }
 
-static void floor1_mergesort(ogg_uint8_t *index,ogg_uint16_t *vals,ogg_uint16_t n){
+static void mergesort(char *index,ogg_uint16_t *vals,ogg_uint16_t n){
   ogg_uint16_t i,j;
-  ogg_uint8_t *temp,*A=index,*B=_ogg_malloc(n*sizeof(*B));
+  char *temp,*A=index,*B=_ogg_malloc(n*sizeof(*B));
 
   for(i=1;i<n;i<<=1){
     for(j=0;j+i<n;){
@@ -112,28 +92,28 @@ vorbis_info_floor *floor1_info_unpack (vorbis_info *vi,oggpack_buffer *opb){
   /* read partitions */
   info->partitions=oggpack_read(opb,5); /* only 0 to 31 legal */
   info->partitionclass=
-    (ogg_uint8_t *)_ogg_malloc(info->partitions*sizeof(*info->partitionclass));
+    (char *)_ogg_malloc(info->partitions*sizeof(*info->partitionclass));
   for(j=0;j<info->partitions;j++){
-    info->partitionclass[j]=(char)oggpack_read(opb,4); /* only 0 to 15 legal */
+    info->partitionclass[j]=oggpack_read(opb,4); /* only 0 to 15 legal */
     if(maxclass<info->partitionclass[j])maxclass=info->partitionclass[j];
   }
 
   /* read partition classes */
-  info->klass=
-    (floor1class *)_ogg_malloc((maxclass+1)*sizeof(*info->klass));
+  info->class=
+    (floor1class *)_ogg_malloc((maxclass+1)*sizeof(*info->class));
   for(j=0;j<maxclass+1;j++){
-    info->klass[j].class_dim=(char)oggpack_read(opb,3)+1; /* 1 to 8 */
-    info->klass[j].class_subs=(char)oggpack_read(opb,2); /* 0,1,2,3 bits */
+    info->class[j].class_dim=oggpack_read(opb,3)+1; /* 1 to 8 */
+    info->class[j].class_subs=oggpack_read(opb,2); /* 0,1,2,3 bits */
     if(oggpack_eop(opb)<0) goto err_out;
-    if(info->klass[j].class_subs)
-      info->klass[j].class_book=(unsigned char)oggpack_read(opb,8);
+    if(info->class[j].class_subs)
+      info->class[j].class_book=oggpack_read(opb,8);
     else
-      info->klass[j].class_book=0;
-    if(info->klass[j].class_book>=ci->books)goto err_out;
-    for(k=0;k<(1<<info->klass[j].class_subs);k++){
-      info->klass[j].class_subbook[k]=(unsigned char)(oggpack_read(opb,8)-1);
-      if(info->klass[j].class_subbook[k]>=ci->books &&
-	 info->klass[j].class_subbook[k]!=0xff)goto err_out;
+      info->class[j].class_book=0;
+    if(info->class[j].class_book>=ci->books)goto err_out;
+    for(k=0;k<(1<<info->class[j].class_subs);k++){
+      info->class[j].class_subbook[k]=oggpack_read(opb,8)-1;
+      if(info->class[j].class_subbook[k]>=ci->books &&
+	 info->class[j].class_subbook[k]!=0xff)goto err_out;
     }
   }
 
@@ -142,21 +122,21 @@ vorbis_info_floor *floor1_info_unpack (vorbis_info *vi,oggpack_buffer *opb){
   rangebits=oggpack_read(opb,4);
 
   for(j=0,k=0;j<info->partitions;j++)
-    count+=info->klass[info->partitionclass[j]].class_dim;
+    count+=info->class[info->partitionclass[j]].class_dim;
   info->postlist=
     (ogg_uint16_t *)_ogg_malloc((count+2)*sizeof(*info->postlist));
   info->forward_index=
-    (ogg_uint8_t *)_ogg_malloc((count+2)*sizeof(*info->forward_index));
+    (char *)_ogg_malloc((count+2)*sizeof(*info->forward_index));
   info->loneighbor=
-    (ogg_uint8_t *)_ogg_malloc(count*sizeof(*info->loneighbor));
+    (char *)_ogg_malloc(count*sizeof(*info->loneighbor));
   info->hineighbor=
-    (ogg_uint8_t *)_ogg_malloc(count*sizeof(*info->hineighbor));
+    (char *)_ogg_malloc(count*sizeof(*info->hineighbor));
 
   count=0;
   for(j=0,k=0;j<info->partitions;j++){
-    count+=info->klass[info->partitionclass[j]].class_dim;
+    count+=info->class[info->partitionclass[j]].class_dim;
     for(;k<count;k++){
-      int t=info->postlist[k+2]=(ogg_uint16_t)oggpack_read(opb,rangebits);
+      int t=info->postlist[k+2]=oggpack_read(opb,rangebits);
       if(t>=(1<<rangebits))goto err_out;
     }
   }
@@ -167,7 +147,7 @@ vorbis_info_floor *floor1_info_unpack (vorbis_info *vi,oggpack_buffer *opb){
 
   /* also store a sorted position index */
   for(j=0;j<info->posts;j++)info->forward_index[j]=j;
-  floor1_mergesort(info->forward_index,info->postlist,info->posts);
+  mergesort(info->forward_index,info->postlist,info->posts);
 
   /* discover our neighbors for decode where we don't use fit flags
      (that would push the neighbors outward) */
@@ -218,10 +198,6 @@ int render_point(int x0,int x1,int y0,int y1,int x){
   }
 }
 
-#ifndef ONLY_C
-void render_lineARM(int n, ogg_int32_t *d,const ogg_int32_t *floor, int base, int err, int adx, int ady);
-#endif
-
 static void render_line(int n,int x0,int x1,int y0,int y1,ogg_int32_t *d){
   int dy;
   int adx;
@@ -232,9 +208,8 @@ static void render_line(int n,int x0,int x1,int y0,int y1,ogg_int32_t *d){
 
   if(n>x1)n=x1;
   n -= x0;
-  if (n <= 0 || y0 < 0 || y0 > 255 || y1 < 0 || y1 > 255) {
+  if (n <= 0)
     return;
-  }
   dy=y1-y0;
   adx=x1-x0;
   ady=abs(dy);
@@ -304,20 +279,20 @@ ogg_int32_t *floor1_inverse1(vorbis_dsp_state *vd,vorbis_info_floor *in,
     /* partition by partition */
     for(i=0,j=2;i<info->partitions;i++){
       int classv=info->partitionclass[i];
-      int cdim=info->klass[classv].class_dim;
-      int csubbits=info->klass[classv].class_subs;
+      int cdim=info->class[classv].class_dim;
+      int csubbits=info->class[classv].class_subs;
       int csub=1<<csubbits;
       int cval=0;
 
       /* decode the partition's first stage cascade value */
       if(csubbits){
-	cval=vorbis_book_decode(books+info->klass[classv].class_book,&vd->opb);
+	cval=vorbis_book_decode(books+info->class[classv].class_book,&vd->opb);
 
 	if(cval==-1)goto eop;
       }
 
       for(k=0;k<cdim;k++){
-	int book=info->klass[classv].class_subbook[cval&(csub-1)];
+	int book=info->class[classv].class_subbook[cval&(csub-1)];
 	cval>>=csubbits;
 	if(book!=0xff){
 	  if((fit_value[j+k]=vorbis_book_decode(books+book,&vd->opb))==-1)

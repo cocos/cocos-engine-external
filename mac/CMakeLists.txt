@@ -1,0 +1,154 @@
+
+add_library(crypto STATIC IMPORTED GLOBAL)
+set_target_properties(crypto PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libcrypto.a
+)
+
+add_library(curl STATIC IMPORTED GLOBAL)
+set_target_properties(curl PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libcurl.a
+)
+
+add_library(freetype STATIC IMPORTED GLOBAL)
+set_target_properties(freetype PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libfreetype.a
+)
+
+add_library(glfw3 STATIC IMPORTED GLOBAL)
+set_target_properties(glfw3 PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libglfw3.a
+)
+
+
+add_library(jpeg STATIC IMPORTED GLOBAL)
+set_target_properties(jpeg PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libjpeg.a
+)
+
+add_library(png STATIC IMPORTED GLOBAL)
+set_target_properties(png PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libpng.a
+)
+
+add_library(ssl STATIC IMPORTED GLOBAL)
+set_target_properties(ssl PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libssl.a
+)
+
+add_library(uv STATIC IMPORTED GLOBAL)
+set_target_properties(uv PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libuv_a.a
+  INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/uv
+)
+
+add_library(webp STATIC IMPORTED GLOBAL)
+set_target_properties(webp PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libwebp.a
+)
+
+add_library(websockets STATIC IMPORTED GLOBAL)
+set_target_properties(websockets PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libwebsockets.a
+)
+
+add_library(z STATIC IMPORTED GLOBAL)
+set_target_properties(z PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libz.a
+  INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/zlib
+)
+
+add_library(v8_monolith STATIC IMPORTED GLOBAL)
+set_target_properties(v8_monolith PROPERTIES
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libv8_monolith.a
+    INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/v8
+    INTERFACE_COMPILE_DEFINITIONS V8_COMPRESS_POINTERS
+)
+
+add_library(inspector STATIC IMPORTED GLOBAL)
+set_target_properties(inspector PROPERTIES
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libinspector.a
+)
+
+add_library(EGL SHARED IMPORTED GLOBAL)
+set_target_properties(EGL PROPERTIES
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libEGL.dylib
+)
+
+add_library(GLESv2 SHARED IMPORTED GLOBAL)
+set_target_properties(GLESv2 PROPERTIES
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libGLESv2.dylib
+)
+
+set(se_libs_name)
+
+if(USE_SE_V8)
+    list(APPEND se_libs_name 
+        v8_monolith
+        uv
+        )
+    if(USE_V8_DEBUGGER)
+        list(APPEND se_libs_name inspector)
+    endif()
+endif()
+
+# if(USE_SOCKETS)
+#     list(APPEND CC_EXTERNAL_LIBS 
+#         websockets
+#     )
+# endif()
+
+add_library(glslang STATIC IMPORTED GLOBAL)
+set_target_properties(glslang PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libglslang.a
+)
+add_library(OGLCompiler STATIC IMPORTED GLOBAL)
+set_target_properties(OGLCompiler PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libOGLCompiler.a
+)
+add_library(OSDependent STATIC IMPORTED GLOBAL)
+set_target_properties(OSDependent PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libOSDependent.a
+)
+add_library(SPIRV STATIC IMPORTED GLOBAL)
+set_target_properties(SPIRV PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libSPIRV.a
+)
+add_library(glslang-default-resource-limits STATIC IMPORTED GLOBAL)
+set_target_properties(glslang-default-resource-limits PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libglslang-default-resource-limits.a
+)
+set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits)
+
+add_library(spirv-cross-core STATIC IMPORTED GLOBAL)
+set_target_properties(spirv-cross-core PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libspirv-cross-core.a
+)
+add_library(spirv-cross-msl STATIC IMPORTED GLOBAL)
+set_target_properties(spirv-cross-msl PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libspirv-cross-msl.a
+)
+add_library(spirv-cross-glsl STATIC IMPORTED GLOBAL)
+set_target_properties(spirv-cross-glsl PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libspirv-cross-glsl.a
+)
+set(spirv-cross_libs_name spirv-cross-core spirv-cross-glsl spirv-cross-msl)
+
+list(APPEND CC_EXTERNAL_LIBS
+    freetype
+    EGL
+    GLESv2
+    jpeg
+    png
+    webp
+    curl
+    ${se_libs_name}
+    crypto
+    ssl
+    z
+    ${glslang_libs_name}
+    ${spirv-cross_libs_name}
+)
+
+list(APPEND CC_EXTERNAL_INCLUDES
+  ${CMAKE_CURRENT_LIST_DIR}/include
+)

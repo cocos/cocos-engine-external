@@ -1,39 +1,19 @@
-/************************************************************************
- * Copyright (C) 2002-2009, Xiph.org Foundation
- * Copyright (C) 2010, Robin Watts for Pinknoise Productions Ltd
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the names of the Xiph.org Foundation nor Pinknoise
- * Productions Ltd nor the names of its contributors may be used to
- * endorse or promote products derived from this software without
- * specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- ************************************************************************
+/********************************************************************
+ *                                                                  *
+ * THIS FILE IS PART OF THE OggVorbis 'TREMOR' CODEC SOURCE CODE.   *
+ *                                                                  *
+ * USE, DISTRIBUTION AND REPRODUCTION OF THIS LIBRARY SOURCE IS     *
+ * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
+ * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
+ *                                                                  *
+ * THE OggVorbis 'TREMOR' SOURCE CODE IS (C) COPYRIGHT 1994-2003    *
+ * BY THE Xiph.Org FOUNDATION http://www.xiph.org/                  *
+ *                                                                  *
+ ********************************************************************
 
   function: packing variable sized words into an octet stream
 
- ************************************************************************/
+ ********************************************************************/
 
 /* We're 'LSb' endian; if we write a word but read individual bits,
    then we'll read the lsb first */
@@ -163,7 +143,7 @@ static void _span(oggpack_buffer *b){
     b->headend-=b->headbit>>3;
     b->headbit&=0x7;
 
-    if(b->head && b->head->next){
+    if(b->head->next){
       b->count+=b->head->length;
       b->head=b->head->next;
 
@@ -187,13 +167,8 @@ void oggpack_readinit(oggpack_buffer *b,ogg_reference *r){
 
   b->tail=b->head=r;
   b->count=0;
-  if (b->head && r->length) {
-    b->headptr=b->head->buffer->data+b->head->begin;
-    b->headend=b->head->length;
-  } else {
-    b->headptr=0;
-    b->headend=0;
-  }
+  b->headptr=b->head->buffer->data+b->head->begin;
+  b->headend=b->head->length;
   _span(b);
 
   //fprintf(stderr,
@@ -214,10 +189,8 @@ void oggpack_readinit(oggpack_buffer *b,ogg_reference *r){
 /* Read in bits without advancing the bitptr; bits <= 32 */
 long oggpack_look(oggpack_buffer *b,int bits){
   unsigned long m=mask[bits];
-  unsigned long ret = 0;
+  unsigned long ret;
   int BITS = bits;
-
-  if (!b->headptr) return 0;
 
   bits+=b->headbit;
 
@@ -226,8 +199,7 @@ long oggpack_look(oggpack_buffer *b,int bits){
     unsigned char *ptr=b->headptr;
     ogg_reference *head=b->head;
 
-    if(end<0)return 0;
-    if (!head || !end)return 0;
+    if(end<0)return -1;
 
     if(bits){
       _lookspan();
