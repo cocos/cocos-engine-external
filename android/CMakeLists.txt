@@ -48,7 +48,6 @@ set_target_properties(z PROPERTIES
 
 add_library(android_platform STATIC
   ${CMAKE_ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c
-  ${CMAKE_ANDROID_NDK}/sources/android/native_app_glue/android_native_app_glue.c
 )
 target_include_directories(android_platform PUBLIC 
   ${CMAKE_ANDROID_NDK}/sources/android/cpufeatures
