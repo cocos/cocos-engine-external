@@ -229,6 +229,27 @@ set_target_properties(glslang-default-resource-limits PROPERTIES
 list(APPEND CC_EXTERNAL_INCLUDES ${CMAKE_CURRENT_LIST_DIR}/include/glslang)
 set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits)
 
+add_library(tbb STATIC IMPORTED GLOBAL)
+set_target_properties(tbb PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/tbb/tbb_static_debug.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/tbb/tbb_static.lib
+)
+add_library(tbbmalloc STATIC IMPORTED GLOBAL)
+set_target_properties(tbbmalloc PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/tbb/tbbmalloc_static_debug.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/tbb/tbbmalloc_static.lib
+)
+add_library(tbbmalloc_proxy STATIC IMPORTED GLOBAL)
+set_target_properties(tbbmalloc_proxy PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/tbb/tbbmalloc_proxy_static_debug.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/tbb/tbbmalloc_proxy_static.lib
+)
+set(tbb_libs_name tbb tbbmalloc tbbmalloc_proxy)
+
+list(APPEND CC_EXTERNAL_PRIVATE_DEFINITIONS
+  $<IF:$<CONFIG:Debug>, __TBB_LIB_NAME=tbb_static_debug, __TBB_LIB_NAME=tbb_static>
+)
+
 list(APPEND CC_EXTERNAL_LIBS
     freetype
     glew32
@@ -255,6 +276,7 @@ list(APPEND CC_EXTERNAL_LIBS
     EGL
     GLES_CM
     ${glslang_libs_name}
+    ${tbb_libs_name}
 )
 
 

@@ -80,7 +80,7 @@ set_target_properties(mozglue PROPERTIES
 set(se_libs_name)
 
 if(USE_SE_V8)
-    list(APPEND se_libs_name 
+    list(APPEND se_libs_name
         v8_monolith
         uv
         )
@@ -130,7 +130,21 @@ set_target_properties(spirv-cross-glsl PROPERTIES
 )
 set(spirv-cross_libs_name spirv-cross-core spirv-cross-glsl spirv-cross-msl)
 
-list(APPEND CC_EXTERNAL_INCLUDES 
+add_library(tbb STATIC IMPORTED GLOBAL)
+set_target_properties(tbb PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libtbb_static.a
+)
+add_library(tbbmalloc STATIC IMPORTED GLOBAL)
+set_target_properties(tbbmalloc PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libtbbmalloc_static.a
+)
+add_library(tbbmalloc_proxy STATIC IMPORTED GLOBAL)
+set_target_properties(tbbmalloc_proxy PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libtbbmalloc_proxy_static.a
+)
+set(tbb_libs_name tbb tbbmalloc tbbmalloc_proxy)
+
+list(APPEND CC_EXTERNAL_INCLUDES
     ${CMAKE_CURRENT_LIST_DIR}/include
 )
 
@@ -144,4 +158,5 @@ list(APPEND CC_EXTERNAL_LIBS
     ssl
     ${glslang_libs_name}
     ${spirv-cross_libs_name}
+    ${tbb_libs_name}
 )

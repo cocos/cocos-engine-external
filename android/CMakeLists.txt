@@ -49,28 +49,28 @@ set_target_properties(z PROPERTIES
 add_library(android_platform STATIC
   ${CMAKE_ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c
 )
-target_include_directories(android_platform PUBLIC 
+target_include_directories(android_platform PUBLIC
   ${CMAKE_ANDROID_NDK}/sources/android/cpufeatures
   ${CMAKE_ANDROID_NDK}/sources/android/native_app_glue
 )
 
 ## Settings from  ${CMAKE_ANDROID_NDK}/sources/android/native_app_glue/Android.mk
 # set_property(TARGET android_platform APPEND_STRING PROPERTY LINK_FLAGS "-u ANativeActivity_onCreate")
-# target_link_libraries(android_platform PUBLIC 
+# target_link_libraries(android_platform PUBLIC
 #   android log dl
 # )
 
 set(se_libs_name)
 
 if(USE_SE_V8)
-    
+
     add_library(v8_monolith STATIC IMPORTED GLOBAL)
     set_target_properties(v8_monolith PROPERTIES
       IMPORTED_LOCATION ${platform_spec_path}/v8/libv8_monolith.a
     )
 
     if(ANDROID_ABI STREQUAL "arm64-v8a" OR ANDROID_ABI STREQUAL "x86_64")
-      set_property(TARGET v8_monolith 
+      set_property(TARGET v8_monolith
         APPEND PROPERTY INTERFACE_COMPILE_DEFINITIONS V8_COMPRESS_POINTERS
       )
     endif()
@@ -119,6 +119,19 @@ set_target_properties(glslang-default-resource-limits PROPERTIES
 )
 set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits)
 
+add_library(tbb STATIC IMPORTED GLOBAL)
+set_target_properties(tbb PROPERTIES
+  IMPORTED_LOCATION ${platform_spec_path}/libtbb_static.a
+)
+add_library(tbbmalloc STATIC IMPORTED GLOBAL)
+set_target_properties(tbbmalloc PROPERTIES
+  IMPORTED_LOCATION ${platform_spec_path}/libtbbmalloc_static.a
+)
+add_library(tbbmalloc_proxy STATIC IMPORTED GLOBAL)
+set_target_properties(tbbmalloc_proxy PROPERTIES
+  IMPORTED_LOCATION ${platform_spec_path}/libtbbmalloc_proxy_static.a
+)
+set(tbb_libs_name tbb tbbmalloc tbbmalloc_proxy)
 
 list(APPEND CC_EXTERNAL_LIBS
     freetype
@@ -130,6 +143,7 @@ list(APPEND CC_EXTERNAL_LIBS
     z
     android_platform
     ${glslang_libs_name}
+    ${tbb_libs_name}
 )
 
 
