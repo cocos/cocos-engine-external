@@ -131,7 +131,7 @@ add_library(tbbmalloc_proxy STATIC IMPORTED GLOBAL)
 set_target_properties(tbbmalloc_proxy PROPERTIES
   IMPORTED_LOCATION ${platform_spec_path}/libtbbmalloc_proxy_static.a
 )
-set(tbb_libs_name tbb tbbmalloc tbbmalloc_proxy)
+set(tbb_libs_name tbbmalloc_proxy tbbmalloc tbb)
 
 list(APPEND CC_EXTERNAL_LIBS
     freetype
