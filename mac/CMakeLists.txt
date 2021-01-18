@@ -69,16 +69,6 @@ set_target_properties(inspector PROPERTIES
     IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libinspector.a
 )
 
-add_library(EGL SHARED IMPORTED GLOBAL)
-set_target_properties(EGL PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libEGL.dylib
-)
-
-add_library(GLESv2 SHARED IMPORTED GLOBAL)
-set_target_properties(GLESv2 PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libGLESv2.dylib
-)
-
 set(se_libs_name)
 
 if(USE_SE_V8)
@@ -149,8 +139,6 @@ set(tbb_libs_name tbb tbbmalloc tbbmalloc_proxy)
 
 list(APPEND CC_EXTERNAL_LIBS
     freetype
-    EGL
-    GLESv2
     jpeg
     png
     webp

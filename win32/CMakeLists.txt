@@ -148,24 +148,6 @@ set_target_properties(SDL2Main PROPERTIES
   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/SDL2Main.lib
 )
 
-add_library(EGL SHARED IMPORTED GLOBAL)
-set_target_properties(EGL PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libEGL.dll
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libEGL.lib
-)
-
-add_library(GLESv2 SHARED IMPORTED GLOBAL)
-set_target_properties(GLESv2 PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libGLESv2.dll
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libGLESv2.lib
-)
-
-
-add_library(GLES_CM SHARED IMPORTED GLOBAL)
-set_target_properties(GLES_CM PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libGLES_CM.dll
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libGLES_CM.lib
-)
 set(se_libs_name)
 
 if(USE_SE_V8)
@@ -272,9 +254,6 @@ list(APPEND CC_EXTERNAL_LIBS
     websockets
     SDL2
     SDL2Main
-    GLESv2
-    EGL
-    GLES_CM
     ${glslang_libs_name}
     ${tbb_libs_name}
 )
