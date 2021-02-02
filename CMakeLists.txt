@@ -17,5 +17,7 @@ elseif(APPLE)
     elseif(IOS)
         include(${CMAKE_CURRENT_LIST_DIR}/ios/CMakeLists.txt)
     endif()
+elseif(OHOS)
+    include(${CMAKE_CURRENT_LIST_DIR}/ohos/CMakeLists.txt)
 endif()
 
