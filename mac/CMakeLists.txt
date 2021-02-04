@@ -69,20 +69,10 @@ set_target_properties(inspector PROPERTIES
     IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libinspector.a
 )
 
-add_library(EGL SHARED IMPORTED GLOBAL)
-set_target_properties(EGL PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libEGL.dylib
-)
-
-add_library(GLESv2 SHARED IMPORTED GLOBAL)
-set_target_properties(GLESv2 PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libGLESv2.dylib
-)
-
 set(se_libs_name)
 
 if(USE_SE_V8)
-    list(APPEND se_libs_name 
+    list(APPEND se_libs_name
         v8_monolith
         uv
         )
@@ -92,7 +82,7 @@ if(USE_SE_V8)
 endif()
 
 # if(USE_SOCKETS)
-#     list(APPEND CC_EXTERNAL_LIBS 
+#     list(APPEND CC_EXTERNAL_LIBS
 #         websockets
 #     )
 # endif()
@@ -133,10 +123,22 @@ set_target_properties(spirv-cross-glsl PROPERTIES
 )
 set(spirv-cross_libs_name spirv-cross-core spirv-cross-glsl spirv-cross-msl)
 
+add_library(tbb STATIC IMPORTED GLOBAL)
+set_target_properties(tbb PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libtbb_static.a
+)
+add_library(tbbmalloc STATIC IMPORTED GLOBAL)
+set_target_properties(tbbmalloc PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libtbbmalloc_static.a
+)
+add_library(tbbmalloc_proxy STATIC IMPORTED GLOBAL)
+set_target_properties(tbbmalloc_proxy PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libtbbmalloc_proxy_static.a
+)
+set(tbb_libs_name tbb tbbmalloc tbbmalloc_proxy)
+
 list(APPEND CC_EXTERNAL_LIBS
     freetype
-    EGL
-    GLESv2
     jpeg
     png
     webp
@@ -147,6 +149,7 @@ list(APPEND CC_EXTERNAL_LIBS
     z
     ${glslang_libs_name}
     ${spirv-cross_libs_name}
+    ${tbb_libs_name}
 )
 
 list(APPEND CC_EXTERNAL_INCLUDES

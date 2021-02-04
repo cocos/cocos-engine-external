@@ -148,24 +148,6 @@ set_target_properties(SDL2Main PROPERTIES
   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/SDL2Main.lib
 )
 
-add_library(EGL SHARED IMPORTED GLOBAL)
-set_target_properties(EGL PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libEGL.dll
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libEGL.lib
-)
-
-add_library(GLESv2 SHARED IMPORTED GLOBAL)
-set_target_properties(GLESv2 PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libGLESv2.dll
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libGLESv2.lib
-)
-
-
-add_library(GLES_CM SHARED IMPORTED GLOBAL)
-set_target_properties(GLES_CM PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libGLES_CM.dll
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libGLES_CM.lib
-)
 set(se_libs_name)
 
 if(USE_SE_V8)
@@ -229,6 +211,27 @@ set_target_properties(glslang-default-resource-limits PROPERTIES
 list(APPEND CC_EXTERNAL_INCLUDES ${CMAKE_CURRENT_LIST_DIR}/include/glslang)
 set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits)
 
+add_library(tbb STATIC IMPORTED GLOBAL)
+set_target_properties(tbb PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/tbb/tbb_static_debug.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/tbb/tbb_static.lib
+)
+add_library(tbbmalloc STATIC IMPORTED GLOBAL)
+set_target_properties(tbbmalloc PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/tbb/tbbmalloc_static_debug.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/tbb/tbbmalloc_static.lib
+)
+add_library(tbbmalloc_proxy STATIC IMPORTED GLOBAL)
+set_target_properties(tbbmalloc_proxy PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/tbb/tbbmalloc_proxy_static_debug.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/tbb/tbbmalloc_proxy_static.lib
+)
+set(tbb_libs_name tbb tbbmalloc tbbmalloc_proxy)
+
+list(APPEND CC_EXTERNAL_PRIVATE_DEFINITIONS
+  $<IF:$<CONFIG:Debug>, __TBB_LIB_NAME=tbb_static_debug, __TBB_LIB_NAME=tbb_static>
+)
+
 list(APPEND CC_EXTERNAL_LIBS
     freetype
     glew32
@@ -251,10 +254,8 @@ list(APPEND CC_EXTERNAL_LIBS
     websockets
     SDL2
     SDL2Main
-    GLESv2
-    EGL
-    GLES_CM
     ${glslang_libs_name}
+    ${tbb_libs_name}
 )
 
 

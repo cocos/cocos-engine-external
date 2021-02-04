@@ -1,6 +1,6 @@
 websockets
     mac: 2.1.0
-    win32: 2.1.0 
+    win32: 2.1.0
     ios: 2.1.0
     android: 2.1.0
 
@@ -9,7 +9,7 @@ openssl
     win32: 1.1.0c
     ios: 1.1.0c
     android: 1.1.0c
-    
+
 curl
     mac: 7.52.1
     win32: 7.52.1
@@ -69,3 +69,13 @@ v8
 libuv
     win32: 1.13.1
     android: 1.13.1
+
+tbb
+    mac: 2020.2
+    win32: 2020.2
+    android: 2020.2
+    ios: 2020.2
+
+PVRVFrame
+    mac: 10.13
+    win32: 10.13

@@ -16,7 +16,6 @@ set(CC_EXTERNAL_SROUCES
   ${CMAKE_CURRENT_LIST_DIR}/unzip/unzip.cpp
   ${CMAKE_CURRENT_LIST_DIR}/unzip/unzip.h
 
-
   ${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTF.c
   ${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTF.h
   ${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTFWrapper.cpp
@@ -44,7 +43,3 @@ elseif(APPLE)
       include(${CMAKE_CURRENT_LIST_DIR}/SocketRocket/CMakeLists.txt)
   endif()
 endif()
-
-list(APPEND CC_EXTERNAL_INCLUDES
- ${CMAKE_CURRENT_LIST_DIR}
-)
