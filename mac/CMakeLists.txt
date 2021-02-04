@@ -68,6 +68,15 @@ add_library(inspector STATIC IMPORTED GLOBAL)
 set_target_properties(inspector PROPERTIES
     IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libinspector.a
 )
+add_library(EGL SHARED IMPORTED GLOBAL)
+set_target_properties(EGL PROPERTIES
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libEGL.dylib
+)
+
+add_library(GLESv2 SHARED IMPORTED GLOBAL)
+set_target_properties(GLESv2 PROPERTIES
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libGLESv2.dylib
+)
 
 set(se_libs_name)
 
