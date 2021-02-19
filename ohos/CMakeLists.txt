@@ -49,6 +49,16 @@ set_target_properties(z PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libz.a
 )
 
+add_library(OpenALSoft SHARED IMPORTED GLOBAL)
+set_target_properties(OpenALSoft PROPERTIES
+  IMPORTED_LOCATION ${ohos_lib_dir}/libopenal.a
+)
+
+add_library(mpg123 SHARED IMPORTED GLOBAL)
+set_target_properties(mpg123 PROPERTIES
+  IMPORTED_LOCATION ${ohos_lib_dir}/libmpg123.a
+)
+
 set(se_libs_name)
 
 if(USE_SE_V8)
@@ -142,6 +152,8 @@ list(APPEND CC_EXTERNAL_LIBS
     sqlite3
     ${se_libs_name}
     ${glslang_libs_name}
+    OpenALSoft
+    mpg123
 )
 
 if(USE_V8_DEBUGGER OR USE_WEBSOCKET_SERVER)

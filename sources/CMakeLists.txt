@@ -25,7 +25,7 @@ set(CC_EXTERNAL_SROUCES
   ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommy.h
 )
 
-if(ANDROID)
+if(ANDROID OR OHOS)
 
   include(${CMAKE_CURRENT_LIST_DIR}/pvmp3dec/CMakeLists.txt)
   include(${CMAKE_CURRENT_LIST_DIR}/tremolo/CMakeLists.txt)
