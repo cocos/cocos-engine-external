@@ -6,7 +6,7 @@
 	#endif
 #endif
 
-#define LWS_INSTALL_DATADIR "/Volumes/data/hw/arm64/share"
+#define LWS_INSTALL_DATADIR "/Users/pt/Github/cocos2d-x-lite-external/ohos/arm64-v8a/share"
 
 /* Define to 1 to use wolfSSL/CyaSSL as a replacement for OpenSSL.
  * LWS_OPENSSL_SUPPORT needs to be set also for this to work. */
@@ -100,7 +100,7 @@
 /* #undef LWS_WITH_CGI */
 
 /* whether the Openssl is recent enough, and / or built with, ecdh */
-#define LWS_HAVE_OPENSSL_ECDH_H
+/* #undef LWS_HAVE_OPENSSL_ECDH_H */
 
 /* HTTP Proxy support */
 /* #undef LWS_WITH_HTTP_PROXY */

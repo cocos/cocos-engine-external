@@ -159,7 +159,7 @@ typedef unsigned long long lws_intptr_t;
 #define LWS_FORMAT(string_index)
 #endif
 
-#if defined(__ANDROID__)
+#if defined(__OHOS__)
 #include <unistd.h>
 #define getdtablesize() sysconf(_SC_OPEN_MAX)
 #endif
