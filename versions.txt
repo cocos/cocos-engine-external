@@ -67,8 +67,10 @@ v8
     android: 6.0.286.52
 
 libuv
+    mac: 1.23.1
     win32: 1.13.1
     android: 1.13.1
+    ios: 1.23.1
 
 tbb
     mac: 2020.2
@@ -79,3 +81,7 @@ tbb
 PVRVFrame
     mac: 10.13
     win32: 10.13
+
+spirv_cross
+    mac: 2021.1.15
+    ios: 2021.1.15
