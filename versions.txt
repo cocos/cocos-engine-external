@@ -5,7 +5,7 @@ websockets
     android: 2.1.0
 
 openssl
-    mac: 1.1.0c
+    mac: 1.1.1g
     win32: 1.1.0c
     ios: 1.1.0c
     android: 1.1.0c
@@ -15,13 +15,13 @@ curl
     win32: 7.52.1
 
 png
-    mac: 1.6.21
+    mac: 1.6.37
     win32: 1.6.16
     ios: --
     android: 1.6.21
 
 jpeg
-    mac: v9
+    mac: 9d
     win32: v9
     ios: --
     android: v9
@@ -33,7 +33,7 @@ freetype2
     android: 2.6.3
 
 libz
-    mac: 1.2.8
+    mac: 1.2.11
     win32: 1.2.5
     ios: --
     android: 1.2.8
