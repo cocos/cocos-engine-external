@@ -1,7 +1,19 @@
+add_library(dbgcore SHARED IMPORTED GLOBAL)
+
+set_target_properties(dbgcore PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/dbgcore.dll
+)
+
 add_library(dbghelp SHARED IMPORTED GLOBAL)
 
 set_target_properties(dbghelp PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/dbghelp.dll
+)
+
+add_library(dbgeng SHARED IMPORTED GLOBAL)
+
+set_target_properties(dbgeng PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/dbgeng.dll
 )
 
 add_library(freetype STATIC IMPORTED GLOBAL)
