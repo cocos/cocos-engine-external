@@ -1,7 +1,7 @@
 
 
 
-set(CC_EXTERNAL_SROUCES
+set(CC_EXTERNAL_SOURCES
   ${CMAKE_CURRENT_LIST_DIR}/tinyxml2/tinyxml2.cpp
   ${CMAKE_CURRENT_LIST_DIR}/tinyxml2/tinyxml2.h
 
