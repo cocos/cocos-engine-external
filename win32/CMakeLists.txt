@@ -56,8 +56,7 @@ set_target_properties(curl PROPERTIES
 add_library(jpeg STATIC IMPORTED GLOBAL)
 
 set_target_properties(jpeg PROPERTIES
-  #IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libjpeg.lib
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libjpeg-2015.lib
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libjpeg.lib
 )
 
 add_library(mpg123 SHARED IMPORTED GLOBAL)
@@ -74,11 +73,11 @@ set_target_properties(ogg PROPERTIES
   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libogg.lib
 )
 
-add_library(png STATIC IMPORTED GLOBAL)
+add_library(png SHARED IMPORTED GLOBAL)
 
 set_target_properties(png PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libpng-2015.lib
-  #IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libpng.lib
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libpng16.dll
+  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libpng16.lib
 )
 
 
