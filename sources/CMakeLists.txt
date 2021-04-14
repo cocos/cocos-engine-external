@@ -43,3 +43,16 @@ elseif(APPLE)
       include(${CMAKE_CURRENT_LIST_DIR}/SocketRocket/CMakeLists.txt)
   endif()
 endif()
+
+list(APPEND CC_EXTERNAL_INCLUDES
+ ${CMAKE_CURRENT_LIST_DIR}
+)
+
+if(USE_PHYSICS_PHYSX)
+  list(APPEND CC_EXTERNAL_INCLUDES
+    ${CMAKE_CURRENT_LIST_DIR}/PhysX/PhysX/include
+    ${CMAKE_CURRENT_LIST_DIR}/PhysX/PhysX/source
+    ${CMAKE_CURRENT_LIST_DIR}/PhysX/PxShared/include
+  )
+endif()
+
