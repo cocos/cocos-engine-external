@@ -243,6 +243,19 @@ list(APPEND CC_EXTERNAL_PRIVATE_DEFINITIONS
   $<IF:$<CONFIG:Debug>, __TBB_LIB_NAME=tbb_static_debug, __TBB_LIB_NAME=tbb_static>
 )
 
+if(USE_PHYSICS_PHYSX)
+  set(PhysXSDK PhysX PhysXCommon PhysXFoundation PhysXExtensions PhysXCooking PhysXCharacterKinematic PhysXVehicle PhysXPvdSDK)
+  foreach(PX IN LISTS PhysXSDK)
+    add_library(${PX} STATIC IMPORTED GLOBAL)
+    set_target_properties(${PX} PROPERTIES
+      IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/PhysX/debug/${PX}_static_32.lib
+      IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/PhysX/release/${PX}_static_32.lib
+    )
+  endforeach()
+else()
+  set(PhysXSDK)
+endif()
+
 list(APPEND CC_EXTERNAL_LIBS
     freetype
     glew32
@@ -267,6 +280,7 @@ list(APPEND CC_EXTERNAL_LIBS
     SDL2Main
     ${glslang_libs_name}
     ${tbb_libs_name}
+    ${PhysXSDK}
 )
 
 

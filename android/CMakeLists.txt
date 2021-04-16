@@ -133,6 +133,18 @@ set_target_properties(tbbmalloc_proxy PROPERTIES
 )
 set(tbb_libs_name tbbmalloc_proxy tbbmalloc tbb)
 
+if(USE_PHYSICS_PHYSX)
+  set(PhysXSDK PhysXCooking PhysXCharacterKinematic PhysXVehicle PhysXExtensions PhysX PhysXPvdSDK PhysXCommon PhysXFoundation)
+  foreach(PX IN LISTS PhysXSDK)
+    add_library(${PX} STATIC IMPORTED GLOBAL)
+    set_target_properties(${PX} PROPERTIES
+      IMPORTED_LOCATION ${platform_spec_path}/PhysX/lib${PX}_static.a
+    )
+  endforeach()
+else()
+  set(PhysXSDK)
+endif()
+
 list(APPEND CC_EXTERNAL_LIBS
     freetype
     jpeg
@@ -144,6 +156,7 @@ list(APPEND CC_EXTERNAL_LIBS
     android_platform
     ${glslang_libs_name}
     ${tbb_libs_name}
+    ${PhysXSDK}
 )
 
 
