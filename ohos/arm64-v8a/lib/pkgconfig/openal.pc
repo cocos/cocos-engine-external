@@ -1,0 +1,12 @@
+prefix=/Users/pt/Github/cocos2d-x-lite-external/ohos/arm64-v8a
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: OpenAL
+Description: OpenAL is a cross-platform 3D audio API
+Requires: 
+Version: 1.21.1
+Libs: -L${libdir} -lopenal 
+Libs.private: -pthread -lOpenSLES -ldl -lm
+Cflags: -I${includedir} -I${includedir}/AL -DAL_LIBTYPE_STATIC
