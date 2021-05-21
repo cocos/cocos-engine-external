@@ -167,3 +167,7 @@ list(APPEND CC_EXTERNAL_INCLUDES
   ${platform_spec_path}/include/v8
   ${platform_spec_path}/include/glslang
 )
+
+#TODO: remove in future version
+link_directories(${platform_spec_path}/ext/usr/lib)
+include_directories(${platform_spec_path}/ext/usr/include)
