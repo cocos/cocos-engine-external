@@ -30,6 +30,12 @@ set_target_properties(uv PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/uv
 )
 
+add_library(openxr SHARED IMPORTED GLOBAL)
+set_target_properties(openxr PROPERTIES
+  IMPORTED_LOCATION ${platform_spec_path}/libxr_loader.a
+  INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/openxr
+)
+
 add_library(webp STATIC IMPORTED GLOBAL)
 set_target_properties(webp PROPERTIES
   IMPORTED_LOCATION ${platform_spec_path}/libwebp.a
