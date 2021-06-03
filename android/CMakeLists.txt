@@ -32,7 +32,7 @@ set_target_properties(uv PROPERTIES
 
 add_library(openxr SHARED IMPORTED GLOBAL)
 set_target_properties(openxr PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/libxr_loader.a
+  IMPORTED_LOCATION ${platform_spec_path}/libxr_loader.so
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/openxr
 )
 
