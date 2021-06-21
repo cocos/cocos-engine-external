@@ -204,12 +204,24 @@ add_library(glslang STATIC IMPORTED GLOBAL)
 set_target_properties(glslang PROPERTIES
   IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslangd.lib#
   IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslang.lib#
-  
 )
+
+add_library(GenericCodeGen STATIC IMPORTED GLOBAL)
+set_target_properties(GenericCodeGen PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/GenericCodeGend.lib#
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/GenericCodeGen.lib#
+)
+
+add_library(MachineIndependent STATIC IMPORTED GLOBAL)
+set_target_properties(MachineIndependent PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/MachineIndependentd.lib#
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/MachineIndependent.lib#
+)
+
 add_library(hlsl STATIC IMPORTED GLOBAL)
 set_target_properties(hlsl PROPERTIES
-  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/hlsld.lib#
-  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/hlsl.lib#
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/HLSLd.lib#
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/HLSL.lib#
   
 )
 add_library(OGLCompiler STATIC IMPORTED GLOBAL)
@@ -222,11 +234,13 @@ set_target_properties(OSDependent PROPERTIES
   IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OSDependentd.lib#
   IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OSDependent.lib#
 )
+
 add_library(SPIRV STATIC IMPORTED GLOBAL)
 set_target_properties(SPIRV PROPERTIES
   IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRVd.lib#
   IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRV.lib#
 )
+
 add_library(glslang-default-resource-limits STATIC IMPORTED GLOBAL)
 set_target_properties(glslang-default-resource-limits PROPERTIES
   IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslang-default-resource-limitsd.lib#
@@ -234,7 +248,7 @@ set_target_properties(glslang-default-resource-limits PROPERTIES
 )
 
 list(APPEND CC_EXTERNAL_INCLUDES ${CMAKE_CURRENT_LIST_DIR}/include/glslang)
-set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits hlsl)#
+set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits hlsl GenericCodeGen MachineIndependent) #
 
 add_library(tbb STATIC IMPORTED GLOBAL)
 set_target_properties(tbb PROPERTIES

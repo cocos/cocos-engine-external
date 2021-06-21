@@ -3244,7 +3244,7 @@ bool HlslGrammar::acceptConstructor(TIntermTyped*& node)
         }
 
         // hook it up
-        node = parseContext.handleFunctionCall(token.loc, constructorFunction, arguments);
+        node = parseContext.handleFunctionCall(arguments->getLoc(), constructorFunction, arguments);
 
         return node != nullptr;
     }

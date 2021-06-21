@@ -1526,13 +1526,6 @@ TGlslangToSpvTraverser::TGlslangToSpvTraverser(unsigned int spvVersion,
         builder.addCapability(spv::CapabilityRayTraversalPrimitiveCullingKHR);
     }
 
-#ifndef GLSLANG_WEB
-    if (glslangIntermediate->getSubgroupUniformControlFlow()) {
-        builder.addExtension(spv::E_SPV_KHR_subgroup_uniform_control_flow);
-        builder.addExecutionMode(shaderEntry, spv::ExecutionModeSubgroupUniformControlFlowKHR);
-    }
-#endif
-
     unsigned int mode;
     switch (glslangIntermediate->getStage()) {
     case EShLangVertex:
@@ -4243,8 +4236,6 @@ spv::Id TGlslangToSpvTraverser::makeArraySizeId(const glslang::TArraySizes& arra
     glslang::TIntermTyped* specNode = arraySizes.getDimNode(dim);
     if (specNode != nullptr) {
         builder.clearAccessChain();
-        SpecConstantOpModeGuard spec_constant_op_mode_setter(&builder);
-        spec_constant_op_mode_setter.turnOnSpecConstantOpMode();
         specNode->traverse(this);
         return accessChainLoad(specNode->getAsTyped()->getType());
     }
@@ -5569,7 +5560,7 @@ spv::Id TGlslangToSpvTraverser::handleUserFunctionCall(const glslang::TIntermAgg
             ++lValueCount;
         } else {
             // process r-value, which involves a copy for a type mismatch
-            if (function->getParamType(a) != builder.getTypeId(rValues[rValueCount]) ||
+            if (function->getParamType(a) != convertGlslangToSpvType(*argTypes[a]) ||
                 TranslatePrecisionDecoration(*argTypes[a]) != function->getParamPrecision(a))
             {
                 spv::Id argCopy = builder.createVariable(function->getParamPrecision(a), spv::StorageClassFunction, function->getParamType(a), "arg");

@@ -944,25 +944,6 @@ function_prototype
         $$.function = $1;
         $$.loc = $2.loc;
     }
-    | function_declarator RIGHT_PAREN attribute {
-        $$.function = $1;
-        $$.loc = $2.loc;
-        parseContext.requireExtensions($2.loc, 1, &E_GL_EXT_subgroup_uniform_control_flow, "attribute");
-        parseContext.handleFunctionAttributes($2.loc, *$3, $$.function);
-    }
-    | attribute function_declarator RIGHT_PAREN {
-        $$.function = $2;
-        $$.loc = $3.loc;
-        parseContext.requireExtensions($3.loc, 1, &E_GL_EXT_subgroup_uniform_control_flow, "attribute");
-        parseContext.handleFunctionAttributes($3.loc, *$1, $$.function);
-    }
-    | attribute function_declarator RIGHT_PAREN attribute {
-        $$.function = $2;
-        $$.loc = $3.loc;
-        parseContext.requireExtensions($3.loc, 1, &E_GL_EXT_subgroup_uniform_control_flow, "attribute");
-        parseContext.handleFunctionAttributes($3.loc, *$1, $$.function);
-        parseContext.handleFunctionAttributes($3.loc, *$4, $$.function);
-    }
     ;
 
 function_declarator
@@ -3732,7 +3713,6 @@ selection_statement
     }
 GLSLANG_WEB_EXCLUDE_ON
     | attribute selection_statement_nonattributed {
-        parseContext.requireExtensions($2->getLoc(), 1, &E_GL_EXT_control_flow_attributes, "attribute");
         parseContext.handleSelectionAttributes(*$1, $2);
         $$ = $2;
     }
@@ -3780,7 +3760,6 @@ switch_statement
     }
 GLSLANG_WEB_EXCLUDE_ON
     | attribute switch_statement_nonattributed {
-        parseContext.requireExtensions($2->getLoc(), 1, &E_GL_EXT_control_flow_attributes, "attribute");
         parseContext.handleSwitchAttributes(*$1, $2);
         $$ = $2;
     }
@@ -3845,7 +3824,6 @@ iteration_statement
     }
 GLSLANG_WEB_EXCLUDE_ON
     | attribute iteration_statement_nonattributed {
-        parseContext.requireExtensions($2->getLoc(), 1, &E_GL_EXT_control_flow_attributes, "attribute");
         parseContext.handleLoopAttributes(*$1, $2);
         $$ = $2;
     }
@@ -4049,6 +4027,7 @@ GLSLANG_WEB_EXCLUDE_ON
 attribute
     : LEFT_BRACKET LEFT_BRACKET attribute_list RIGHT_BRACKET RIGHT_BRACKET {
         $$ = $3;
+        parseContext.requireExtensions($1.loc, 1, &E_GL_EXT_control_flow_attributes, "attribute");
     }
 
 attribute_list

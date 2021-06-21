@@ -1487,9 +1487,6 @@ void TIntermediate::output(TInfoSink& infoSink, bool tree)
     if (xfbMode)
         infoSink.debug << "in xfb mode\n";
 
-    if (getSubgroupUniformControlFlow())
-        infoSink.debug << "subgroup_uniform_control_flow\n";
-
     switch (language) {
     case EShLangVertex:
         break;
