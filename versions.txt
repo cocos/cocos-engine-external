@@ -85,3 +85,7 @@ PVRVFrame
 spirv_cross
     mac: 2021.1.15
     ios: 2021.1.15
+
+glslang
+    win64: 11.4.0
+        config: -DENABLE_OPT=OFF -DENABLE_SPVREMAPPER=OFF (otherwise it will depend on 2 other libs)
