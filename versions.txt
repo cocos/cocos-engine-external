@@ -65,6 +65,8 @@ tinydir
 v8
     win32: 6.0.286.52
     android: 6.0.286.52
+    ios: 8.0.426.16
+    ios-m1-simulator: 9.1.269
 
 libuv
     mac: 1.23.1
@@ -86,6 +88,8 @@ spirv_cross
     mac: 2021.1.15
     ios: 2021.1.15
 
+
 glslang
     win64: 11.4.0
         config: -DENABLE_OPT=OFF -DENABLE_SPVREMAPPER=OFF (otherwise it will depend on 2 other libs)
+    ios: 3641ff73
