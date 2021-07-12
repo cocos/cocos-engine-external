@@ -23,6 +23,7 @@ elseif(APPLE)
     if(MACOSX)
         include(${CMAKE_CURRENT_LIST_DIR}/mac/CMakeLists.txt)
     elseif(IOS)
+        # include(${CMAKE_CURRENT_LIST_DIR}/ios-m1-simulator/CMakeLists.txt) # Uncomment this line and comment next line if using M1 simulator
         include(${CMAKE_CURRENT_LIST_DIR}/ios/CMakeLists.txt)
     endif()
 elseif(OHOS)
