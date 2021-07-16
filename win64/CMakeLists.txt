@@ -92,7 +92,7 @@ add_library(uv STATIC IMPORTED GLOBAL)
 
 set_target_properties(uv PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libuv.lib
-  INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/libuv
+  INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/uv
 )
 
 
@@ -185,7 +185,6 @@ if(USE_SE_V8)
     target_link_libraries(v8 INTERFACE v8_libbase v8_libplatform)
 
     set_target_properties(v8 PROPERTIES
-      INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/v8
       INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/v8
     )
 
