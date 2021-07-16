@@ -1,42 +1,56 @@
 websockets
     mac: 2.1.0
-    win32: 2.1.0
+    win32: 2.4.2
     ios: 2.1.0
     android: 2.1.0
+    win64: 2.4.2
 
 openssl
     mac: 1.1.1g
     win32: 1.1.1g
     ios: 1.1.1g
     android: 1.1.1g
+    win64: 1.1.1k 
+
+mpg123
+    win32: 40
+    win64: 45
 
 curl
     mac: 7.52.1
     win32: 7.52.1
+    win64: 7.74.0
 
 png
     mac: 1.6.37
     win32: 1.6.37
     ios: 1.6.37
     android: 1.6.37
+    win64: 1.6.37
+sdl
+    win32: 2.0.10
+    win64: 2.0.14
 
 jpeg
     mac: 9d
     win32: 9d
     ios: 9d
     android: 9d
+    win64: 9d
 
 freetype2
     mac: 2.6.3
     win32: 2.5.5
     ios: 2.6.3
     android: 2.6.3
+    win64: 2.10.4
 
 libz
     mac: 1.2.11
     win32: 1.2.11
     ios: --
     android: 1.2.11
+    win64: 1.2.11
 
 spidermonkey
     mac: v52
@@ -73,7 +87,10 @@ libuv
     win32: 1.13.1
     android: 1.13.1
     ios: 1.23.1
-
+    win64: 1.41.0-release
+sqlite3
+    win64: 3.35.4
+    win32: 3.7.15.1
 tbb
     mac: 2020.2
     win32: 2020.2
@@ -87,9 +104,11 @@ PVRVFrame
 spirv_cross
     mac: 2021.1.15
     ios: 2021.1.15
-
-
+iconv
+    win32: 0x0109
+    win64: 0x0110
 glslang
+    win32: 
     win64: 11.4.0
         config: -DENABLE_OPT=OFF -DENABLE_SPVREMAPPER=OFF (otherwise it will depend on 2 other libs)
     ios: 3641ff73
