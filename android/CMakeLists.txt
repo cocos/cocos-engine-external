@@ -84,8 +84,8 @@ if(USE_SE_V8)
     add_library(v8_inspector STATIC IMPORTED GLOBAL)
     set_target_properties(v8_inspector PROPERTIES
       IMPORTED_LOCATION ${platform_spec_path}/v8/libinspector.a
+      INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/v8
     )
-
     set(se_libs_name v8_monolith v8_inspector)
 endif()
 
@@ -157,13 +157,17 @@ list(APPEND CC_EXTERNAL_LIBS
     png
     uv
     webp
-    ${se_libs_name}
-    z
     android_platform
     ${glslang_libs_name}
     ${tbb_libs_name}
     ${PhysXSDK}
 )
+
+set(ZLIB z)
+if(NOT USE_MODULES)
+  list(APPEND CC_EXTERNAL_LIBS ${ZLIB}  ${se_libs_name})
+endif()
+
 
 
 list(APPEND CC_EXTERNAL_INCLUDES

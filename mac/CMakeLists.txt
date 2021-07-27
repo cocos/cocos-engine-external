@@ -164,15 +164,19 @@ list(APPEND CC_EXTERNAL_LIBS
     png
     webp
     curl
-    ${se_libs_name}
     crypto
     ssl
-    z
     ${glslang_libs_name}
     ${spirv-cross_libs_name}
     ${tbb_libs_name}
     ${PhysXSDK}
 )
+
+set(ZLIB z)
+if(NOT USE_MODULES)
+  list(APPEND CC_EXTERNAL_LIBS ${ZLIB} ${se_libs_name})
+endif()
+
 
 list(APPEND CC_EXTERNAL_INCLUDES
   ${CMAKE_CURRENT_LIST_DIR}/include

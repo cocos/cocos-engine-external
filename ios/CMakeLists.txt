@@ -165,7 +165,6 @@ list(APPEND CC_EXTERNAL_LIBS
     jpeg
     png
     webp
-    ${se_libs_name}
     crypto
     ssl
     ${glslang_libs_name}
@@ -173,3 +172,9 @@ list(APPEND CC_EXTERNAL_LIBS
     ${tbb_libs_name}
     ${PhysXSDK}
 )
+
+set(ZLIB z)
+if(NOT USE_MODULES)
+  list(APPEND CC_EXTERNAL_LIBS ${se_libs_name})
+endif()
+
