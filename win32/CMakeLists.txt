@@ -273,8 +273,6 @@ list(APPEND CC_EXTERNAL_LIBS
     webp
     OpenAL32
     sqlite3
-    ${se_libs_name}
-    zlib
     websockets
     SDL2
     SDL2Main
@@ -282,6 +280,14 @@ list(APPEND CC_EXTERNAL_LIBS
     ${tbb_libs_name}
     ${PhysXSDK}
 )
+
+
+set(ZLIB zlib)
+if(NOT USE_MODULES)
+  list(APPEND CC_EXTERNAL_LIBS ${ZLIB}
+    ${se_libs_name}
+  )
+endif()
 
 
 list(APPEND CC_EXTERNAL_INCLUDES

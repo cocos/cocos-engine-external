@@ -294,7 +294,6 @@ list(APPEND CC_EXTERNAL_LIBS
     webp
     OpenAL32
     sqlite3
-    ${se_libs_name}
     zlib
     websockets
     SDL2
@@ -304,6 +303,12 @@ list(APPEND CC_EXTERNAL_LIBS
     ${PhysXSDK}
 )
 
+set(ZLIB zlib)
+if(NOT USE_MODULES)
+  list(APPEND CC_EXTERNAL_LIBS ${ZLIB}
+    ${se_libs_name}
+  )
+endif()
 
 list(APPEND CC_EXTERNAL_INCLUDES
   ${CMAKE_CURRENT_LIST_DIR}/include
