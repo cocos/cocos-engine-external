@@ -101,7 +101,7 @@ if(USE_SE_V8)
     add_library(v8_inspector STATIC IMPORTED GLOBAL)
     set_target_properties(v8_inspector PROPERTIES
       IMPORTED_LOCATION ${ohos_lib_dir}/libinspector.a
-      INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/v8
+      INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/v8
     )
 
     set(se_libs_name v8_monolith v8_inspector)
@@ -150,6 +150,7 @@ list(APPEND CC_EXTERNAL_LIBS
     png
     webp
     sqlite3
+    ${se_libs_name}
     ${glslang_libs_name}
     OpenALSoft
     mpg123
@@ -157,7 +158,7 @@ list(APPEND CC_EXTERNAL_LIBS
 
 set(ZLIB z)
 if(NOT USE_MODULES)
-  list(APPEND CC_EXTERNAL_LIBS ${ZLIB} ${se_libs_name})
+  list(APPEND CC_EXTERNAL_LIBS ${ZLIB})
 endif()
 
 
