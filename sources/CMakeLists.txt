@@ -16,15 +16,17 @@ set(CC_TINYDIR_SOURCES
   ${CMAKE_CURRENT_LIST_DIR}/tinydir/tinydir.h
 )
 
+set(CC_FS_SOURCES
+  ${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTF.c
+  ${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTF.h
+  ${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTFWrapper.cpp
+)
+
+
 set(CC_EXTERNAL_SOURCES
 
   ${CMAKE_CURRENT_LIST_DIR}/xxtea/xxtea.cpp
   ${CMAKE_CURRENT_LIST_DIR}/xxtea/xxtea.h
-
-
-  ${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTF.c
-  ${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTF.h
-  ${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTFWrapper.cpp
 
   ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommy.c
   ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommy.h
@@ -34,6 +36,7 @@ if(USE_MODULES)
   list(APPEND CC_EXTERNAL_SOURCES 
     ${CC_UNZIP_SOURCES}
     ${CC_TINYDIR_SOURCES}
+    ${CC_FS_SOURCES}
   )
 endif()
 
