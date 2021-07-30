@@ -10,7 +10,7 @@ openssl
     win32: 1.1.1g
     ios: 1.1.1g
     android: 1.1.1g
-    win64: 1.1.1k 
+    win64: 1.1.1k
 
 mpg123
     win32: 40
@@ -107,8 +107,10 @@ spirv_cross
 iconv
     win32: 0x0109
     win64: 0x0110
-glslang
-    win32: 
-    win64: 11.4.0
-        config: -DENABLE_OPT=OFF -DENABLE_SPVREMAPPER=OFF (otherwise it will depend on 2 other libs)
-    ios: 3641ff73
+
+glslang (Built using https://github.com/YunHsiao/glslang/tree/build)
+    win32:      11.5.0 (commit: 1978c76)
+    win64:      11.5.0 (commit: 1978c76)
+    android:    11.5.0 (commit: 1978c76)
+    mac:        11.5.0 (commit: 1978c76)
+    ios:        11.5.0 (commit: 1978c76)
