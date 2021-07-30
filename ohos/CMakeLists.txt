@@ -62,7 +62,6 @@ set_target_properties(mpg123 PROPERTIES
 set(se_libs_name)
 
 if(USE_SE_V8)
-    
     add_library(v8_monolith STATIC IMPORTED GLOBAL)
     set_target_properties(v8_monolith PROPERTIES
       IMPORTED_LOCATION ${ohos_lib_dir}/libv8_monolith.a
@@ -171,7 +170,6 @@ endif()
 list(APPEND CC_EXTERNAL_INCLUDES
   ${platform_spec_path}/include
   ${platform_spec_path}/include/v8
-  ${platform_spec_path}/include/glslang
 )
 
 #TODO: remove in future version

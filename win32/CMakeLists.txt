@@ -193,34 +193,71 @@ else()
    message(FATAL_ERROR "Only V8 is supported!")
 endif()
 
+############################# glslang #############################
+
+add_library(GenericCodeGen STATIC IMPORTED GLOBAL)
+set_target_properties(GenericCodeGen PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/GenericCodeGend.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/GenericCodeGen.lib
+)
+
 add_library(glslang STATIC IMPORTED GLOBAL)
 set_target_properties(glslang PROPERTIES
   IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslangd.lib
   IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslang.lib
 )
-add_library(OGLCompiler STATIC IMPORTED GLOBAL)
-set_target_properties(OGLCompiler PROPERTIES
-  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OGLCompilerd.lib
-  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OGLCompiler.lib
-)
-add_library(OSDependent STATIC IMPORTED GLOBAL)
-set_target_properties(OSDependent PROPERTIES
-  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OSDependentd.lib
-  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OSDependent.lib
-)
-add_library(SPIRV STATIC IMPORTED GLOBAL)
-set_target_properties(SPIRV PROPERTIES
-  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRVd.lib
-  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRV.lib
-)
+
 add_library(glslang-default-resource-limits STATIC IMPORTED GLOBAL)
 set_target_properties(glslang-default-resource-limits PROPERTIES
   IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslang-default-resource-limitsd.lib
   IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/glslang-default-resource-limits.lib
 )
 
-list(APPEND CC_EXTERNAL_INCLUDES ${CMAKE_CURRENT_LIST_DIR}/include/glslang)
-set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits)
+add_library(MachineIndependent STATIC IMPORTED GLOBAL)
+set_target_properties(MachineIndependent PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/MachineIndependentd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/MachineIndependent.lib
+)
+
+add_library(OGLCompiler STATIC IMPORTED GLOBAL)
+set_target_properties(OGLCompiler PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OGLCompilerd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OGLCompiler.lib
+)
+
+add_library(OSDependent STATIC IMPORTED GLOBAL)
+set_target_properties(OSDependent PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OSDependentd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/OSDependent.lib
+)
+
+add_library(SPIRV STATIC IMPORTED GLOBAL)
+set_target_properties(SPIRV PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRVd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRV.lib
+)
+
+add_library(SPIRV-Tools STATIC IMPORTED GLOBAL)
+set_target_properties(SPIRV-Tools PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRV-Toolsd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRV-Tools.lib
+)
+
+add_library(SPIRV-Tools-opt STATIC IMPORTED GLOBAL)
+set_target_properties(SPIRV-Tools-opt PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRV-Tools-optd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPIRV-Tools-opt.lib
+)
+
+add_library(SPVRemapper STATIC IMPORTED GLOBAL)
+set_target_properties(SPVRemapper PROPERTIES
+  IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPVRemapperd.lib
+  IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/SPVRemapper.lib
+)
+
+set(glslang_libs_name glslang glslang-default-resource-limits MachineIndependent OGLCompiler OSDependent SPIRV SPIRV-Tools-opt SPIRV-Tools SPVRemapper GenericCodeGen)
+
+############################# TBB #############################
 
 add_library(tbb STATIC IMPORTED GLOBAL)
 set_target_properties(tbb PROPERTIES
@@ -239,9 +276,7 @@ set_target_properties(tbbmalloc_proxy PROPERTIES
 )
 set(tbb_libs_name tbb tbbmalloc tbbmalloc_proxy)
 
-list(APPEND CC_EXTERNAL_PRIVATE_DEFINITIONS
-  $<IF:$<CONFIG:Debug>, __TBB_LIB_NAME=tbb_static_debug, __TBB_LIB_NAME=tbb_static>
-)
+list(APPEND CC_EXTERNAL_PRIVATE_DEFINITIONS __TBB_LIB_NAME=tbb_static)
 
 if(USE_PHYSICS_PHYSX)
   set(PhysXSDK PhysX PhysXCommon PhysXFoundation PhysXExtensions PhysXCooking PhysXCharacterKinematic PhysXVehicle PhysXPvdSDK)
