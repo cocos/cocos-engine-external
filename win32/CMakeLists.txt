@@ -275,11 +275,10 @@ list(APPEND CC_EXTERNAL_PRIVATE_DEFINITIONS __TBB_LIB_NAME=tbb)
 if(USE_PHYSICS_PHYSX)
   set(PhysXSDK PhysX PhysXCommon PhysXFoundation PhysXExtensions PhysXCooking PhysXCharacterKinematic PhysXVehicle PhysXPvdSDK)
   foreach(PX IN LISTS PhysXSDK)
-    add_library(${PX} SHARED IMPORTED GLOBAL)
+    add_library(${PX} STATIC IMPORTED GLOBAL)
     set_target_properties(${PX} PROPERTIES
-      IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/${PX}_static_32.dll
-      IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/${PX}_static_32.lib
-      
+      IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/PhysX/debug/${PX}_static_32.lib
+      IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/PhysX/release/${PX}_static_32.lib
     )
   endforeach()
 else()
