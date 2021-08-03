@@ -143,6 +143,23 @@ set_target_properties(glslang-default-resource-limits PROPERTIES
 set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits)
 
 
+############################# TBB #############################
+if(USE_JOB_SYSTEM_TASKFLOW)
+  add_library(tbb STATIC IMPORTED GLOBAL)
+  set_target_properties(tbb PROPERTIES
+    IMPORTED_LOCATION ${ohos_lib_dir}/libtbb_static.a
+  )
+  add_library(tbbmalloc STATIC IMPORTED GLOBAL)
+  set_target_properties(tbbmalloc PROPERTIES
+    IMPORTED_LOCATION ${ohos_lib_dir}/libtbbmalloc_static.a
+  )
+  add_library(tbbmalloc_proxy STATIC IMPORTED GLOBAL)
+  set_target_properties(tbbmalloc_proxy PROPERTIES
+    IMPORTED_LOCATION ${ohos_lib_dir}/libtbbmalloc_proxy_static.a
+  )
+  set(tbb_libs_name tbbmalloc_proxy tbbmalloc tbb)
+endif()
+
 list(APPEND CC_EXTERNAL_LIBS
     freetype
     jpeg
@@ -154,6 +171,12 @@ list(APPEND CC_EXTERNAL_LIBS
     OpenALSoft
     mpg123
 )
+
+if(USE_JOB_SYSTEM_TASKFLOW)
+  list(APPEND CC_EXTERNAL_LIBS
+    ${tbb_libs_name}
+  )
+endif()
 
 set(ZLIB z)
 if(NOT USE_MODULES)
