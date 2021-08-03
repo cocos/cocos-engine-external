@@ -144,7 +144,7 @@ set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-reso
 
 
 ############################# TBB #############################
-if(USE_JOB_SYSTEM_TASKFLOW)
+if(USE_JOB_SYSTEM_TBB)
   add_library(tbb STATIC IMPORTED GLOBAL)
   set_target_properties(tbb PROPERTIES
     IMPORTED_LOCATION ${ohos_lib_dir}/libtbb_static.a
@@ -158,6 +158,9 @@ if(USE_JOB_SYSTEM_TASKFLOW)
     IMPORTED_LOCATION ${ohos_lib_dir}/libtbbmalloc_proxy_static.a
   )
   set(tbb_libs_name tbbmalloc_proxy tbbmalloc tbb)
+  list(APPEND CC_EXTERNAL_LIBS
+    ${tbb_libs_name}
+  )
 endif()
 
 list(APPEND CC_EXTERNAL_LIBS
@@ -171,12 +174,6 @@ list(APPEND CC_EXTERNAL_LIBS
     OpenALSoft
     mpg123
 )
-
-if(USE_JOB_SYSTEM_TASKFLOW)
-  list(APPEND CC_EXTERNAL_LIBS
-    ${tbb_libs_name}
-  )
-endif()
 
 set(ZLIB z)
 if(NOT USE_MODULES)
