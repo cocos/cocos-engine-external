@@ -165,7 +165,7 @@ set_target_properties(spirv-cross-glsl PROPERTIES
 set(spirv-cross_libs_name spirv-cross-core spirv-cross-glsl spirv-cross-msl)
 
 ############################# TBB #############################
-
+if(USE_JOB_SYSTEM_TBB)
 add_library(tbb STATIC IMPORTED GLOBAL)
 set_target_properties(tbb PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libtbb_static.a
@@ -179,6 +179,9 @@ set_target_properties(tbbmalloc_proxy PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libtbbmalloc_proxy_static.a
 )
 set(tbb_libs_name tbb tbbmalloc tbbmalloc_proxy)
+else()
+  set(tbb_libs_name)
+endif()
 
 if(USE_PHYSICS_PHYSX)
   set(PhysXSDK PhysX PhysXCommon PhysXFoundation PhysXExtensions PhysXCooking PhysXCharacterKinematic PhysXVehicle PhysXPvdSDK)
