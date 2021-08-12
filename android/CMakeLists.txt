@@ -158,7 +158,7 @@ set_target_properties(SPVRemapper PROPERTIES
 set(glslang_libs_name glslang glslang-default-resource-limits MachineIndependent OGLCompiler OSDependent SPIRV SPIRV-Tools-opt SPIRV-Tools SPVRemapper GenericCodeGen)
 
 ############################# TBB #############################
-
+if(USE_JOB_SYSTEM_TBB)
 add_library(tbb STATIC IMPORTED GLOBAL)
 set_target_properties(tbb PROPERTIES
   IMPORTED_LOCATION ${platform_spec_path}/libtbb_static.a
@@ -172,6 +172,9 @@ set_target_properties(tbbmalloc_proxy PROPERTIES
   IMPORTED_LOCATION ${platform_spec_path}/libtbbmalloc_proxy_static.a
 )
 set(tbb_libs_name tbbmalloc_proxy tbbmalloc tbb)
+else()
+  set(tbb_libs_name)
+endif()
 
 if(USE_PHYSICS_PHYSX)
   set(PhysXSDK PhysXCooking PhysXCharacterKinematic PhysXVehicle PhysXExtensions PhysX PhysXPvdSDK PhysXCommon PhysXFoundation)
