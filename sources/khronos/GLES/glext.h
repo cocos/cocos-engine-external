@@ -1,33 +1,14 @@
-#ifndef __glext_h_
-#define __glext_h_ 1
+#ifndef __gles1_glext_h_
+#define __gles1_glext_h_ 1
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*
-** Copyright (c) 2013-2017 The Khronos Group Inc.
+** Copyright 2013-2020 The Khronos Group Inc.
+** SPDX-License-Identifier: MIT
 **
-** Permission is hereby granted, free of charge, to any person obtaining a
-** copy of this software and/or associated documentation files (the
-** "Materials"), to deal in the Materials without restriction, including
-** without limitation the rights to use, copy, modify, merge, publish,
-** distribute, sublicense, and/or sell copies of the Materials, and to
-** permit persons to whom the Materials are furnished to do so, subject to
-** the following conditions:
-**
-** The above copyright notice and this permission notice shall be included
-** in all copies or substantial portions of the Materials.
-**
-** THE MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-** EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-** MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-** IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-** CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-** TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-** MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
-*/
-/*
 ** This header is generated from the Khronos OpenGL / OpenGL ES XML
 ** API Registry. The current version of the Registry, generator scripts
 ** used to make the header, and the header can be found at
@@ -38,7 +19,7 @@ extern "C" {
 #define GL_APIENTRYP GL_APIENTRY*
 #endif
 
-/* Generated on date 20170613 */
+/* Generated on date 20210107 */
 
 /* Generated C header for:
  * API: gles1
@@ -49,6 +30,10 @@ extern "C" {
  * Additional extensions included: _nomatch_^
  * Extensions removed: ^(GL_OES_read_format|GL_OES_compressed_paletted_texture|GL_OES_point_size_array|GL_OES_point_sprite)$
  */
+
+#ifndef GL_KHR_debug
+#define GL_KHR_debug 1
+#endif /* GL_KHR_debug */
 
 #ifndef GL_OES_EGL_image
 #define GL_OES_EGL_image 1
@@ -444,6 +429,11 @@ GL_API void GL_APIENTRY glOrthofOES (GLfloat l, GLfloat r, GLfloat b, GLfloat t,
 #define GL_DECR_WRAP_OES                  0x8508
 #endif /* GL_OES_stencil_wrap */
 
+#ifndef GL_OES_surfaceless_context
+#define GL_OES_surfaceless_context 1
+#define GL_FRAMEBUFFER_UNDEFINED_OES      0x8219
+#endif /* GL_OES_surfaceless_context */
+
 #ifndef GL_OES_texture_cube_map
 #define GL_OES_texture_cube_map 1
 #define GL_NORMAL_MAP_OES                 0x8511
@@ -483,6 +473,10 @@ GL_API void GL_APIENTRY glGetTexGenivOES (GLenum coord, GLenum pname, GLint *par
 #define GL_OES_texture_mirrored_repeat 1
 #define GL_MIRRORED_REPEAT_OES            0x8370
 #endif /* GL_OES_texture_mirrored_repeat */
+
+#ifndef GL_OES_texture_npot
+#define GL_OES_texture_npot 1
+#endif /* GL_OES_texture_npot */
 
 #ifndef GL_OES_vertex_array_object
 #define GL_OES_vertex_array_object 1
@@ -564,7 +558,7 @@ typedef void (GL_APIENTRYP PFNGLDELETESYNCAPPLEPROC) (GLsync sync);
 typedef GLenum (GL_APIENTRYP PFNGLCLIENTWAITSYNCAPPLEPROC) (GLsync sync, GLbitfield flags, GLuint64 timeout);
 typedef void (GL_APIENTRYP PFNGLWAITSYNCAPPLEPROC) (GLsync sync, GLbitfield flags, GLuint64 timeout);
 typedef void (GL_APIENTRYP PFNGLGETINTEGER64VAPPLEPROC) (GLenum pname, GLint64 *params);
-typedef void (GL_APIENTRYP PFNGLGETSYNCIVAPPLEPROC) (GLsync sync, GLenum pname, GLsizei bufSize, GLsizei *length, GLint *values);
+typedef void (GL_APIENTRYP PFNGLGETSYNCIVAPPLEPROC) (GLsync sync, GLenum pname, GLsizei count, GLsizei *length, GLint *values);
 #ifdef GL_GLEXT_PROTOTYPES
 GL_API GLsync GL_APIENTRY glFenceSyncAPPLE (GLenum condition, GLbitfield flags);
 GL_API GLboolean GL_APIENTRY glIsSyncAPPLE (GLsync sync);
@@ -572,7 +566,7 @@ GL_API void GL_APIENTRY glDeleteSyncAPPLE (GLsync sync);
 GL_API GLenum GL_APIENTRY glClientWaitSyncAPPLE (GLsync sync, GLbitfield flags, GLuint64 timeout);
 GL_API void GL_APIENTRY glWaitSyncAPPLE (GLsync sync, GLbitfield flags, GLuint64 timeout);
 GL_API void GL_APIENTRY glGetInteger64vAPPLE (GLenum pname, GLint64 *params);
-GL_API void GL_APIENTRY glGetSyncivAPPLE (GLsync sync, GLenum pname, GLsizei bufSize, GLsizei *length, GLint *values);
+GL_API void GL_APIENTRY glGetSyncivAPPLE (GLsync sync, GLenum pname, GLsizei count, GLsizei *length, GLint *values);
 #endif
 #endif /* GL_APPLE_sync */
 
@@ -600,6 +594,19 @@ GL_API void GL_APIENTRY glGetSyncivAPPLE (GLsync sync, GLenum pname, GLsizei buf
 #define GL_MIN_EXT                        0x8007
 #define GL_MAX_EXT                        0x8008
 #endif /* GL_EXT_blend_minmax */
+
+#ifndef GL_EXT_debug_marker
+#define GL_EXT_debug_marker 1
+typedef char GLchar;
+typedef void (GL_APIENTRYP PFNGLINSERTEVENTMARKEREXTPROC) (GLsizei length, const GLchar *marker);
+typedef void (GL_APIENTRYP PFNGLPUSHGROUPMARKEREXTPROC) (GLsizei length, const GLchar *marker);
+typedef void (GL_APIENTRYP PFNGLPOPGROUPMARKEREXTPROC) (void);
+#ifdef GL_GLEXT_PROTOTYPES
+GL_API void GL_APIENTRY glInsertEventMarkerEXT (GLsizei length, const GLchar *marker);
+GL_API void GL_APIENTRY glPushGroupMarkerEXT (GLsizei length, const GLchar *marker);
+GL_API void GL_APIENTRY glPopGroupMarkerEXT (void);
+#endif
+#endif /* GL_EXT_debug_marker */
 
 #ifndef GL_EXT_discard_framebuffer
 #define GL_EXT_discard_framebuffer 1
@@ -829,7 +836,6 @@ GL_API void GL_APIENTRY glSetFenceNV (GLuint fence, GLenum condition);
 
 #ifndef GL_QCOM_driver_control
 #define GL_QCOM_driver_control 1
-typedef char GLchar;
 typedef void (GL_APIENTRYP PFNGLGETDRIVERCONTROLSQCOMPROC) (GLint *num, GLsizei size, GLuint *driverControls);
 typedef void (GL_APIENTRYP PFNGLGETDRIVERCONTROLSTRINGQCOMPROC) (GLuint driverControl, GLsizei bufSize, GLsizei *length, GLchar *driverControlString);
 typedef void (GL_APIENTRYP PFNGLENABLEDRIVERCONTROLQCOMPROC) (GLuint driverControl);
