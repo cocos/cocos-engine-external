@@ -1,33 +1,14 @@
-#ifndef __gl_h_
-#define __gl_h_ 1
+#ifndef __gles1_gl_h_
+#define __gles1_gl_h_ 1
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*
-** Copyright (c) 2013-2017 The Khronos Group Inc.
+** Copyright 2013-2020 The Khronos Group Inc.
+** SPDX-License-Identifier: MIT
 **
-** Permission is hereby granted, free of charge, to any person obtaining a
-** copy of this software and/or associated documentation files (the
-** "Materials"), to deal in the Materials without restriction, including
-** without limitation the rights to use, copy, modify, merge, publish,
-** distribute, sublicense, and/or sell copies of the Materials, and to
-** permit persons to whom the Materials are furnished to do so, subject to
-** the following conditions:
-**
-** The above copyright notice and this permission notice shall be included
-** in all copies or substantial portions of the Materials.
-**
-** THE MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-** EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-** MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-** IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-** CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-** TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-** MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
-*/
-/*
 ** This header is generated from the Khronos OpenGL / OpenGL ES XML
 ** API Registry. The current version of the Registry, generator scripts
 ** used to make the header, and the header can be found at
@@ -36,7 +17,7 @@ extern "C" {
 
 #include <GLES/glplatform.h>
 
-/* Generated on date 20170613 */
+/* Generated on date 20210107 */
 
 /* Generated C header for:
  * API: gles1
@@ -50,10 +31,13 @@ extern "C" {
 
 #ifndef GL_VERSION_ES_CM_1_0
 #define GL_VERSION_ES_CM_1_0 1
+#include <KHR/khrplatform.h>
+typedef khronos_int8_t GLbyte;
+typedef khronos_float_t GLclampf;
+typedef khronos_int16_t GLshort;
+typedef khronos_uint16_t GLushort;
 typedef void GLvoid;
-typedef char GLchar;
 typedef unsigned int GLenum;
-#include <khronos/KHR/khrplatform.h>
 typedef khronos_float_t GLfloat;
 typedef khronos_int32_t GLfixed;
 typedef unsigned int GLuint;
@@ -61,13 +45,9 @@ typedef khronos_ssize_t GLsizeiptr;
 typedef khronos_intptr_t GLintptr;
 typedef unsigned int GLbitfield;
 typedef int GLint;
-typedef unsigned short GLushort;
-typedef short GLshort;
-typedef khronos_int8_t GLbyte;
 typedef khronos_uint8_t GLubyte;
 typedef unsigned char GLboolean;
 typedef int GLsizei;
-typedef khronos_float_t GLclampf;
 typedef khronos_int32_t GLclampx;
 #define GL_VERSION_ES_CL_1_0              1
 #define GL_VERSION_ES_CM_1_1              1
