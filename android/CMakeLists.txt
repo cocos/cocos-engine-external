@@ -150,12 +150,7 @@ set_target_properties(SPIRV-Tools-opt PROPERTIES
   IMPORTED_LOCATION ${platform_spec_path}/glslang/libSPIRV-Tools-opt.a
 )
 
-add_library(SPVRemapper STATIC IMPORTED GLOBAL)
-set_target_properties(SPVRemapper PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/glslang/libSPVRemapper.a
-)
-
-set(glslang_libs_name glslang glslang-default-resource-limits MachineIndependent OGLCompiler OSDependent SPIRV SPIRV-Tools-opt SPIRV-Tools SPVRemapper GenericCodeGen)
+set(glslang_libs_name glslang glslang-default-resource-limits MachineIndependent OGLCompiler OSDependent SPIRV SPIRV-Tools-opt SPIRV-Tools GenericCodeGen)
 
 ############################# TBB #############################
 
