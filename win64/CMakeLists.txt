@@ -209,26 +209,13 @@ foreach(gl IN LISTS glslang_libs_name)
   )
 endforeach()
 ############################# TBB #############################
-if(USE_JOB_SYSTEM_TBB)
+
 add_library(tbb SHARED IMPORTED GLOBAL)
 set_target_properties(tbb PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/tbb.dll
   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/tbb.lib
 )
-add_library(tbbmalloc SHARED IMPORTED GLOBAL)
-set_target_properties(tbbmalloc PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/tbbmalloc.dll
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/tbbmalloc.lib
-)
-add_library(tbbmalloc_proxy SHARED IMPORTED GLOBAL)
-set_target_properties(tbbmalloc_proxy PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/tbbmalloc_proxy.dll
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/tbbmalloc_proxy.lib
-)
-set(tbb_libs_name tbb tbbmalloc tbbmalloc_proxy)
-else()
-  set(tbb_libs_name)
-endif()
+set(tbb_libs_name tbb)
 
 list(APPEND CC_EXTERNAL_PRIVATE_DEFINITIONS __TBB_LIB_NAME=tbb)
 
