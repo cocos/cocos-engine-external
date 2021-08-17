@@ -14,12 +14,12 @@ extern "C" {
 ** used to make the header, and the header can be found at
 **   http://www.khronos.org/registry/egl
 **
-** Khronos $Git commit SHA1: 5a9a7e3fcb $ on $Git commit date: 2020-08-24 11:05:32 -0700 $
+** Khronos $Git commit SHA1: dc0b58dca5 $ on $Git commit date: 2021-06-25 01:58:50 +0200 $
 */
 
 #include <EGL/eglplatform.h>
 
-#define EGL_EGLEXT_VERSION 20201001
+#define EGL_EGLEXT_VERSION 20210629
 
 /* Generated C header for:
  * API: egl
@@ -574,6 +574,14 @@ EGLAPI EGLBoolean EGLAPIENTRY eglQuerySurfacePointerANGLE (EGLDisplay dpy, EGLSu
 #define EGL_ANGLE_surface_d3d_texture_2d_share_handle 1
 #endif /* EGL_ANGLE_surface_d3d_texture_2d_share_handle */
 
+#ifndef EGL_ANGLE_sync_control_rate
+#define EGL_ANGLE_sync_control_rate 1
+typedef EGLBoolean (EGLAPIENTRYP PFNEGLGETMSCRATEANGLEPROC) (EGLDisplay dpy, EGLSurface surface, EGLint *numerator, EGLint *denominator);
+#ifdef EGL_EGLEXT_PROTOTYPES
+EGLAPI EGLBoolean EGLAPIENTRY eglGetMscRateANGLE (EGLDisplay dpy, EGLSurface surface, EGLint *numerator, EGLint *denominator);
+#endif
+#endif /* EGL_ANGLE_sync_control_rate */
+
 #ifndef EGL_ANGLE_window_fixed_size
 #define EGL_ANGLE_window_fixed_size 1
 #define EGL_FIXED_SIZE_ANGLE              0x3201
@@ -643,6 +651,11 @@ EGLAPI EGLBoolean EGLAPIENTRY eglCompositorSwapPolicyEXT (EGLint external_win_id
 #endif
 #endif /* EGL_EXT_compositor */
 
+#ifndef EGL_EXT_config_select_group
+#define EGL_EXT_config_select_group 1
+#define EGL_CONFIG_SELECT_GROUP_EXT       0x34C0
+#endif /* EGL_EXT_config_select_group */
+
 #ifndef EGL_EXT_create_context_robustness
 #define EGL_EXT_create_context_robustness 1
 #define EGL_CONTEXT_OPENGL_ROBUST_ACCESS_EXT 0x30BF
@@ -675,6 +688,11 @@ EGLAPI EGLBoolean EGLAPIENTRY eglQueryDisplayAttribEXT (EGLDisplay dpy, EGLint a
 #define EGL_DRM_MASTER_FD_EXT             0x333C
 #endif /* EGL_EXT_device_drm */
 
+#ifndef EGL_EXT_device_drm_render_node
+#define EGL_EXT_device_drm_render_node 1
+#define EGL_DRM_RENDER_NODE_FILE_EXT      0x3377
+#endif /* EGL_EXT_device_drm_render_node */
+
 #ifndef EGL_EXT_device_enumeration
 #define EGL_EXT_device_enumeration 1
 #endif /* EGL_EXT_device_enumeration */
@@ -683,6 +701,17 @@ EGLAPI EGLBoolean EGLAPIENTRY eglQueryDisplayAttribEXT (EGLDisplay dpy, EGLint a
 #define EGL_EXT_device_openwf 1
 #define EGL_OPENWF_DEVICE_ID_EXT          0x3237
 #endif /* EGL_EXT_device_openwf */
+
+#ifndef EGL_EXT_device_persistent_id
+#define EGL_EXT_device_persistent_id 1
+#define EGL_DEVICE_UUID_EXT               0x335C
+#define EGL_DRIVER_UUID_EXT               0x335D
+#define EGL_DRIVER_NAME_EXT               0x335E
+typedef EGLBoolean (EGLAPIENTRYP PFNEGLQUERYDEVICEBINARYEXTPROC) (EGLDeviceEXT device, EGLint name, EGLint max_size, void *value, EGLint *size);
+#ifdef EGL_EGLEXT_PROTOTYPES
+EGLAPI EGLBoolean EGLAPIENTRY eglQueryDeviceBinaryEXT (EGLDeviceEXT device, EGLint name, EGLint max_size, void *value, EGLint *size);
+#endif
+#endif /* EGL_EXT_device_persistent_id */
 
 #ifndef EGL_EXT_device_query
 #define EGL_EXT_device_query 1
