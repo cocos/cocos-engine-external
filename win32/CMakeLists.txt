@@ -159,6 +159,11 @@ set_target_properties(SDL2Main PROPERTIES
   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/SDL2Main.lib
 )
 
+add_library(tcmalloc SHARED IMPORTED GLOBAL)
+set_target_properties(tcmalloc PROPERTIES
+  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libtcmalloc_minimal.lib
+)
+
 set(se_libs_name)
 
 if(USE_SE_V8)
@@ -211,17 +216,7 @@ set_target_properties(tbb PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/tbb.dll
   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/tbb.lib
 )
-add_library(tbbmalloc SHARED IMPORTED GLOBAL)
-set_target_properties(tbbmalloc PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/tbbmalloc.dll
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/tbbmalloc.lib
-)
-add_library(tbbmalloc_proxy SHARED IMPORTED GLOBAL)
-set_target_properties(tbbmalloc_proxy PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/tbbmalloc_proxy.dll
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/tbbmalloc_proxy.lib
-)
-set(tbb_libs_name tbb tbbmalloc tbbmalloc_proxy)
+set(tbb_libs_name tbb)
 
 list(APPEND CC_EXTERNAL_PRIVATE_DEFINITIONS __TBB_LIB_NAME=tbb)
 
@@ -260,6 +255,7 @@ list(APPEND CC_EXTERNAL_LIBS
     websockets
     SDL2
     SDL2Main
+    tcmalloc
     ${glslang_libs_name}
     ${tbb_libs_name}
     ${PhysXSDK}

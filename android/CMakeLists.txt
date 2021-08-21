@@ -158,15 +158,7 @@ add_library(tbb STATIC IMPORTED GLOBAL)
 set_target_properties(tbb PROPERTIES
   IMPORTED_LOCATION ${platform_spec_path}/libtbb_static.a
 )
-add_library(tbbmalloc STATIC IMPORTED GLOBAL)
-set_target_properties(tbbmalloc PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/libtbbmalloc_static.a
-)
-add_library(tbbmalloc_proxy STATIC IMPORTED GLOBAL)
-set_target_properties(tbbmalloc_proxy PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/libtbbmalloc_proxy_static.a
-)
-set(tbb_libs_name tbbmalloc_proxy tbbmalloc tbb)
+set(tbb_libs_name tbb)
 
 if(USE_PHYSICS_PHYSX)
   set(PhysXSDK PhysXCooking PhysXCharacterKinematic PhysXVehicle PhysXExtensions PhysX PhysXPvdSDK PhysXCommon PhysXFoundation)

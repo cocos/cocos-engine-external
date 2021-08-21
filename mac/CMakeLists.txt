@@ -168,15 +168,7 @@ add_library(tbb STATIC IMPORTED GLOBAL)
 set_target_properties(tbb PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libtbb_static.a
 )
-add_library(tbbmalloc STATIC IMPORTED GLOBAL)
-set_target_properties(tbbmalloc PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libtbbmalloc_static.a
-)
-add_library(tbbmalloc_proxy STATIC IMPORTED GLOBAL)
-set_target_properties(tbbmalloc_proxy PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libtbbmalloc_proxy_static.a
-)
-set(tbb_libs_name tbb tbbmalloc tbbmalloc_proxy)
+set(tbb_libs_name tbb)
 
 if(USE_PHYSICS_PHYSX)
   set(PhysXSDK PhysX PhysXCommon PhysXFoundation PhysXExtensions PhysXCooking PhysXCharacterKinematic PhysXVehicle PhysXPvdSDK)
