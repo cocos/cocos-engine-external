@@ -8,45 +8,45 @@ set_target_properties(z PROPERTIES
 set(se_libs_name)
 
 ############################# glslang #############################
-list(APPEND SPIRV_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/../sources/glslang)
-list(APPEND SPIRV_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/../sources/khronos)
-add_library(GenericCodeGen STATIC IMPORTED GLOBAL)
-set_target_properties(GenericCodeGen PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libGenericCodeGen.a
-)
+# list(APPEND SPIRV_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/../sources/glslang)
+# list(APPEND SPIRV_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/../sources/khronos)
+# add_library(GenericCodeGen STATIC IMPORTED GLOBAL)
+# set_target_properties(GenericCodeGen PROPERTIES
+#   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libGenericCodeGen.a
+# )
 
-add_library(glslang STATIC IMPORTED GLOBAL)
-set_target_properties(glslang PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libglslang.a
-  INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/../sources/glslang
-)
+# add_library(glslang STATIC IMPORTED GLOBAL)
+# set_target_properties(glslang PROPERTIES
+#   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libglslang.a
+#   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/../sources/glslang
+# )
 
-add_library(glslang-default-resource-limits STATIC IMPORTED GLOBAL)
-set_target_properties(glslang-default-resource-limits PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libglslang-default-resource-limits.a
+# add_library(glslang-default-resource-limits STATIC IMPORTED GLOBAL)
+# set_target_properties(glslang-default-resource-limits PROPERTIES
+#   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libglslang-default-resource-limits.a
 
-)
+# )
 
-add_library(MachineIndependent STATIC IMPORTED GLOBAL)
-set_target_properties(MachineIndependent PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libMachineIndependent.a
-)
+# add_library(MachineIndependent STATIC IMPORTED GLOBAL)
+# set_target_properties(MachineIndependent PROPERTIES
+#   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libMachineIndependent.a
+# )
 
-add_library(OGLCompiler STATIC IMPORTED GLOBAL)
-set_target_properties(OGLCompiler PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libOGLCompiler.a
-)
+# add_library(OGLCompiler STATIC IMPORTED GLOBAL)
+# set_target_properties(OGLCompiler PROPERTIES
+#   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libOGLCompiler.a
+# )
 
-add_library(OSDependent STATIC IMPORTED GLOBAL)
-set_target_properties(OSDependent PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libOSDependent.a
-)
+# add_library(OSDependent STATIC IMPORTED GLOBAL)
+# set_target_properties(OSDependent PROPERTIES
+#   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libOSDependent.a
+# )
 
-add_library(SPIRV STATIC IMPORTED GLOBAL)
-set_target_properties(SPIRV PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libSPIRV.a
-  INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/../sources/khronos
-)
+# add_library(SPIRV STATIC IMPORTED GLOBAL)
+# set_target_properties(SPIRV PROPERTIES
+#   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libSPIRV.a
+#   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/../sources/khronos
+# )
 
 # add_library(SPIRV-Tools STATIC IMPORTED GLOBAL)
 # set_target_properties(SPIRV-Tools PROPERTIES
@@ -117,7 +117,7 @@ list(APPEND CC_EXTERNAL_LIBS
     #curl
     #crypto
     #ssl
-    ${glslang_libs_name}
+    #${glslang_libs_name}
     #${spirv-cross_libs_name}
     #${tbb_libs_name}
     ${PhysXSDK}
