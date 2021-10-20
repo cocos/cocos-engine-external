@@ -98,6 +98,12 @@ set_target_properties(tbb PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/tbb
 )
 
+add_library(sdl2 SHARED IMPORTED GLOBAL)
+set_target_properties(sdl2 PROPERTIES
+  IMPORTED_LOCATION ${linux_lib_dir}/libSDL2.so
+  INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/sdl2
+)
+
 list(APPEND CC_EXTERNAL_INCLUDES
   ${platform_spec_path}/include
   ${platform_spec_path}/include/v8
@@ -122,4 +128,5 @@ list(APPEND CC_EXTERNAL_LIBS
     curl
     webp
     tbb
+    sdl2
 )
