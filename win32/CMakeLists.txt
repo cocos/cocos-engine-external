@@ -200,7 +200,7 @@ endif()
 
 ############################# glslang #############################
 
-set(glslang_libs_name glslang glslang-default-resource-limits MachineIndependent OGLCompiler OSDependent SPIRV SPIRV-Tools SPIRV-Tools-opt GenericCodeGen)
+set(glslang_libs_name glslang glslang-default-resource-limits SPIRV MachineIndependent OGLCompiler OSDependent SPIRV-Tools-opt SPIRV-Tools GenericCodeGen)
 foreach(gl IN LISTS glslang_libs_name)
   add_library(${gl} STATIC IMPORTED GLOBAL)
   set_target_properties(${gl} PROPERTIES
