@@ -58,10 +58,13 @@ target_include_directories(pvmp3dec PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/include
 )
 
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/pvmp3dec_tmp_def.h "#pragma once\n#define OSCL_UNUSED_ARG(x) (void)(x)")
+if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/pvmp3dec_tmp_def.h)
+    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/pvmp3dec_tmp_def.h "#pragma once\n#define OSCL_UNUSED_ARG(x) (void)(x)")
+endif()
 
 target_compile_options(pvmp3dec PRIVATE 
     #-fsanitize=signed-integer-overflow
     -include ${CMAKE_CURRENT_BINARY_DIR}/pvmp3dec_tmp_def.h
    #
 )
+
