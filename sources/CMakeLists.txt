@@ -24,11 +24,6 @@ set(CC_UTILS_SOURCES
   ${CMAKE_CURRENT_LIST_DIR}/xxtea/xxtea.h
 )
 
-add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/boost/container/repo boost/container)
-list(APPEND CC_EXTERNAL_LIBS
-  Boost::container
-)
-
 set(CC_EXTERNAL_SOURCES
 
   ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommy.c
@@ -42,6 +37,9 @@ if(NOT USE_MODULES)
     ${CC_UTILS_SOURCES}
   )
 endif()
+
+# add dependent boost libs
+include(${CMAKE_CURRENT_LIST_DIR}/boost-source/boost.cmake)
 
 if(ANDROID OR OHOS)
 

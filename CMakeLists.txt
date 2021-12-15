@@ -13,7 +13,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/sources/CMakeLists.txt)
 
 if(WINDOWS)
     if(${CMAKE_SIZEOF_VOID_P} STREQUAL "4")
-        include(${CMAKE_CURRENT_LIST_DIR}/win32/CMakeLists.txt)    
+        include(${CMAKE_CURRENT_LIST_DIR}/win32/CMakeLists.txt)
     else()
         include(${CMAKE_CURRENT_LIST_DIR}/win64/CMakeLists.txt)
     endif()
