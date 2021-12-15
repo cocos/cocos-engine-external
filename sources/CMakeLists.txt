@@ -24,6 +24,10 @@ set(CC_UTILS_SOURCES
   ${CMAKE_CURRENT_LIST_DIR}/xxtea/xxtea.h
 )
 
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/boost/container/repo boost/container)
+list(APPEND CC_EXTERNAL_LIBS
+  Boost::container
+)
 
 set(CC_EXTERNAL_SOURCES
 
@@ -32,7 +36,7 @@ set(CC_EXTERNAL_SOURCES
 )
 
 if(NOT USE_MODULES)
-  list(APPEND CC_EXTERNAL_SOURCES 
+  list(APPEND CC_EXTERNAL_SOURCES
     ${CC_UNZIP_SOURCES}
     ${CC_TINYDIR_SOURCES}
     ${CC_UTILS_SOURCES}
@@ -70,4 +74,3 @@ if(USE_PHYSICS_PHYSX)
     ${CMAKE_CURRENT_LIST_DIR}/PhysX/PxShared/include
   )
 endif()
-
