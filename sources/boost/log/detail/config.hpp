@@ -17,12 +17,6 @@
 #ifndef BOOST_LOG_DETAIL_CONFIG_HPP_INCLUDED_
 #define BOOST_LOG_DETAIL_CONFIG_HPP_INCLUDED_
 
-// This check must be before any system headers are included, or __MSVCRT_VERSION__ may get defined to 0x0600
-#if defined(__MINGW32__) && !defined(__MSVCRT_VERSION__)
-// Target MinGW headers to at least MSVC 7.0 runtime by default. This will enable some useful functions.
-#define __MSVCRT_VERSION__ 0x0700
-#endif
-
 #include <boost/predef/os.h>
 
 // Try including WinAPI config as soon as possible so that any other headers don't include Windows SDK headers
@@ -104,10 +98,12 @@
 #   define BOOST_LOG_BROKEN_CONSTANT_EXPRESSIONS
 #endif
 
-#if defined(BOOST_NO_CXX11_HDR_CODECVT)
+#if (defined(BOOST_NO_CXX11_HDR_CODECVT) && BOOST_CXX_VERSION < 201703) || (defined(_MSVC_STL_VERSION) && _MSVC_STL_VERSION < 142)
     // The compiler does not support std::codecvt<char16_t> and std::codecvt<char32_t> specializations.
     // The BOOST_NO_CXX11_HDR_CODECVT means there's no usable <codecvt>, which is slightly different from this macro.
     // But in order for <codecvt> to be implemented the std::codecvt specializations have to be implemented as well.
+    // We need to check the C++ version as well, since <codecvt> is deprecated from C++17 onwards which may cause
+    // BOOST_NO_CXX11_HDR_CODECVT to be set, even though std::codecvt in <locale> is just fine.
 #   define BOOST_LOG_NO_CXX11_CODECVT_FACETS
 #endif
 
@@ -171,6 +167,14 @@
 // An MS-like compilers' extension that allows to optimize away the needless code
 #if defined(_MSC_VER)
 #   define BOOST_LOG_ASSUME(expr) __assume(expr)
+#elif defined(__has_builtin)
+// Clang 3.6 adds __builtin_assume, but enabling it causes weird compilation errors, where the compiler
+// doesn't see one of attachable_sstream_buf::append overloads. It works fine with Clang 3.7 and later.
+#   if __has_builtin(__builtin_assume) && (!defined(__clang__) || (__clang_major__ * 100 + __clang_minor__) >= 307)
+#       define BOOST_LOG_ASSUME(expr) __builtin_assume(expr)
+#   else
+#       define BOOST_LOG_ASSUME(expr)
+#   endif
 #else
 #   define BOOST_LOG_ASSUME(expr)
 #endif
@@ -245,15 +249,7 @@
         // other Boost libraries. We explicitly add comments here for other libraries.
         // In dynamic-library builds this is not needed.
 #       if !defined(BOOST_LOG_DLL)
-#           include <boost/system/config.hpp>
 #           include <boost/filesystem/config.hpp>
-#           if !defined(BOOST_DATE_TIME_NO_LIB) && !defined(BOOST_DATE_TIME_SOURCE)
-#               define BOOST_LIB_NAME boost_date_time
-#               if defined(BOOST_ALL_DYN_LINK) || defined(BOOST_DATE_TIME_DYN_LINK)
-#                   define BOOST_DYN_LINK
-#               endif
-#               include <boost/config/auto_link.hpp>
-#           endif
             // Boost.Thread's config is included below, if needed
 #       endif
 #   endif  // auto-linking disabled
@@ -328,7 +324,9 @@ namespace boost {
 #           if defined(BOOST_THREAD_PLATFORM_PTHREAD)
 #               define BOOST_LOG_VERSION_NAMESPACE v2_mt_posix
 #           elif defined(BOOST_THREAD_PLATFORM_WIN32)
-#               if BOOST_USE_WINAPI_VERSION >= BOOST_WINAPI_VERSION_WIN6
+#               if BOOST_USE_WINAPI_VERSION >= BOOST_WINAPI_VERSION_WIN8
+#                   define BOOST_LOG_VERSION_NAMESPACE v2_mt_nt62
+#               elif BOOST_USE_WINAPI_VERSION >= BOOST_WINAPI_VERSION_WIN6
 #                   define BOOST_LOG_VERSION_NAMESPACE v2_mt_nt6
 #               else
 #                   define BOOST_LOG_VERSION_NAMESPACE v2_mt_nt5
@@ -344,7 +342,9 @@ namespace boost {
 #           if defined(BOOST_THREAD_PLATFORM_PTHREAD)
 #               define BOOST_LOG_VERSION_NAMESPACE v2s_mt_posix
 #           elif defined(BOOST_THREAD_PLATFORM_WIN32)
-#               if BOOST_USE_WINAPI_VERSION >= BOOST_WINAPI_VERSION_WIN6
+#               if BOOST_USE_WINAPI_VERSION >= BOOST_WINAPI_VERSION_WIN8
+#                   define BOOST_LOG_VERSION_NAMESPACE v2s_mt_nt62
+#               elif BOOST_USE_WINAPI_VERSION >= BOOST_WINAPI_VERSION_WIN6
 #                   define BOOST_LOG_VERSION_NAMESPACE v2s_mt_nt6
 #               else
 #                   define BOOST_LOG_VERSION_NAMESPACE v2s_mt_nt5

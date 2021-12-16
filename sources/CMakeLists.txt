@@ -24,7 +24,6 @@ set(CC_UTILS_SOURCES
   ${CMAKE_CURRENT_LIST_DIR}/xxtea/xxtea.h
 )
 
-
 set(CC_EXTERNAL_SOURCES
 
   ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommy.c
@@ -32,12 +31,15 @@ set(CC_EXTERNAL_SOURCES
 )
 
 if(NOT USE_MODULES)
-  list(APPEND CC_EXTERNAL_SOURCES 
+  list(APPEND CC_EXTERNAL_SOURCES
     ${CC_UNZIP_SOURCES}
     ${CC_TINYDIR_SOURCES}
     ${CC_UTILS_SOURCES}
   )
 endif()
+
+# add dependent boost libs
+include(${CMAKE_CURRENT_LIST_DIR}/boost-source/boost.cmake)
 
 if(ANDROID OR OHOS)
 
@@ -70,4 +72,3 @@ if(USE_PHYSICS_PHYSX)
     ${CMAKE_CURRENT_LIST_DIR}/PhysX/PxShared/include
   )
 endif()
-
