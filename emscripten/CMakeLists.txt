@@ -37,17 +37,17 @@ set_target_properties(z PROPERTIES
 # )
 # set(tbb_libs_name tbb tbbmalloc tbbmalloc_proxy)
 
-if(USE_PHYSICS_PHYSX)
-  set(PhysXSDK PhysX PhysXCommon PhysXFoundation PhysXExtensions PhysXCooking PhysXCharacterKinematic PhysXVehicle PhysXPvdSDK)
-  foreach(PX IN LISTS PhysXSDK)
-    add_library(${PX} STATIC IMPORTED GLOBAL)
-    set_target_properties(${PX} PROPERTIES
-      IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/PhysX/lib${PX}_static_64.a
-    )
-  endforeach()
-else()
-  set(PhysXSDK)
-endif()
+#if(USE_PHYSICS_PHYSX)
+#  set(PhysXSDK PhysX PhysXCommon PhysXFoundation PhysXExtensions PhysXCooking PhysXCharacterKinematic PhysXVehicle PhysXPvdSDK)
+#  foreach(PX IN LISTS PhysXSDK)
+#    add_library(${PX} STATIC IMPORTED GLOBAL)
+#    set_target_properties(${PX} PROPERTIES
+#      IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/PhysX/lib${PX}_static_64.a
+#    )
+#  endforeach()
+#else()
+#  set(PhysXSDK)
+#endif()
 
 list(APPEND CC_EXTERNAL_LIBS
     #freetype
@@ -58,7 +58,7 @@ list(APPEND CC_EXTERNAL_LIBS
     #crypto
     #ssl
     #${tbb_libs_name}
-    ${PhysXSDK}
+    #${PhysXSDK}
 )
 
 set(ZLIB z)
