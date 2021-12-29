@@ -105,52 +105,13 @@ endif()
 
 ############################# glslang #############################
 
-add_library(GenericCodeGen STATIC IMPORTED GLOBAL)
-set_target_properties(GenericCodeGen PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/glslang/libGenericCodeGen.a
-)
-
-add_library(glslang STATIC IMPORTED GLOBAL)
-set_target_properties(glslang PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/glslang/libglslang.a
-)
-
-add_library(glslang-default-resource-limits STATIC IMPORTED GLOBAL)
-set_target_properties(glslang-default-resource-limits PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/glslang/libglslang-default-resource-limits.a
-)
-
-add_library(MachineIndependent STATIC IMPORTED GLOBAL)
-set_target_properties(MachineIndependent PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/glslang/libMachineIndependent.a
-)
-
-add_library(OGLCompiler STATIC IMPORTED GLOBAL)
-set_target_properties(OGLCompiler PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/glslang/libOGLCompiler.a
-)
-
-add_library(OSDependent STATIC IMPORTED GLOBAL)
-set_target_properties(OSDependent PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/glslang/libOSDependent.a
-)
-
-add_library(SPIRV STATIC IMPORTED GLOBAL)
-set_target_properties(SPIRV PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/glslang/libSPIRV.a
-)
-
-add_library(SPIRV-Tools STATIC IMPORTED GLOBAL)
-set_target_properties(SPIRV-Tools PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/glslang/libSPIRV-Tools.a
-)
-
-add_library(SPIRV-Tools-opt STATIC IMPORTED GLOBAL)
-set_target_properties(SPIRV-Tools-opt PROPERTIES
-  IMPORTED_LOCATION ${platform_spec_path}/glslang/libSPIRV-Tools-opt.a
-)
-
 set(glslang_libs_name glslang glslang-default-resource-limits MachineIndependent OGLCompiler OSDependent SPIRV SPIRV-Tools-opt SPIRV-Tools GenericCodeGen)
+foreach(lib IN LISTS glslang_libs_name)
+  add_library(${lib} STATIC IMPORTED GLOBAL)
+  set_target_properties(${lib} PROPERTIES
+    IMPORTED_LOCATION ${platform_spec_path}/glslang/lib${lib}.a
+  )
+endforeach()
 
 ############################# TBB #############################
 

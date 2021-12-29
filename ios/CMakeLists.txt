@@ -37,20 +37,24 @@ set_target_properties(webp PROPERTIES
 
 add_library(v8_monolith STATIC IMPORTED GLOBAL)
 set(V8_COMPILE_FLAGS
-  V8_TARGET_ARCH_ARM64
-  V8_HAVE_TARGET_OS
-  V8_TARGET_OS_IOS
   V8_TYPED_ARRAY_MAX_SIZE_IN_HEAP=64
   ENABLE_MINOR_MC
-  V8_CONCURRENT_MARKING
+  ENABLE_HANDLE_ZAPPING
+  V8_ATOMIC_OBJECT_FIELD_WRITES
+  V8_ATOMIC_MARKING_STATE
   V8_ENABLE_LAZY_SOURCE_POSITIONS
-  V8_EMBEDDED_BUILTINS
   V8_SHARED_RO_HEAP
   V8_WIN64_UNWINDING_INFO
   V8_ENABLE_REGEXP_INTERPRETER_THREADED_DISPATCH
-  V8_31BIT_SMIS_ON_64BIT_ARCH
+  V8_SNAPSHOT_COMPRESSION
+  V8_ENABLE_SYSTEM_INSTRUMENTATION
+  V8_ENABLE_WEBASSEMBLY
   V8_DEPRECATION_WARNINGS
   V8_IMMINENT_DEPRECATION_WARNINGS
+  CPPGC_CAGED_HEAP
+  V8_TARGET_ARCH_ARM64
+  V8_HAVE_TARGET_OS
+  V8_TARGET_OS_IOS
   DISABLE_UNTRUSTED_CODE_MITIGATIONS
 )
 set_target_properties(v8_monolith PROPERTIES
@@ -96,13 +100,54 @@ endif()
 
 ############################# glslang #############################
 
-set(glslang_libs_name glslang glslang-default-resource-limits MachineIndependent OGLCompiler OSDependent SPIRV SPIRV-Tools SPIRV-Tools-opt GenericCodeGen)
-foreach(gl IN LISTS glslang_libs_name)
-  add_library(${gl} STATIC IMPORTED GLOBAL)
-  set_target_properties(${gl} PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/lib${gl}.a
-  )
-endforeach()
+add_library(GenericCodeGen STATIC IMPORTED GLOBAL)
+set_target_properties(GenericCodeGen PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libGenericCodeGen.a
+)
+
+add_library(glslang STATIC IMPORTED GLOBAL)
+set_target_properties(glslang PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libglslang.a
+)
+
+add_library(glslang-default-resource-limits STATIC IMPORTED GLOBAL)
+set_target_properties(glslang-default-resource-limits PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libglslang-default-resource-limits.a
+)
+
+add_library(MachineIndependent STATIC IMPORTED GLOBAL)
+set_target_properties(MachineIndependent PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libMachineIndependent.a
+)
+
+add_library(OGLCompiler STATIC IMPORTED GLOBAL)
+set_target_properties(OGLCompiler PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libOGLCompiler.a
+)
+
+add_library(OSDependent STATIC IMPORTED GLOBAL)
+set_target_properties(OSDependent PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libOSDependent.a
+)
+
+add_library(SPIRV STATIC IMPORTED GLOBAL)
+set_target_properties(SPIRV PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libSPIRV.a
+)
+
+add_library(SPIRV-Tools STATIC IMPORTED GLOBAL)
+set_target_properties(SPIRV-Tools PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libSPIRV-Tools.a
+)
+
+add_library(SPIRV-Tools-opt STATIC IMPORTED GLOBAL)
+set_target_properties(SPIRV-Tools-opt PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/libSPIRV-Tools-opt.a
+)
+
+
+
+set(glslang_libs_name glslang glslang-default-resource-limits MachineIndependent OGLCompiler OSDependent SPIRV SPIRV-Tools-opt SPIRV-Tools GenericCodeGen)
 
 ############################# SPIRV-Cross #############################
 
