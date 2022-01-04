@@ -24,6 +24,11 @@ set(CC_UTILS_SOURCES
   ${CMAKE_CURRENT_LIST_DIR}/xxtea/xxtea.h
 )
 
+set(CC_MURMURHASH2_SOURCES
+  ${CMAKE_CURRENT_LIST_DIR}/MurmurHash2/MurmurHash2.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/MurmurHash2/MurmurHash2.h
+)
+
 set(CC_EXTERNAL_SOURCES
 
   ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommy.c
@@ -35,6 +40,7 @@ if(NOT USE_MODULES)
     ${CC_UNZIP_SOURCES}
     ${CC_TINYDIR_SOURCES}
     ${CC_UTILS_SOURCES}
+    ${CC_MURMURHASH2_SOURCES}
   )
 endif()
 
