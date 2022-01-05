@@ -81,6 +81,14 @@ set_target_properties(crypto PROPERTIES
 set(optional_libs_name ssl crypto)
 endif()
 
+if(QNX)
+add_library(cairo SHARED IMPORTED GLOBAL)
+set_target_properties(cairo PROPERTIES
+  IMPORTED_LOCATION ${linux_lib_dir}/cairo/libcairo.so
+)
+set(optional_libs_name ${optional_libs_name} cairo)
+endif()
+
 add_library(websockets STATIC IMPORTED GLOBAL)
 set_target_properties(websockets PROPERTIES
   IMPORTED_LOCATION ${linux_lib_dir}/libwebsockets/libwebsockets.a
