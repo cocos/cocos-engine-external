@@ -95,9 +95,9 @@ set_target_properties(websockets PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/libwebsockets
 )
 
-add_library(curl SHARED IMPORTED GLOBAL)
+add_library(curl STATIC IMPORTED GLOBAL)
 set_target_properties(curl PROPERTIES
-  IMPORTED_LOCATION ${linux_lib_dir}/curl/libcurl.so
+  IMPORTED_LOCATION ${linux_lib_dir}/curl/libcurl.a
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/curl
 )
 
@@ -176,10 +176,9 @@ list(APPEND CC_EXTERNAL_LIBS
     jpeg
     png
     websockets
-    crypto
-    curl
     webp
     sdl2
+    curl
     ${optional_libs_name}
     ${glslang_libs_name}
 )
