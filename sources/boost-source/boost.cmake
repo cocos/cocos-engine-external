@@ -9,6 +9,9 @@ set(BOOST_LIBS
 
 foreach(lib ${BOOST_LIBS})
     set_target_properties(${lib} PROPERTIES FOLDER Utils)
+    target_compile_definitions(${lib} PUBLIC
+        BOOST_UUID_FORCE_AUTO_LINK
+    )
 endforeach()
 
 list(APPEND CC_EXTERNAL_LIBS ${BOOST_LIBS})
