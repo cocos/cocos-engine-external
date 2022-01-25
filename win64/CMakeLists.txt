@@ -194,7 +194,7 @@ if(USE_SE_V8)
     )
 
     set(se_libs_name v8)
-else()
+elseif(NOT CC_EDITOR)
    message(FATAL_ERROR "Only V8 is supported!")
 endif()
 
