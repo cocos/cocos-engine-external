@@ -8,10 +8,9 @@ set(BOOST_LIB_NAMES
 foreach(lib ${BOOST_LIB_NAMES})
     add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/${lib} boost/${lib})
     set_target_properties(boost_${lib} PROPERTIES FOLDER Utils)
-    list(APPEND CC_EXTERNAL_LIBS boost_${lib})
-foreach(lib ${BOOST_LIBS})
-    set_target_properties(${lib} PROPERTIES FOLDER Utils)
-    target_compile_definitions(${lib} PUBLIC
+    target_compile_definitions(boost_${lib} PUBLIC
         BOOST_UUID_FORCE_AUTO_LINK
     )
+    list(APPEND CC_EXTERNAL_LIBS boost_${lib})
 endforeach()
+
