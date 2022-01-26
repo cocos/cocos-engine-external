@@ -62,8 +62,8 @@ set_target_properties(jpeg PROPERTIES
 add_library(mpg123 SHARED IMPORTED GLOBAL)
 
 set_target_properties(mpg123 PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libmpg123.dll
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libmpg123.lib
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libmpg123-0.dll
+  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libmpg123-0.lib
   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/mpg123
 )
 
@@ -200,7 +200,7 @@ endif()
 
 ############################# glslang #############################
 
-set(glslang_libs_name glslang glslang-default-resource-limits SPIRV MachineIndependent OGLCompiler OSDependent SPIRV-Tools-opt SPIRV-Tools GenericCodeGen)
+set(glslang_libs_name glslang glslang-default-resource-limits MachineIndependent OGLCompiler OSDependent SPIRV SPIRV-Tools-opt SPIRV-Tools GenericCodeGen)
 foreach(gl IN LISTS glslang_libs_name)
   add_library(${gl} STATIC IMPORTED GLOBAL)
   set_target_properties(${gl} PROPERTIES
