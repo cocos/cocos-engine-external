@@ -166,8 +166,9 @@ set_target_properties(tcmalloc PROPERTIES
 
 set(se_libs_name)
 
-if(USE_SE_V8)
-
+if(CC_EDITOR)
+    message(VERBOSE "CC_EDITOR USE V8 FROM NODEJS")
+elseif(USE_SE_V8)
     add_library(v8 SHARED IMPORTED GLOBAL)
     set_target_properties(v8 PROPERTIES
       IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/v8.dll
@@ -195,7 +196,7 @@ if(USE_SE_V8)
 
     set(se_libs_name v8)
 else()
-   message(FATAL_ERROR "Only V8 is supported!")
+    message(FATAL_ERROR "Only V8 is supported!")
 endif()
 
 ############################# glslang #############################
