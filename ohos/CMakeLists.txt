@@ -190,11 +190,12 @@ ${se_libs_name}
 OpenALSoft
 mpg123
 )
-endif()
 
 set(ZLIB z)
 if(NOT USE_MODULES)
   list(APPEND CC_EXTERNAL_LIBS ${ZLIB})
+endif()
+
 endif()
 
 
