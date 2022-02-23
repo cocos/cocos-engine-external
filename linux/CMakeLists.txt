@@ -177,8 +177,11 @@ list(APPEND CC_EXTERNAL_LIBS
     png
     websockets
     webp
-    sdl2
     curl
     ${optional_libs_name}
     ${glslang_libs_name}
 )
+
+if(NOT USE_SERVER_MODE)
+  list(APPEND CC_EXTERNAL_LIBS sdl2)
+endif()
