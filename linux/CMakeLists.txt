@@ -118,9 +118,9 @@ set_target_properties(tbb PROPERTIES
 set(optional_libs_name ${optional_libs_name} tbb)
 endif()
 
-add_library(sdl2 SHARED IMPORTED GLOBAL)
+add_library(sdl2 STATIC IMPORTED GLOBAL)
 set_target_properties(sdl2 PROPERTIES
-  IMPORTED_LOCATION ${linux_lib_dir}/sdl2/libSDL2.so
+  IMPORTED_LOCATION ${linux_lib_dir}/sdl2/libSDL2.a
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/sdl2
 )
 
