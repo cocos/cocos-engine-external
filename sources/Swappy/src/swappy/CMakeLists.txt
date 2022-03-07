@@ -24,14 +24,14 @@ set ( SOURCE_LOCATION_VULKAN "${SOURCE_LOCATION}/vulkan" )
 include_directories( ${CMAKE_CURRENT_LIST_DIR}/../../include )
 include_directories( ${CMAKE_CURRENT_LIST_DIR}/../common )
 include_directories( ${CMAKE_CURRENT_LIST_DIR}/common )
-include_directories( ${ANDROID_NDK}/sources/third_party/vulkan/src/common )
 
-if(CC_USE_GLES3 or CC_USE_GLES2)
+if(CC_USE_GLES3 OR CC_USE_GLES2)
     include_directories( ${CMAKE_CURRENT_LIST_DIR}/opengl )
 endif()
 
 if(CC_USE_VULKAN)
     include_directories( ${CMAKE_CURRENT_LIST_DIR}/vulkan )
+    include_directories( ${ANDROID_NDK}/sources/third_party/vulkan/src/common )
 endif()
 
 message( STATUS "Building swappy_static to ${CMAKE_CURRENT_BINARY_DIR}/build" )
@@ -74,11 +74,14 @@ set(SRC_FILE
             ${SOURCE_LOCATION_OPENGL}/FrameStatisticsGL.cpp
             ${SOURCE_LOCATION}/../common/system_utils.cpp)
 
-if(CC_USE_GLES3 or CC_USE_GLES2)
+set(SWAPPY_C_SRC)
+if(CC_USE_GLES3 OR CC_USE_GLES2)
     list(APPEND SRC_FILE
         ${SOURCE_LOCATION_OPENGL}/EGL.cpp
         ${SOURCE_LOCATION_OPENGL}/swappyGL_c.cpp
         ${SOURCE_LOCATION_OPENGL}/SwappyGL.cpp)
+    list(APPEND SWAPPY_C_SRC
+        ${SOURCE_LOCATION_OPENGL}/swappyGL_c.cpp)
 endif()
 
 if(CC_USE_VULKAN)
@@ -88,6 +91,8 @@ if(CC_USE_VULKAN)
         ${SOURCE_LOCATION_VULKAN}/SwappyVkBase.cpp
         ${SOURCE_LOCATION_VULKAN}/SwappyVkFallback.cpp
         ${SOURCE_LOCATION_VULKAN}/SwappyVkGoogleDisplayTiming.cpp)
+    list(APPEND SWAPPY_C_SRC
+            ${SOURCE_LOCATION_OPENGL}/swappyVk_c.cpp)
 endif()
 
 add_library( swappy_static
@@ -103,13 +108,13 @@ add_library( swappy_static
 set_target_properties( swappy_static PROPERTIES
      LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/build )
 
+
+
 add_library( swappy
 
              SHARED
 
-             ${SOURCE_LOCATION_COMMON}/swappy_c.cpp
-             ${SOURCE_LOCATION_OPENGL}/swappyGL_c.cpp
-             ${SOURCE_LOCATION_VULKAN}/swappyVk_c.cpp)
+             ${SWAPPY_C_SRC})
 
 
 target_link_libraries( swappy
