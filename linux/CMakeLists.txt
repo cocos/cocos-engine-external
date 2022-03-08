@@ -9,9 +9,9 @@ set_target_properties(uv PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/libuv
 )
 
-add_library(mpg123 SHARED IMPORTED GLOBAL)
+add_library(mpg123 STATIC IMPORTED GLOBAL)
 set_target_properties(mpg123 PROPERTIES
-  IMPORTED_LOCATION ${linux_lib_dir}/mpg123/libmpg123.so
+  IMPORTED_LOCATION ${linux_lib_dir}/mpg123/libmpg123.a
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/mpg123
 )
 
@@ -32,15 +32,15 @@ set_target_properties(vorbis PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/vorbis
 )
 
-add_library(libz SHARED IMPORTED GLOBAL)
+add_library(libz STATIC IMPORTED GLOBAL)
 set_target_properties(libz PROPERTIES
-  IMPORTED_LOCATION ${linux_lib_dir}/libz/libz.so.1.2.11
+  IMPORTED_LOCATION ${linux_lib_dir}/libz/libz.a
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/libz
 )
 
-add_library(sqlite3 SHARED IMPORTED GLOBAL)
+add_library(sqlite3 STATIC IMPORTED GLOBAL)
 set_target_properties(sqlite3 PROPERTIES
-  IMPORTED_LOCATION ${linux_lib_dir}/sqlite/libsqlite3.so.0.8.6
+  IMPORTED_LOCATION ${linux_lib_dir}/sqlite/libsqlite3.a
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/sqlite
 )
 
@@ -49,9 +49,9 @@ set_target_properties(v8 PROPERTIES
   IMPORTED_LOCATION ${linux_lib_dir}/v8/libv8_monolith.a
 )
 
-add_library(openal SHARED IMPORTED GLOBAL)
+add_library(openal STATIC IMPORTED GLOBAL)
 set_target_properties(openal PROPERTIES
-  IMPORTED_LOCATION ${linux_lib_dir}/openal-soft/libopenal.so.1.21.1
+  IMPORTED_LOCATION ${linux_lib_dir}/openal-soft/libopenal.a
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/openal-soft
 )
 
@@ -118,9 +118,9 @@ set_target_properties(tbb PROPERTIES
 set(optional_libs_name ${optional_libs_name} tbb)
 endif()
 
-add_library(sdl2 SHARED IMPORTED GLOBAL)
+add_library(sdl2 STATIC IMPORTED GLOBAL)
 set_target_properties(sdl2 PROPERTIES
-  IMPORTED_LOCATION ${linux_lib_dir}/sdl2/libSDL2.so
+  IMPORTED_LOCATION ${linux_lib_dir}/sdl2/libSDL2.a
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/sdl2
 )
 
@@ -177,8 +177,11 @@ list(APPEND CC_EXTERNAL_LIBS
     png
     websockets
     webp
-    sdl2
     curl
     ${optional_libs_name}
     ${glslang_libs_name}
 )
+
+if(NOT USE_SERVER_MODE)
+  list(APPEND CC_EXTERNAL_LIBS sdl2)
+endif()
