@@ -78,8 +78,8 @@ if(CC_USE_GLES3 OR CC_USE_GLES2)
     list(APPEND SRC_FILE
         ${SOURCE_LOCATION_OPENGL}/EGL.cpp
         ${SOURCE_LOCATION_OPENGL}/swappyGL_c.cpp
-        ${SOURCE_LOCATION_OPENGL}/SwappyGL.cpp)
-        ${SOURCE_LOCATION_OPENGL}/FrameStatisticsGL.cpp
+        ${SOURCE_LOCATION_OPENGL}/SwappyGL.cpp
+        ${SOURCE_LOCATION_OPENGL}/FrameStatisticsGL.cpp)
     list(APPEND SWAPPY_C_SRC
         ${SOURCE_LOCATION_OPENGL}/swappyGL_c.cpp)
 endif()
