@@ -71,7 +71,6 @@ set(SRC_FILE
             ${SOURCE_LOCATION_COMMON}/swappy_c.cpp
             ${SOURCE_LOCATION_COMMON}/SwappyDisplayManager.cpp
             ${SOURCE_LOCATION_COMMON}/CPUTracer.cpp
-            ${SOURCE_LOCATION_OPENGL}/FrameStatisticsGL.cpp
             ${SOURCE_LOCATION}/../common/system_utils.cpp)
 
 set(SWAPPY_C_SRC)
@@ -80,6 +79,7 @@ if(CC_USE_GLES3 OR CC_USE_GLES2)
         ${SOURCE_LOCATION_OPENGL}/EGL.cpp
         ${SOURCE_LOCATION_OPENGL}/swappyGL_c.cpp
         ${SOURCE_LOCATION_OPENGL}/SwappyGL.cpp)
+        ${SOURCE_LOCATION_OPENGL}/FrameStatisticsGL.cpp
     list(APPEND SWAPPY_C_SRC
         ${SOURCE_LOCATION_OPENGL}/swappyGL_c.cpp)
 endif()
@@ -92,7 +92,7 @@ if(CC_USE_VULKAN)
         ${SOURCE_LOCATION_VULKAN}/SwappyVkFallback.cpp
         ${SOURCE_LOCATION_VULKAN}/SwappyVkGoogleDisplayTiming.cpp)
     list(APPEND SWAPPY_C_SRC
-            ${SOURCE_LOCATION_OPENGL}/swappyVk_c.cpp)
+            ${SOURCE_LOCATION_VULKAN}/swappyVk_c.cpp)
 endif()
 
 add_library( swappy_static
