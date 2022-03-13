@@ -116,6 +116,8 @@ add_library( swappy
 
              ${SWAPPY_C_SRC})
 
+set(SWAPPY_ENABLED TRUE)
+
 add_definitions(-DSWAPPY_ENABLED)
 
 target_link_libraries( swappy
