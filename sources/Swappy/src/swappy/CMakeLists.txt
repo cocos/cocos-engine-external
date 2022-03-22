@@ -120,10 +120,14 @@ set(SWAPPY_ENABLED TRUE)
 
 add_definitions(-DSWAPPY_ENABLED)
 
-target_link_libraries( swappy
+set(LIBS 
+      swappy_static
+      android
+      log
+      atomic)
 
-                        swappy_static
-                        android
-                        GLESv2
-                        log
-			atomic)
+if(CC_USE_GLES3 OR CC_USE_GLES2)
+    list(APPEND LIBS GLESv2)
+endif()
+
+target_link_libraries( swappy ${LIBS})
