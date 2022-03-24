@@ -34,7 +34,6 @@
 // to your game/engine's own Java component, you do not need to add the binary
 // resource and can instead define ANDROIDGAMESDK_NO_BINARY_DEX_LINKAGE which
 // will avoid the linker requiring these symbols.
-#define ANDROIDGAMESDK_NO_BINARY_DEX_LINKAGE
 #ifndef ANDROIDGAMESDK_NO_BINARY_DEX_LINKAGE
 extern const char _binary_classes_dex_start;
 extern const char _binary_classes_dex_end;
@@ -63,8 +62,8 @@ static bool deleteFile(std::string fileName) {
 
 static bool createTempFile(JNIEnv* env, jobject activity, const char* ext,
                            std::string& tempFileName) {
-    bool result = false;
-    jclass activityClass = env->GetObjectClass(activity);
+    bool      result        = false;
+    jclass    activityClass = env->GetObjectClass(activity);
     jmethodID getCacheDir =
         env->GetMethodID(activityClass, "getCacheDir", "()Ljava/io/File;");
     jobject cacheDir = env->CallObjectMethod(activity, getCacheDir);
@@ -72,13 +71,13 @@ static bool createTempFile(JNIEnv* env, jobject activity, const char* ext,
         env->ExceptionDescribe();
         env->ExceptionClear();
     } else {
-        jclass fileClass = env->FindClass("java/io/File");
+        jclass    fileClass = env->FindClass("java/io/File");
         jmethodID createTempFile =
             env->GetStaticMethodID(fileClass, "createTempFile",
                                    "(Ljava/lang/String;Ljava/lang/String;Ljava/"
                                    "io/File;)Ljava/io/File;");
-        jstring prefix = env->NewStringUTF("ags");
-        jstring suffix = env->NewStringUTF(ext);
+        jstring prefix   = env->NewStringUTF("ags");
+        jstring suffix   = env->NewStringUTF(ext);
         jobject tempFile = env->CallStaticObjectMethod(
             fileClass, createTempFile, prefix, suffix, cacheDir);
         if (env->ExceptionCheck()) {
@@ -105,11 +104,11 @@ static bool createTempFile(JNIEnv* env, jobject activity, const char* ext,
     return result;
 }
 
-#endif  // #ifndef ANDROIDGAMESDK_NO_BINARY_DEX_LINKAGE
+#endif // #ifndef ANDROIDGAMESDK_NO_BINARY_DEX_LINKAGE
 
 static jclass loadClass(JNIEnv* env, jobject activity, const char* name,
                         JNINativeMethod* nativeMethods,
-                        size_t nativeMethodsSize) {
+                        size_t           nativeMethodsSize) {
     /*
      *   1. Get a classloader from actvity
      *   2. Try to create the requested class from the activty classloader
@@ -120,15 +119,15 @@ static jclass loadClass(JNIEnv* env, jobject activity, const char* name,
     if (!env || !activity || !name) {
         return nullptr;
     }
-    jclass activityClass = env->GetObjectClass(activity);
-    jclass classLoaderClass = env->FindClass("java/lang/ClassLoader");
-    jmethodID getClassLoader = env->GetMethodID(activityClass, "getClassLoader",
+    jclass    activityClass    = env->GetObjectClass(activity);
+    jclass    classLoaderClass = env->FindClass("java/lang/ClassLoader");
+    jmethodID getClassLoader   = env->GetMethodID(activityClass, "getClassLoader",
                                                 "()Ljava/lang/ClassLoader;");
-    jobject classLoaderObj = env->CallObjectMethod(activity, getClassLoader);
-    jmethodID loadClass = env->GetMethodID(
+    jobject   classLoaderObj   = env->CallObjectMethod(activity, getClassLoader);
+    jmethodID loadClass        = env->GetMethodID(
         classLoaderClass, "loadClass", "(Ljava/lang/String;)Ljava/lang/Class;");
-    jstring className = env->NewStringUTF(name);
-    jclass targetClass = static_cast<jclass>(
+    jstring className   = env->NewStringUTF(name);
+    jclass  targetClass = static_cast<jclass>(
         env->CallObjectMethod(classLoaderObj, loadClass, className));
     if (env->ExceptionCheck()) {
         env->ExceptionClear();
@@ -230,10 +229,10 @@ static jclass loadClass(JNIEnv* env, jobject activity, const char* name,
         if (imclassloaderClass) {
             env->DeleteLocalRef(imclassloaderClass);
         }
-#endif  // #ifdef ANDROIDGAMESDK_NO_BINARY_DEX_LINKAGE
+#endif // #ifdef ANDROIDGAMESDK_NO_BINARY_DEX_LINKAGE
     }
     env->DeleteLocalRef(className);
     return targetClass;
 }
 
-}  // namespace gamesdk
+} // namespace gamesdk
