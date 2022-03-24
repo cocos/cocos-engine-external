@@ -80,14 +80,16 @@ set_target_properties(GLESv2 PROPERTIES
 
 set(se_libs_name)
 
-if(USE_SE_V8)
-    list(APPEND se_libs_name
-        v8_monolith
-        uv
-        )
-    if(USE_V8_DEBUGGER)
-        list(APPEND se_libs_name inspector)
-    endif()
+if(CC_EDITOR)
+  message(STATUS "CC_EDITOR USE V8 FROM NODEJS")
+elseif(USE_SE_V8)
+  list(APPEND se_libs_name
+  v8_monolith
+  uv
+  )
+  if(USE_V8_DEBUGGER)
+  list(APPEND se_libs_name inspector)
+  endif()
 endif()
 
 # if(USE_SOCKETS)

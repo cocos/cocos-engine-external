@@ -11,3 +11,4 @@ foreach(lib ${BOOST_LIB_NAMES})
     set_target_properties(boost_${lib} PROPERTIES FOLDER Utils)
     list(APPEND CC_EXTERNAL_LIBS boost_${lib})
 endforeach()
+
