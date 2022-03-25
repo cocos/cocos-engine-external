@@ -77,7 +77,7 @@ Returns
 ; Include all pre-processor statements here. Include conditional
 ; compile variables also.
 ----------------------------------------------------------------------------*/
-#define Qfmt31(a)   (int32)(a*(0x7FFFFFFF))
+#define Qfmt31(a)   (int32)(1.0*a*(0x7FFFFFFF))
 
 #define cos_pi_9    Qfmt31( 0.93969262078591f)
 #define cos_2pi_9   Qfmt31( 0.76604444311898f)
