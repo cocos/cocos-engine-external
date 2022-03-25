@@ -169,7 +169,7 @@ void pvmp3_alias_reduction(int32 *input_buffer,         /* Ptr to spec values of
 
     int32 i, j;
 
-    *used_freq_lines = fxp_mul32_Q32(*used_freq_lines << 16, (int32)(0x7FFFFFFF / (float)18 - 1.0f)) >> 15;
+    *used_freq_lines = fxp_mul32_Q32(*used_freq_lines << 16, (int32)(0x7FFFFFFF / 18.0 - 1.0)) >> 15;
 
 
     if (gr_info->window_switching_flag &&  gr_info->block_type == 2)

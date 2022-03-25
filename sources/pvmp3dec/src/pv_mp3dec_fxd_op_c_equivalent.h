@@ -44,7 +44,7 @@ extern "C"
 #endif
 
 #include "pvmp3_audio_type_defs.h"
-#define Qfmt_31(a)   (Int32)((float)a*0x7FFFFFFF)
+#define Qfmt_31(a)   (Int32)((double)a*0x7FFFFFFF)
 
 #define Qfmt15(x)   (Int16)(x*((Int32)1<<15) + (x>=0?0.5F:-0.5F))
 
