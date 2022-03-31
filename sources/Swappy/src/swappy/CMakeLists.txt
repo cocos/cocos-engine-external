@@ -53,7 +53,7 @@ if (ANDROID_NDK_MAJOR GREATER 22)
 endif()
 
 add_custom_command(OUTPUT classes_dex.o
-        COMMAND cd ${CMAKE_CURRENT_LIST_DIR}/ && ${CMAKE_LINKER} ${LINKER_TARGET_EMULATION_OPTION} -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/classes_dex.o classes.dex
+        COMMAND cd ${CMAKE_CURRENT_LIST_DIR}/ && ${ANDROID_LD} ${LINKER_TARGET_EMULATION_OPTION} -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/classes_dex.o classes.dex
         WORKING_DIRECTORY ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
         )
 
