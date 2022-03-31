@@ -127,7 +127,7 @@ set_target_properties(sdl2 PROPERTIES
 add_library(freetype STATIC IMPORTED GLOBAL)
 set_target_properties(freetype PROPERTIES
   IMPORTED_LOCATION ${linux_lib_dir}/freetype/libfreetype.a
-  INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/freetype2
+  INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/freetype
 )
 
 #glslang
