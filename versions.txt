@@ -39,11 +39,11 @@ jpeg
     win64: 9d
 
 freetype2
-    mac: 2.6.3
+    mac: 2.10.0
     win32: 2.5.5
-    ios: 2.6.3
-    android: 2.6.3
-    win64: 2.10.4
+    ios: 2.10.0
+    android: 2.10.0
+    win64: 2.10.0
 
 libz
     mac: 1.2.11
