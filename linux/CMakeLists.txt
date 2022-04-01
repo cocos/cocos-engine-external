@@ -124,6 +124,12 @@ set_target_properties(sdl2 PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/sdl2
 )
 
+add_library(freetype STATIC IMPORTED GLOBAL)
+set_target_properties(freetype PROPERTIES
+  IMPORTED_LOCATION ${linux_lib_dir}/freetype/libfreetype.a
+  INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/freetype
+)
+
 #glslang
 add_library(libGenericCodeGen STATIC IMPORTED GLOBAL)
 set_target_properties(libGenericCodeGen PROPERTIES
@@ -178,6 +184,7 @@ list(APPEND CC_EXTERNAL_LIBS
     websockets
     webp
     curl
+    freetype
     ${optional_libs_name}
     ${glslang_libs_name}
 )
