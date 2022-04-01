@@ -2,7 +2,7 @@
 list(APPEND CC_EXTERNAL_PRIVATE_DEFINITIONS BOOST_ALL_NO_LIB)
 
 set(BOOST_LIB_NAMES
-    container
+    # container
 )
 
 foreach(lib ${BOOST_LIB_NAMES})
