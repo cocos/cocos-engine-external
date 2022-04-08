@@ -40,7 +40,7 @@ endif()
 message( STATUS "Building swappy_static to ${CMAKE_CURRENT_BINARY_DIR}/build" )
 
 # Dex linking requires an extra option for later versions of clang lld
-if (ANDROID_NDK_MAJOR GREATER 22)
+if (ANDROID_NDK_MAJOR GREATER 18)
     if ( ANDROID_NDK_ABI_NAME MATCHES "armeabi-v7a")
         set (LINKER_TARGET_EMULATION_OPTION "-m" "armelf_linux_eabi")
     elseif(ANDROID_NDK_ABI_NAME MATCHES "arm64-v8a")
