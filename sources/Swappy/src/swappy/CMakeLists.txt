@@ -99,27 +99,21 @@ if(CC_USE_VULKAN)
 endif()
 
 add_library( swappy_static
-
-        STATIC
-
-        ${SRC_FILE}
-                     ${CMAKE_CURRENT_BINARY_DIR}/classes_dex.o
-        # Add new source files here
+                STATIC
+                ${SRC_FILE}
+                ${CMAKE_CURRENT_BINARY_DIR}/classes_dex.o
+                # Add new source files here
         )
 
 
 set_target_properties( swappy_static PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/build )
 
+add_library(swappy
+                SHARED
+                ${SWAPPY_C_SRC})
 
-
-add_library( swappy
-
-        SHARED
-
-        ${SWAPPY_C_SRC})
-
-set(SWAPPY_ENABLED TRUE)
+set(SWAPPY_ENABLED FALSE)
 add_definitions(-DSWAPPY_ENABLED)
 
 set(LIBS
