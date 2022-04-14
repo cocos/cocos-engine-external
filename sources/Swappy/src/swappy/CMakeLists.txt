@@ -1,5 +1,4 @@
 project(swappy C CXX)
-set(CMAKE_CXX_STANDARD 14)
 set(IgnoreOldToolchainWarning "${ANDROID_UNIFIED_HEADERS}")
 
 # set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wthread-safety" )
@@ -52,9 +51,9 @@ if (ANDROID_NDK_MAJOR GREATER 18)
     endif()
 endif()
 
-add_custom_command(OUTPUT classes_dex.o
-        COMMAND cd ${CMAKE_CURRENT_LIST_DIR}/ && ${ANDROID_TOOLCHAIN_ROOT}/bin/ld.lld${ANDROID_TOOLCHAIN_SUFFIX} ${LINKER_TARGET_EMULATION_OPTION} -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/classes_dex.o classes.dex
-        WORKING_DIRECTORY ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/classes_dex.o
+        COMMAND ${ANDROID_TOOLCHAIN_ROOT}/bin/ld.lld${ANDROID_TOOLCHAIN_SUFFIX} ${LINKER_TARGET_EMULATION_OPTION} -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/classes_dex.o classes.dex
+        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
         )
 
 set_source_files_properties(SwappyDisplayManager
