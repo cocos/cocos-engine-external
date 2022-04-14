@@ -47,16 +47,24 @@ endif()
 # add dependent boost libs
 include(${CMAKE_CURRENT_LIST_DIR}/boost-source/boost.cmake)
 
+if(ANDROID AND CC_ENABLE_SWAPPY)
+
+include(${CMAKE_CURRENT_LIST_DIR}/Swappy/src/swappy/CMakeLists.txt)
+list(APPEND CC_EXTERNAL_LIBS
+  swappy
+)
+add_definitions(-DCC_SWAPPY_ENABLED)
+
+endif()
+
 if(ANDROID OR OHOS)
 
   include(${CMAKE_CURRENT_LIST_DIR}/pvmp3dec/CMakeLists.txt)
   include(${CMAKE_CURRENT_LIST_DIR}/tremolo/CMakeLists.txt)
-  include(${CMAKE_CURRENT_LIST_DIR}/Swappy/src/swappy/CMakeLists.txt)
 
   list(APPEND CC_EXTERNAL_LIBS
     pvmp3dec
     vorbisidec
-    swappy
   )
 
 elseif(WINDOWS)

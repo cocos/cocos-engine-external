@@ -112,9 +112,6 @@ add_library(swappy
                 SHARED
                 ${SWAPPY_C_SRC})
 
-set(SWAPPY_ENABLED FALSE)
-add_definitions(-DSWAPPY_ENABLED)
-
 set(LIBS
         swappy_static
         android
