@@ -16,13 +16,6 @@ set(CC_TINYDIR_SOURCES
   ${CMAKE_CURRENT_LIST_DIR}/tinydir/tinydir.h
 )
 
-set(CC_GAME_ACTIVITY_SOURCES
-  ${CMAKE_CURRENT_LIST_DIR}/gamesdk/GameActivity/game-activity/include/game-activity/GameActivity.cpp
-  ${CMAKE_CURRENT_LIST_DIR}/gamesdk/GameActivity/game-activity/include/game-activity/native_app_glue/android_native_app_glue.c
-  ${CMAKE_CURRENT_LIST_DIR}/gamesdk/GameActivity/game-activity/include/game-text-input/gametextinput.cpp
-)
-
-
 set(CC_UTILS_SOURCES
   ${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTF.c
   ${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTF.h
@@ -56,11 +49,17 @@ include(${CMAKE_CURRENT_LIST_DIR}/boost-source/boost.cmake)
 
 
 if(ANDROID)
-    include(${CMAKE_CURRENT_LIST_DIR}/gamesdk/GameController/CMakeLists.txt)
+    set(CC_GAME_ACTIVITY_SOURCES
+        ${CMAKE_CURRENT_LIST_DIR}/android-gamesdk/GameActivity/game-activity/include/game-activity/GameActivity.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/android-gamesdk/GameActivity/game-activity/include/game-activity/native_app_glue/android_native_app_glue.c
+        ${CMAKE_CURRENT_LIST_DIR}/android-gamesdk/GameActivity/game-activity/include/game-text-input/gametextinput.cpp
+    )
+
+    include(${CMAKE_CURRENT_LIST_DIR}/android-gamesdk/GameController/CMakeLists.txt)
     list(APPEND CC_EXTERNAL_SOURCES
         ${CC_GAME_ACTIVITY_SOURCES}
     )
-    include_directories(${CMAKE_CURRENT_LIST_DIR}/gamesdk/GameActivity/game-activity/include)
+    include_directories(${CMAKE_CURRENT_LIST_DIR}/android-gamesdk/GameActivity/game-activity/include)
 endif()
 
 if(ANDROID OR OHOS)
