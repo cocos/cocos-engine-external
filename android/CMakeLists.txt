@@ -68,7 +68,7 @@ target_include_directories(android_platform PUBLIC
 
 set(se_libs_name)
 
-if(USE_SE_V8)
+if(USE_SE_V8 OR USE_NODE_NAPI)
 
     add_library(v8_monolith STATIC IMPORTED GLOBAL)
     set_target_properties(v8_monolith PROPERTIES

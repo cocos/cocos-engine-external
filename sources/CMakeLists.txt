@@ -80,3 +80,10 @@ if(USE_PHYSICS_PHYSX)
     ${CMAKE_CURRENT_LIST_DIR}/PhysX/PxShared/include
   )
 endif()
+
+if(USE_NODE_NAPI)
+  add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/node_napi node_napi)
+  list(APPEND CC_EXTERNAL_LIBS
+    node_napi
+  )
+endif()

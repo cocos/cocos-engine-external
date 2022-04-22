@@ -82,7 +82,7 @@ set(se_libs_name)
 
 if(CC_EDITOR)
   message(STATUS "CC_EDITOR USE V8 FROM NODEJS")
-elseif(USE_SE_V8)
+elseif(USE_SE_V8 OR USE_NODE_NAPI)
   list(APPEND se_libs_name
   v8_monolith
   uv

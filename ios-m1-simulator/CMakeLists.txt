@@ -83,7 +83,7 @@ set_target_properties(mozglue PROPERTIES
 
 set(se_libs_name)
 
-if(USE_SE_V8)
+if(USE_SE_V8 OR USE_NODE_NAPI)
     list(APPEND se_libs_name
         v8_monolith
         uv
