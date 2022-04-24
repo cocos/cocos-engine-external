@@ -31,7 +31,11 @@ else()
 endif()
 
 if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
-
   add_subdirectory(test)
+endif()
 
+if(APPLE)
+  set_target_properties(boost_container PROPERTIES
+    ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/archives
+  )
 endif()
