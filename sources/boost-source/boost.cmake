@@ -3,7 +3,7 @@
 add_definitions(-DBOOST_ALL_NO_LIB=1)
 
 set(BOOST_LIB_NAMES
-    container
+    # container
 )
 
 foreach(lib ${BOOST_LIB_NAMES})

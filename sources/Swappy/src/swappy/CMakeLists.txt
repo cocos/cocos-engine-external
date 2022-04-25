@@ -1,5 +1,4 @@
 project(swappy C CXX)
-set(CMAKE_CXX_STANDARD 14)
 set(IgnoreOldToolchainWarning "${ANDROID_UNIFIED_HEADERS}")
 
 # set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wthread-safety" )
@@ -40,7 +39,7 @@ endif()
 message( STATUS "Building swappy_static to ${CMAKE_CURRENT_BINARY_DIR}/build" )
 
 # Dex linking requires an extra option for later versions of clang lld
-if (ANDROID_NDK_MAJOR GREATER 22)
+if (ANDROID_NDK_MAJOR GREATER 18)
     if ( ANDROID_NDK_ABI_NAME MATCHES "armeabi-v7a")
         set (LINKER_TARGET_EMULATION_OPTION "-m" "armelf_linux_eabi")
     elseif(ANDROID_NDK_ABI_NAME MATCHES "arm64-v8a")
@@ -52,9 +51,9 @@ if (ANDROID_NDK_MAJOR GREATER 22)
     endif()
 endif()
 
-add_custom_command(OUTPUT classes_dex.o
-        COMMAND cd ${CMAKE_CURRENT_LIST_DIR}/ && ${ANDROID_TOOLCHAIN_ROOT}/bin/ld.lld${ANDROID_TOOLCHAIN_SUFFIX} ${LINKER_TARGET_EMULATION_OPTION} -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/classes_dex.o classes.dex
-        WORKING_DIRECTORY ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/classes_dex.o
+        COMMAND ${ANDROID_TOOLCHAIN_ROOT}/bin/ld.lld${ANDROID_TOOLCHAIN_SUFFIX} ${LINKER_TARGET_EMULATION_OPTION} -r -b binary -o ${CMAKE_CURRENT_BINARY_DIR}/classes_dex.o classes.dex
+        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
         )
 
 set_source_files_properties(SwappyDisplayManager
@@ -99,28 +98,19 @@ if(CC_USE_VULKAN)
 endif()
 
 add_library( swappy_static
-
-        STATIC
-
-        ${SRC_FILE}
-                     ${CMAKE_CURRENT_BINARY_DIR}/classes_dex.o
-        # Add new source files here
+                STATIC
+                ${SRC_FILE}
+                ${CMAKE_CURRENT_BINARY_DIR}/classes_dex.o
+                # Add new source files here
         )
 
 
 set_target_properties( swappy_static PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/build )
 
-
-
-add_library( swappy
-
-        SHARED
-
-        ${SWAPPY_C_SRC})
-
-set(SWAPPY_ENABLED TRUE)
-add_definitions(-DSWAPPY_ENABLED)
+add_library(swappy
+                SHARED
+                ${SWAPPY_C_SRC})
 
 set(LIBS
         swappy_static
