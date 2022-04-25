@@ -1,6 +1,3 @@
-if(QNX)
-set(platform_spec_path ${platform_spec_path}/qnx)
-endif()
 set(linux_lib_dir ${platform_spec_path}/lib)
 MESSAGE(STATUS "${platform_spec_path}")
 add_library(uv STATIC IMPORTED GLOBAL)
@@ -66,9 +63,6 @@ set_target_properties(png PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/libpng
 )
 
-if(QNX)
-#not add ssl
-else()
 add_library(ssl STATIC IMPORTED GLOBAL)
 set_target_properties(ssl PROPERTIES
   IMPORTED_LOCATION ${linux_lib_dir}/openssl/libssl.a
@@ -79,15 +73,6 @@ set_target_properties(crypto PROPERTIES
   IMPORTED_LOCATION ${linux_lib_dir}/openssl/libcrypto.a
 )
 set(optional_libs_name ssl crypto)
-endif()
-
-if(QNX)
-add_library(cairo SHARED IMPORTED GLOBAL)
-set_target_properties(cairo PROPERTIES
-  IMPORTED_LOCATION ${linux_lib_dir}/cairo/libcairo.so
-)
-set(optional_libs_name ${optional_libs_name} cairo)
-endif()
 
 add_library(websockets STATIC IMPORTED GLOBAL)
 set_target_properties(websockets PROPERTIES
@@ -107,16 +92,12 @@ set_target_properties(webp PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/libwebp
 )
 
-if(QNX)
-#not add to qnx
-else()
 add_library(tbb STATIC IMPORTED GLOBAL)
 set_target_properties(tbb PROPERTIES
   IMPORTED_LOCATION ${linux_lib_dir}/tbb/libtbb_static.a
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/tbb
 )
 set(optional_libs_name ${optional_libs_name} tbb)
-endif()
 
 add_library(sdl2 STATIC IMPORTED GLOBAL)
 set_target_properties(sdl2 PROPERTIES
