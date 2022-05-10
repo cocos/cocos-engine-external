@@ -253,14 +253,15 @@ list(APPEND CC_EXTERNAL_LIBS
     OpenAL32
     sqlite3
     websockets
-    SDL2
-    SDL2Main
     tcmalloc
     ${glslang_libs_name}
     ${tbb_libs_name}
     ${PhysXSDK}
 )
 
+if(NOT USE_SERVER_MODE)
+    list(APPEND CC_EXTERNAL_LIBS SDL2 SDL2Main)
+endif()
 
 set(ZLIB zlib)
 if(NOT USE_MODULES)
