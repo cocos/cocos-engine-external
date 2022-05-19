@@ -46,7 +46,7 @@ endif()
 
 # add dependent boost libs
 if(NOT NX)
-include(${CMAKE_CURRENT_LIST_DIR}/boost-source/boost.cmake)
+  include(${CMAKE_CURRENT_LIST_DIR}/boost-source/boost.cmake)
 endif()
 
 if(ANDROID AND CC_ENABLE_SWAPPY)
@@ -78,10 +78,10 @@ elseif(APPLE)
       include(${CMAKE_CURRENT_LIST_DIR}/SocketRocket/CMakeLists.txt)
   endif()
 elseif(NX_WINDOWS)
-include(${CMAKE_CURRENT_LIST_DIR}/pvmp3dec/CMakeLists.txt)
-list(APPEND CC_EXTERNAL_LIBS
-  pvmp3dec
-)
+  include(${CMAKE_CURRENT_LIST_DIR}/pvmp3dec/CMakeLists.txt)
+  list(APPEND CC_EXTERNAL_LIBS
+    pvmp3dec
+  )
 endif()
 
 if((NOT NX_WINDOWS) AND (NOT NX))
