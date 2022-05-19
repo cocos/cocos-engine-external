@@ -21,7 +21,9 @@
 #define __TBB_machine_linux_ia64_H
 
 #include <stdint.h>
-#include <ia64intrin.h>
+#if (CC_PLATFORM != CC_PLATFORM_NX)
+    #include <ia64intrin.h>
+#endif
 
 #define __TBB_WORDSIZE 8
 #define __TBB_ENDIANNESS __TBB_ENDIAN_LITTLE
