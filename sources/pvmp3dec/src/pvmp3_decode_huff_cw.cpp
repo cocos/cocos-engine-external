@@ -139,9 +139,7 @@
 
 uint16 pvmp3_decode_huff_cw_tab0(tmp3Bits *pMainData)
 {
-#if (CC_PLATFORM != CC_PLATFORM_NX_WINDOWS)
     OSCL_UNUSED_ARG(pMainData);
-#endif
     return(0);
 
 }
