@@ -62,16 +62,9 @@ if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/pvmp3dec_tmp_def.h)
     file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/pvmp3dec_tmp_def.h "#pragma once\n#define OSCL_UNUSED_ARG(x) (void)(x)")
 endif()
 
-if(WINDOWS OR NX_WINDOWS)
-target_compile_options(pvmp3dec PRIVATE
-    #-fsanitize=signed-integer-overflow
-    /FI ${CMAKE_CURRENT_BINARY_DIR}/pvmp3dec_tmp_def.h
-   #
-)
-else()
 target_compile_options(pvmp3dec PRIVATE 
     #-fsanitize=signed-integer-overflow
     -include ${CMAKE_CURRENT_BINARY_DIR}/pvmp3dec_tmp_def.h
    #
 )
-endif()
+
