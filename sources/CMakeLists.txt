@@ -45,7 +45,9 @@ if(NOT USE_MODULES)
 endif()
 
 # add dependent boost libs
-include(${CMAKE_CURRENT_LIST_DIR}/boost-source/boost.cmake)
+if(NOT NX)
+  include(${CMAKE_CURRENT_LIST_DIR}/boost-source/boost.cmake)
+endif()
 
 if(ANDROID AND CC_ENABLE_SWAPPY)
 
@@ -72,7 +74,7 @@ if(ANDROID)
     include_directories(${CMAKE_CURRENT_LIST_DIR}/android-gamesdk/GameActivity/game-activity/include)
 endif()
 
-if(ANDROID OR OHOS)
+if(ANDROID OR OHOS OR NX)
 
   include(${CMAKE_CURRENT_LIST_DIR}/pvmp3dec/CMakeLists.txt)
   include(${CMAKE_CURRENT_LIST_DIR}/tremolo/CMakeLists.txt)
@@ -90,11 +92,18 @@ elseif(APPLE)
   if(USE_SOCKET)
       include(${CMAKE_CURRENT_LIST_DIR}/SocketRocket/CMakeLists.txt)
   endif()
+elseif(NX_WINDOWS)
+  include(${CMAKE_CURRENT_LIST_DIR}/pvmp3dec/CMakeLists.txt)
+  list(APPEND CC_EXTERNAL_LIBS
+    pvmp3dec
+  )
 endif()
 
-list(APPEND CC_EXTERNAL_INCLUDES
- ${CMAKE_CURRENT_LIST_DIR}
-)
+if((NOT NX_WINDOWS) AND (NOT NX))
+  list(APPEND CC_EXTERNAL_INCLUDES
+  ${CMAKE_CURRENT_LIST_DIR}
+  )
+endif()
 
 if(USE_PHYSICS_PHYSX)
   list(APPEND CC_EXTERNAL_INCLUDES
