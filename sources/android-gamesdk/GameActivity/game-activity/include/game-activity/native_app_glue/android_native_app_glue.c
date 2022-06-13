@@ -105,6 +105,11 @@ void android_app_pre_exec_cmd(struct android_app* android_app, int8_t cmd) {
 
         case APP_CMD_TERM_WINDOW:
             LOGV("APP_CMD_TERM_WINDOW");
+/**           pthread_cond_broadcast called here maybe increase the occurrence probability of anr.
+ *            It may cause the APP_CMD_TERM_WINDOW processing in android_app_post_exec_cmd to complete
+ *            before __futex_wait_ex(called from pthread_cond_wait)
+ */
+//            pthread_cond_broadcast(&android_app->cond);
             break;
 
         case APP_CMD_RESUME:
@@ -296,6 +301,15 @@ static void android_app_write_cmd(struct android_app* android_app, int8_t cmd) {
     }
 }
 
+static void android_app_timed_wait(struct android_app* android_app) {
+    struct timeval now;
+    struct timespec destTime;
+    gettimeofday(&now, NULL);
+    destTime.tv_sec = now.tv_sec;
+    destTime.tv_nsec = now.tv_usec * 1000 + HANDLE_APP_CMD_WAIT_TIMEOUT_IN_NANOSECOND;
+    pthread_cond_timedwait(&android_app->cond, &android_app->mutex, &destTime);
+}
+
 static void android_app_set_window(struct android_app* android_app,
                                    ANativeWindow* window) {
     LOGV("android_app_set_window called");
@@ -307,13 +321,8 @@ static void android_app_set_window(struct android_app* android_app,
     if (window != NULL) {
         android_app_write_cmd(android_app, APP_CMD_INIT_WINDOW);
     }
-    struct timeval now;
-    struct timespec destTime;
     while (android_app->window != android_app->pendingWindow) {
-        gettimeofday(&now, NULL);
-        destTime.tv_sec = now.tv_sec;
-        destTime.tv_nsec = now.tv_usec * 1000 + HANDLE_APP_CMD_WAIT_TIMEOUT_IN_NANOSECOND;
-        pthread_cond_timedwait(&android_app->cond, &android_app->mutex, &destTime);
+        android_app_timed_wait(android_app);
     }
     pthread_mutex_unlock(&android_app->mutex);
 }
@@ -322,13 +331,8 @@ static void android_app_set_activity_state(struct android_app* android_app,
                                            int8_t cmd) {
     pthread_mutex_lock(&android_app->mutex);
     android_app_write_cmd(android_app, cmd);
-    struct timeval now;
-    struct timespec destTime;
     while (android_app->activityState != cmd) {
-        gettimeofday(&now, NULL);
-        destTime.tv_sec = now.tv_sec;
-        destTime.tv_nsec = now.tv_usec * 1000 + HANDLE_APP_CMD_WAIT_TIMEOUT_IN_NANOSECOND;
-        pthread_cond_timedwait(&android_app->cond, &android_app->mutex, &destTime);
+        android_app_timed_wait(android_app);
     }
     pthread_mutex_unlock(&android_app->mutex);
 }
@@ -336,13 +340,8 @@ static void android_app_set_activity_state(struct android_app* android_app,
 static void android_app_free(struct android_app* android_app) {
     pthread_mutex_lock(&android_app->mutex);
     android_app_write_cmd(android_app, APP_CMD_DESTROY);
-    struct timeval now;
-    struct timespec destTime;
     while (!android_app->destroyed) {
-        gettimeofday(&now, NULL);
-        destTime.tv_sec = now.tv_sec;
-        destTime.tv_nsec = now.tv_usec * 1000 + HANDLE_APP_CMD_WAIT_TIMEOUT_IN_NANOSECOND;
-        pthread_cond_timedwait(&android_app->cond, &android_app->mutex, &destTime);
+        android_app_timed_wait(android_app);
     }
     pthread_mutex_unlock(&android_app->mutex);
 
