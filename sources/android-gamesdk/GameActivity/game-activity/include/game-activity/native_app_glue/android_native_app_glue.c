@@ -105,11 +105,7 @@ void android_app_pre_exec_cmd(struct android_app* android_app, int8_t cmd) {
 
         case APP_CMD_TERM_WINDOW:
             LOGV("APP_CMD_TERM_WINDOW");
-/**           pthread_cond_broadcast called here maybe increase the occurrence probability of anr.
- *            It may cause the APP_CMD_TERM_WINDOW processing in android_app_post_exec_cmd to complete
- *            before __futex_wait_ex(called from pthread_cond_wait)
- */
-//            pthread_cond_broadcast(&android_app->cond);
+            pthread_cond_broadcast(&android_app->cond);
             break;
 
         case APP_CMD_RESUME:
@@ -302,11 +298,12 @@ static void android_app_write_cmd(struct android_app* android_app, int8_t cmd) {
 }
 
 static void android_app_timed_wait(struct android_app* android_app) {
-    struct timeval now;
+    struct timespec now;
     struct timespec destTime;
-    gettimeofday(&now, NULL);
-    destTime.tv_sec = now.tv_sec;
-    destTime.tv_nsec = now.tv_usec * 1000 + HANDLE_APP_CMD_WAIT_TIMEOUT_IN_NANOSECOND;
+    clock_gettime(CLOCK_REALTIME, &now);
+    long tmpVal = now.tv_nsec + HANDLE_APP_CMD_WAIT_TIMEOUT_IN_NANOSECOND;
+    destTime.tv_sec = now.tv_sec + tmpVal / 1000000000;
+    destTime.tv_nsec = tmpVal % 1000000000;
     pthread_cond_timedwait(&android_app->cond, &android_app->mutex, &destTime);
 }
 
