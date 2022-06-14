@@ -38,6 +38,9 @@
 #define LOGV(...) ((void)0)
 #endif
 
+
+const int HANDLE_APP_CMD_WAIT_TIMEOUT_IN_NANOSECOND = 50 * 1000 * 1000;
+
 static void free_saved_state(struct android_app* android_app) {
     pthread_mutex_lock(&android_app->mutex);
     if (android_app->savedState != NULL) {
@@ -294,6 +297,16 @@ static void android_app_write_cmd(struct android_app* android_app, int8_t cmd) {
     }
 }
 
+static void android_app_timed_wait(struct android_app* android_app) {
+    struct timespec now;
+    struct timespec destTime;
+    clock_gettime(CLOCK_REALTIME, &now);
+    long tmpVal = now.tv_nsec + HANDLE_APP_CMD_WAIT_TIMEOUT_IN_NANOSECOND;
+    destTime.tv_sec = now.tv_sec + tmpVal / 1000000000;
+    destTime.tv_nsec = tmpVal % 1000000000;
+    pthread_cond_timedwait(&android_app->cond, &android_app->mutex, &destTime);
+}
+
 static void android_app_set_window(struct android_app* android_app,
                                    ANativeWindow* window) {
     LOGV("android_app_set_window called");
@@ -306,7 +319,7 @@ static void android_app_set_window(struct android_app* android_app,
         android_app_write_cmd(android_app, APP_CMD_INIT_WINDOW);
     }
     while (android_app->window != android_app->pendingWindow) {
-        pthread_cond_wait(&android_app->cond, &android_app->mutex);
+        android_app_timed_wait(android_app);
     }
     pthread_mutex_unlock(&android_app->mutex);
 }
@@ -316,7 +329,7 @@ static void android_app_set_activity_state(struct android_app* android_app,
     pthread_mutex_lock(&android_app->mutex);
     android_app_write_cmd(android_app, cmd);
     while (android_app->activityState != cmd) {
-        pthread_cond_wait(&android_app->cond, &android_app->mutex);
+        android_app_timed_wait(android_app);
     }
     pthread_mutex_unlock(&android_app->mutex);
 }
@@ -325,7 +338,7 @@ static void android_app_free(struct android_app* android_app) {
     pthread_mutex_lock(&android_app->mutex);
     android_app_write_cmd(android_app, APP_CMD_DESTROY);
     while (!android_app->destroyed) {
-        pthread_cond_wait(&android_app->cond, &android_app->mutex);
+        android_app_timed_wait(android_app);
     }
     pthread_mutex_unlock(&android_app->mutex);
 
