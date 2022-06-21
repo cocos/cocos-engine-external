@@ -116,7 +116,4 @@ glslang (Built using https://github.com/YunHsiao/glslang/tree/build)
     android:    11.5.0 (commit: 1978c76)
     mac:        11.5.0 (commit: 1978c76)
     ios:        11.5.0 (commit: 1978c76)
-
-MurmurHash2
-    all-platforms: (no version informantion): https://sites.google.com/site/murmurhash
     
