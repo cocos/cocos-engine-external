@@ -140,7 +140,19 @@ add_library(glslang-default-resource-limits STATIC IMPORTED GLOBAL)
 set_target_properties(glslang-default-resource-limits PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libglslang-default-resource-limits.a
 )
-set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits)
+set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits MachineIndependent GenericCodeGen)
+
+if(OPENHARMONY)
+add_library(MachineIndependent STATIC IMPORTED GLOBAL)
+set_target_properties(MachineIndependent PROPERTIES
+  IMPORTED_LOCATION ${ohos_lib_dir}/libMachineIndependent.a
+)
+add_library(GenericCodeGen STATIC IMPORTED GLOBAL)
+set_target_properties(GenericCodeGen PROPERTIES
+  IMPORTED_LOCATION ${ohos_lib_dir}/libGenericCodeGen.a
+)
+list(APPEND glslang_libs_name MachineIndependent GenericCodeGen)
+endif()
 
 
 ############################# TBB #############################
@@ -167,17 +179,23 @@ list(APPEND CC_EXTERNAL_LIBS
     freetype
     jpeg
     png
-    webp
     sqlite3
-    ${se_libs_name}
     ${glslang_libs_name}
-    OpenALSoft
-    mpg123
+)
+
+if(NOT OPENHARMONY)
+list(APPEND CC_EXTERNAL_LIBS
+webp
+${se_libs_name}
+OpenALSoft
+mpg123
 )
 
 set(ZLIB z)
 if(NOT USE_MODULES)
   list(APPEND CC_EXTERNAL_LIBS ${ZLIB})
+endif()
+
 endif()
 
 
@@ -190,6 +208,9 @@ endif()
 list(APPEND CC_EXTERNAL_INCLUDES
   ${platform_spec_path}/include
   ${platform_spec_path}/include/v8
+  ${platform_spec_path}/include/sqlite
+  ${platform_spec_path}/include/png16
+  ${platform_spec_path}/include/uv
 )
 
 #TODO: remove in future version
