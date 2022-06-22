@@ -47,10 +47,11 @@ freetype2
 
 libz
     mac: 1.2.11
-    win32: 1.2.11
+    win32: --
     ios: --
-    android: 1.2.11
-    win64: 1.2.11
+    android: 1.2.12
+    win64: 1.2.12
+    linux: 1.2.12
 
 spidermonkey
     mac: v52
