@@ -1299,7 +1299,7 @@ extern "C" int GameActivity_register(JNIEnv *env) {
 
 // Register this method so that GameActiviy_register does not need to be called
 // manually.
-extern "C" jlong Java_com_google_androidgamesdk_GameActivity_loadNativeCode(
+extern "C" JNIEXPORT jlong JNICALL Java_com_google_androidgamesdk_GameActivity_loadNativeCode(
     JNIEnv *env, jobject javaGameActivity, jstring path, jstring funcName,
     jstring internalDataDir, jstring obbDir, jstring externalDataDir,
     jobject jAssetMgr, jbyteArray savedState) {
