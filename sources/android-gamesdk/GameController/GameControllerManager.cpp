@@ -36,7 +36,7 @@
 
 extern "C" {
 
-void Java_com_google_android_games_paddleboat_GameControllerManager_onControllerConnected(
+JNIEXPORT void JNICALL Java_com_google_android_games_paddleboat_GameControllerManager_onControllerConnected(
     JNIEnv *env, jobject gcmObject, jintArray deviceInfoArray,
     jfloatArray axisMinArray, jfloatArray axisMaxArray,
     jfloatArray axisFlatArray, jfloatArray axisFuzzArray) {
@@ -97,24 +97,24 @@ void Java_com_google_android_games_paddleboat_GameControllerManager_onController
     }
 }
 
-void Java_com_google_android_games_paddleboat_GameControllerManager_onControllerDisconnected(
+JNIEXPORT void JNICALL Java_com_google_android_games_paddleboat_GameControllerManager_onControllerDisconnected(
     JNIEnv *env, jobject gcmObject, jint deviceId) {
     paddleboat::GameControllerManager::onDisconnection(deviceId);
 }
 
-void Java_com_google_android_games_paddleboat_GameControllerManager_onMotionData(
+JNIEXPORT void JNICALL Java_com_google_android_games_paddleboat_GameControllerManager_onMotionData(
     JNIEnv *env, jobject gcmObject, jint deviceId, jint motionType,
     jlong timestamp, jfloat dataX, jfloat dataY, jfloat dataZ) {
     paddleboat::GameControllerManager::onMotionData(
         deviceId, motionType, timestamp, dataX, dataY, dataZ);
 }
 
-void Java_com_google_android_games_paddleboat_GameControllerManager_onMouseConnected(
+JNIEXPORT void JNICALL Java_com_google_android_games_paddleboat_GameControllerManager_onMouseConnected(
     JNIEnv *env, jobject gcmObject, jint deviceId) {
     paddleboat::GameControllerManager::onMouseConnection(deviceId);
 }
 
-void Java_com_google_android_games_paddleboat_GameControllerManager_onMouseDisconnected(
+JNIEXPORT void JNICALL Java_com_google_android_games_paddleboat_GameControllerManager_onMouseDisconnected(
     JNIEnv *env, jobject gcmObject, jint deviceId) {
     paddleboat::GameControllerManager::onMouseDisconnection(deviceId);
 }
