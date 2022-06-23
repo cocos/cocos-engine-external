@@ -353,8 +353,8 @@ struct NativeCode : public GameActivity {
     std::string obbPathObj;
 
     ANativeWindow *nativeWindow;
-    int32_t lastWindowWidth;
-    int32_t lastWindowHeight;
+    int32_t lastWindowWidth{-1};
+    int32_t lastWindowHeight{-1};
 
     // These are used to wake up the main thread to process work.
     int mainWorkRead;
@@ -743,6 +743,19 @@ static void onSurfaceCreated_native(JNIEnv *env, jobject javaGameActivity,
     }
 }
 
+static void notify_window_resize(NativeCode *code, int32_t width, int32_t height) {
+    if (width != code->lastWindowWidth ||
+        height != code->lastWindowHeight) {
+        bool hasSizeInitialized = code->lastWindowWidth > 0;
+        code->lastWindowWidth = width;
+        code->lastWindowHeight = height;
+        if (hasSizeInitialized && code->callbacks.onNativeWindowResized != NULL) {
+            code->callbacks.onNativeWindowResized(
+                    code, code->nativeWindow, width, height);
+        }
+    }
+}
+
 static void onSurfaceChanged_native(JNIEnv *env, jobject javaGameActivity,
                                     jlong handle, jobject surface, jint format,
                                     jint width, jint height) {
@@ -766,30 +779,13 @@ static void onSurfaceChanged_native(JNIEnv *env, jobject javaGameActivity,
                     code->callbacks.onNativeWindowCreated(code,
                                                           code->nativeWindow);
                 }
-
-                if (width != code->lastWindowWidth ||
-                    height != code->lastWindowHeight) {
-                    code->lastWindowWidth = width;
-                    code->lastWindowHeight = height;
-                    if (code->callbacks.onNativeWindowResized != NULL) {
-                        code->callbacks.onNativeWindowResized(
-                                code, code->nativeWindow, width, height);
-                    }
-                }
+                notify_window_resize(code, width, height);
             }
         } else {
             // Maybe it was resized?
             int32_t newWidth = ANativeWindow_getWidth(code->nativeWindow);
             int32_t newHeight = ANativeWindow_getHeight(code->nativeWindow);
-            if (newWidth != code->lastWindowWidth ||
-                newHeight != code->lastWindowHeight) {
-                code->lastWindowWidth = newWidth;
-                code->lastWindowHeight = newHeight;
-                if (code->callbacks.onNativeWindowResized != NULL) {
-                    code->callbacks.onNativeWindowResized(
-                        code, code->nativeWindow, newWidth, newHeight);
-                }
-            }
+            notify_window_resize(code, newWidth, newHeight);
         }
         // Release the window we acquired earlier.
         if (oldNativeWindow != NULL) {
