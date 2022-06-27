@@ -46,7 +46,7 @@ freetype2
     win64: 2.10.0
 
 libz
-    mac: 1.2.11
+    mac: 1.2.12
     win32: --
     ios: --
     android: 1.2.12
