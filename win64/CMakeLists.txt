@@ -16,12 +16,14 @@ set_target_properties(dbgeng PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/dbgeng.dll
 )
 
+if (USE_DEBUG_RENDERER)
 add_library(freetype STATIC IMPORTED GLOBAL)
 
 set_target_properties(freetype PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/freetype.lib
   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/freetype
 )
+endif()
 
 add_library(glew32 SHARED IMPORTED GLOBAL)
 
@@ -235,8 +237,13 @@ else()
   set(PhysXSDK)
 endif()
 
+if (USE_DEBUG_RENDERER)
 list(APPEND CC_EXTERNAL_LIBS
     freetype
+)
+endif()
+
+list(APPEND CC_EXTERNAL_LIBS
     glew32
     iconv
     crypto

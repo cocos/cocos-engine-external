@@ -105,11 +105,13 @@ set_target_properties(sdl2 PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/sdl2
 )
 
+if (USE_DEBUG_RENDERER)
 add_library(freetype STATIC IMPORTED GLOBAL)
 set_target_properties(freetype PROPERTIES
   IMPORTED_LOCATION ${linux_lib_dir}/freetype/libfreetype.a
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/freetype
 )
+endif()
 
 #glslang
 add_library(libGenericCodeGen STATIC IMPORTED GLOBAL)
@@ -150,6 +152,12 @@ list(APPEND CC_EXTERNAL_INCLUDES
   ${platform_spec_path}/include/uv
 )
 
+if (USE_DEBUG_RENDERER)
+list(APPEND CC_EXTERNAL_LIBS
+    freetype
+)
+endif()
+
 list(APPEND CC_EXTERNAL_LIBS
     uv
     vorbisfile
@@ -165,7 +173,6 @@ list(APPEND CC_EXTERNAL_LIBS
     websockets
     webp
     curl
-    freetype
     ${optional_libs_name}
     ${glslang_libs_name}
 )

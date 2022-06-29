@@ -4,11 +4,13 @@ set_target_properties(crypto PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libcrypto.a
 )
 
+if (USE_DEBUG_RENDERER)
 add_library(freetype STATIC IMPORTED GLOBAL)
 set_target_properties(freetype PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libfreetype.a
   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/freetype
 )
+endif()
 
 add_library(jpeg STATIC IMPORTED GLOBAL)
 set_target_properties(jpeg PROPERTIES
@@ -190,8 +192,13 @@ list(APPEND CC_EXTERNAL_INCLUDES
     ${CMAKE_CURRENT_LIST_DIR}/include
 )
 
+if (USE_DEBUG_RENDERER)
 list(APPEND CC_EXTERNAL_LIBS
     freetype
+)
+endif()
+
+list(APPEND CC_EXTERNAL_LIBS
     jpeg
     png
     webp

@@ -6,10 +6,12 @@ set_target_properties(crypto PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libcrypto.a
 )
 
+if (USE_DEBUG_RENDERER)
 add_library(freetype STATIC IMPORTED GLOBAL)
 set_target_properties(freetype PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libfreetype.a
 )
+endif()
 
 add_library(jpeg STATIC IMPORTED GLOBAL)
 set_target_properties(jpeg PROPERTIES
@@ -163,8 +165,13 @@ if(USE_JOB_SYSTEM_TBB)
   )
 endif()
 
+if (USE_DEBUG_RENDERER)
 list(APPEND CC_EXTERNAL_LIBS
     freetype
+)
+endif()
+
+list(APPEND CC_EXTERNAL_LIBS
     jpeg
     png
     webp
