@@ -4,11 +4,13 @@ set_target_properties(crypto PROPERTIES
   IMPORTED_LOCATION ${platform_spec_path}/libcrypto.a
 )
 
+if (USE_DEBUG_RENDERER)
 add_library(freetype STATIC IMPORTED GLOBAL)
 set_target_properties(freetype PROPERTIES
   IMPORTED_LOCATION ${platform_spec_path}/libfreetype.a
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/freetype
 )
+endif()
 
 add_library(jpeg STATIC IMPORTED GLOBAL)
 set_target_properties(jpeg PROPERTIES
@@ -134,8 +136,13 @@ else()
   set(PhysXSDK)
 endif()
 
+if (USE_DEBUG_RENDERER)
 list(APPEND CC_EXTERNAL_LIBS
     freetype
+)
+endif()
+
+list(APPEND CC_EXTERNAL_LIBS
     jpeg
     png
     uv

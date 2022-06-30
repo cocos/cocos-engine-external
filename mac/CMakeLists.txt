@@ -9,11 +9,13 @@ set_target_properties(curl PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libcurl.a
 )
 
+if (USE_DEBUG_RENDERER)
 add_library(freetype STATIC IMPORTED GLOBAL)
 set_target_properties(freetype PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libfreetype.a
   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/freetype
 )
+endif()
 
 add_library(glfw3 STATIC IMPORTED GLOBAL)
 set_target_properties(glfw3 PROPERTIES
@@ -185,8 +187,13 @@ else()
   set(PhysXSDK)
 endif()
 
+if (USE_DEBUG_RENDERER)
 list(APPEND CC_EXTERNAL_LIBS
     freetype
+)
+endif()
+
+list(APPEND CC_EXTERNAL_LIBS
     jpeg
     png
     webp
