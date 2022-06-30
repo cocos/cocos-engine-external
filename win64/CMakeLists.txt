@@ -30,16 +30,6 @@ set_target_properties(glew32 PROPERTIES
   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/glew32.lib
 )
 
-add_library(iconv SHARED IMPORTED GLOBAL)
-
-set_target_properties(iconv PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/iconv-2.dll
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/iconv.lib
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/charset-1.dll
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/charset.lib
-)
-
-
 add_library(crypto STATIC IMPORTED GLOBAL)
 
 set_target_properties(crypto PROPERTIES
@@ -238,7 +228,6 @@ endif()
 list(APPEND CC_EXTERNAL_LIBS
     freetype
     glew32
-    iconv
     crypto
     curl
     jpeg
