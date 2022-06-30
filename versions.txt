@@ -107,9 +107,6 @@ PVRVFrame
 spirv_cross
     mac: 2021.1.15
     ios: 2021.1.15
-iconv
-    win32: 0x0109
-    win64: 0x0110
 
 glslang (Built using https://github.com/YunHsiao/glslang/tree/build)
     win32:      11.5.0 (commit: 1978c76)
