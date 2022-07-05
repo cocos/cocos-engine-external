@@ -263,6 +263,7 @@ enum TBuiltInVariable {
     EbvObjectRayDirection,
     EbvRayTmin,
     EbvRayTmax,
+    EbvCullMask,
     EbvHitT,
     EbvHitKind,
     EbvObjectToWorld,
@@ -270,9 +271,12 @@ enum TBuiltInVariable {
     EbvWorldToObject,
     EbvWorldToObject3x4,
     EbvIncomingRayFlags,
+    EbvCurrentRayTimeNV,
     // barycentrics
     EbvBaryCoordNV,
     EbvBaryCoordNoPerspNV,
+    EbvBaryCoordEXT,
+    EbvBaryCoordNoPerspEXT,
     // mesh shaders
     EbvTaskCountNV,
     EbvPrimitiveCountNV,
@@ -475,9 +479,12 @@ __inline const char* GetBuiltInVariableString(TBuiltInVariable v)
     case EbvIncomingRayFlags:           return "IncomingRayFlagsNV";
     case EbvObjectToWorld:              return "ObjectToWorldNV";
     case EbvWorldToObject:              return "WorldToObjectNV";
+    case EbvCurrentRayTimeNV:           return "CurrentRayTimeNV";
 
-    case EbvBaryCoordNV:                return "BaryCoordNV";
-    case EbvBaryCoordNoPerspNV:         return "BaryCoordNoPerspNV";
+    case EbvBaryCoordEXT:
+    case EbvBaryCoordNV:                return "BaryCoordKHR";
+    case EbvBaryCoordNoPerspEXT:
+    case EbvBaryCoordNoPerspNV:         return "BaryCoordNoPerspKHR";
 
     case EbvTaskCountNV:                return "TaskCountNV";
     case EbvPrimitiveCountNV:           return "PrimitiveCountNV";
