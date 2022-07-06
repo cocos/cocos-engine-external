@@ -164,21 +164,27 @@ if(CC_EDITOR)
 elseif(USE_SE_V8)
     add_library(v8 SHARED IMPORTED GLOBAL)
     set_target_properties(v8 PROPERTIES
-      IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/v8.dll
-      IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/v8.dll.lib
+      IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8.dll
+      IMPORTED_IMPLIB_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8.dll.lib
+      IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8.dll
+      IMPORTED_IMPLIB_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8.dll.lib
       INTERFACE_COMPILE_DEFINITIONS V8_COMPRESS_POINTERS
     )
 
     add_library(v8_libbase SHARED IMPORTED GLOBAL)
     set_target_properties(v8_libbase PROPERTIES
-      IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/v8_libbase.dll
-      IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/v8_libbase.dll.lib
+      IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8_libbase.dll
+      IMPORTED_IMPLIB_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8_libbase.dll.lib
+      IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8_libbase.dll
+      IMPORTED_IMPLIB_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8_libbase.dll.lib
     )
 
     add_library(v8_libplatform SHARED IMPORTED GLOBAL)
     set_target_properties(v8_libplatform PROPERTIES
-      IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/v8_libplatform.dll
-      IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/v8_libplatform.dll.lib
+      IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8_libplatform.dll
+      IMPORTED_IMPLIB_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8_libplatform.dll.lib
+      IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8_libplatform.dll
+      IMPORTED_IMPLIB_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8_libplatform.dll.lib
     )
 
     target_link_libraries(v8 INTERFACE v8_libbase v8_libplatform)
