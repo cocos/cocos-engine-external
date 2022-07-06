@@ -111,7 +111,7 @@ spirv_cross
 glslang (Built using https://github.com/YunHsiao/glslang/tree/build)
     win32:      11.5.0 (commit: 1978c76)
     win64:      11.5.0 (commit: 1978c76)
-    android:    11.5.0 (commit: 1978c76)
-    mac:        11.5.0 (commit: 1978c76)
+    android:    11.10.0 (commit: official 11.10.0)
+    mac:        11.10.0 (commit: official 11.10.0)
     ios:        11.5.0 (commit: 1978c76)
     
