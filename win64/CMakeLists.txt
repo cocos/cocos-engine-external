@@ -164,8 +164,8 @@ if(CC_EDITOR)
 elseif(USE_SE_V8)
     add_library(v8 SHARED IMPORTED GLOBAL)
     set_target_properties(v8 PROPERTIES
-      IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8.dll
-      IMPORTED_IMPLIB_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8.dll.lib
+      IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8.dll
+      IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8.dll.lib
       IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8.dll
       IMPORTED_IMPLIB_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8.dll.lib
       INTERFACE_COMPILE_DEFINITIONS V8_COMPRESS_POINTERS
@@ -173,16 +173,16 @@ elseif(USE_SE_V8)
 
     add_library(v8_libbase SHARED IMPORTED GLOBAL)
     set_target_properties(v8_libbase PROPERTIES
-      IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8_libbase.dll
-      IMPORTED_IMPLIB_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8_libbase.dll.lib
+      IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8_libbase.dll
+      IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8_libbase.dll.lib
       IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8_libbase.dll
       IMPORTED_IMPLIB_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8_libbase.dll.lib
     )
 
     add_library(v8_libplatform SHARED IMPORTED GLOBAL)
     set_target_properties(v8_libplatform PROPERTIES
-      IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8_libplatform.dll
-      IMPORTED_IMPLIB_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8_libplatform.dll.lib
+      IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8_libplatform.dll
+      IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8_libplatform.dll.lib
       IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8_libplatform.dll
       IMPORTED_IMPLIB_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8_libplatform.dll.lib
     )
@@ -205,7 +205,7 @@ foreach(gl IN LISTS glslang_libs_name)
   add_library(${gl} STATIC IMPORTED GLOBAL)
   set_target_properties(${gl} PROPERTIES
     IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/${gl}d.lib
-    IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/${gl}.lib
+    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/glslang/${gl}.lib
   )
 endforeach()
 
@@ -226,7 +226,7 @@ if(USE_PHYSICS_PHYSX)
     add_library(${PX} STATIC IMPORTED GLOBAL)
     set_target_properties(${PX} PROPERTIES
       IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/PhysX/debug/${PX}_static_64.lib
-      IMPORTED_LOCATION_RELEASE ${CMAKE_CURRENT_LIST_DIR}/libs/PhysX/release/${PX}_static_64.lib
+      IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/PhysX/release/${PX}_static_64.lib
     )
   endforeach()
 else()
