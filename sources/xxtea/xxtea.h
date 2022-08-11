@@ -22,10 +22,14 @@
 #include <stddef.h> /* for size_t & NULL declarations */
 
 #if defined(_WIN32) && defined(_WINDOWS)
-#if defined(_USRDLL)
-#define XXTEA_DLL     __declspec(dllexport)
-#else         /* use a DLL library */
-#define XXTEA_DLL     __declspec(dllimport)
+#if CC_STATIC
+    #define XXTEA_DLL
+#else
+    #if defined(_USRDLL)
+    #define XXTEA_DLL     __declspec(dllexport)
+    #else         /* use a DLL library */
+    #define XXTEA_DLL     __declspec(dllimport)
+    #endif
 #endif
 #else
 #define XXTEA_DLL

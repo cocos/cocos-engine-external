@@ -1,38 +1,4 @@
-@ Tremolo library
-@-----------------------------------------------------------------------
-@ Copyright (C) 2002-2009, Xiph.org Foundation
-@ Copyright (C) 2010, Robin Watts for Pinknoise Productions Ltd
-@ All rights reserved.
-
-@ Redistribution and use in source and binary forms, with or without
-@ modification, are permitted provided that the following conditions
-@ are met:
-
-@     * Redistributions of source code must retain the above copyright
-@ notice, this list of conditions and the following disclaimer.
-@     * Redistributions in binary form must reproduce the above
-@ copyright notice, this list of conditions and the following disclaimer
-@ in the documentation and/or other materials provided with the
-@ distribution.
-@     * Neither the names of the Xiph.org Foundation nor Pinknoise
-@ Productions Ltd nor the names of its contributors may be used to
-@ endorse or promote products derived from this software without
-@ specific prior written permission.
-@
-@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-@ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-@ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-@ A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-@ OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-@ SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-@ LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-@ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-@ ----------------------------------------------------------------------
-
-    .text
+	.text
 
 	@ full accuracy version
 
@@ -42,11 +8,6 @@
 	.global mdct_unroll_part2
 	.global mdct_unroll_part3
 	.global mdct_unroll_postlap
-
-	.extern	sincos_lookup0
-	.extern	sincos_lookup1
-	.hidden	sincos_lookup0
-	.hidden	sincos_lookup1
 
 mdct_unroll_prelap:
 	@ r0 = out
@@ -312,9 +273,7 @@ find_shift_loop:
 	ADD	r4, r1, r0, LSL #1	@ r4 = aX = in+(n>>1)
 	ADD	r14,r1, r0		@ r14= in+(n>>2)
 	SUB	r4, r4, #3*4		@ r4 = aX = in+n2-3
-	ADRL	r7, .Lsincos_lookup
-	LDR	r5, [r7]		@ r5 = T=sincos_lookup0
-	ADD	r5, r7
+	LDR	r5, =sincos_lookup0	@ r5 = T=sincos_lookup0
 
 presymmetry_loop1:
 	LDR	r7, [r4,#8]		@ r6 = s2 = aX[2]
@@ -322,7 +281,7 @@ presymmetry_loop1:
 	LDR	r6, [r4]		@ r6 = s0 = aX[0]
 	LDR	r10,[r5],r2,LSL #2	@ r10= T[0]   T += step
 
-	@ XPROD31(s0, s2, T[0], T[1], 0xaX[0], &ax[2])
+	@ XPROD31(s0, s2, T[0], T[1], &aX[0], &ax[2])
 	SMULL	r8, r9, r7, r11		@ (r8, r9)   = s2*T[1]
 	@ stall
 	@ stall ?
@@ -346,7 +305,7 @@ presymmetry_loop2:
 	LDR	r7,[r4,#8]		@ r6 = s2 = aX[2]
 	LDR	r11,[r5],-r2,LSL #2	@ r11= T[0]   T -= step
 
-	@ XPROD31(s0, s2, T[1], T[0], 0xaX[0], &ax[2])
+	@ XPROD31(s0, s2, T[1], T[0], &aX[0], &ax[2])
 	SMULL	r8, r9, r6, r10		@ (r8, r9)   = s0*T[1]
 	@ stall
 	@ stall ?
@@ -369,9 +328,7 @@ presymmetry_loop2:
 	@ r2 = step
 	@ r3 = shift
 	STMFD	r13!,{r3}
-	ADRL	r4, .Lsincos_lookup
-	LDR	r5, [r4]		@ r5 = T=sincos_lookup0
-	ADD	r5, r4
+	LDR	r5, =sincos_lookup0	@ r5 = T=sincos_lookup0
 	ADD	r4, r1, r0, LSL #1	@ r4 = aX = in+(n>>1)
 	SUB	r4, r4, #4*4		@ r4 = aX = in+(n>>1)-4
 	LDR	r11,[r5,#4]		@ r11= T[1]
@@ -381,7 +338,7 @@ presymmetry_loop3:
 	LDR	r9,[r1,#8-16]		@ r9 = ro2 = bX[2]
 	LDR	r6,[r4]			@ r6 = ri0 = aX[0]
 
-	@ XNPROD31( ro2, ro0, T[1], T[0], 0xaX[0], &aX[2] )
+	@ XNPROD31( ro2, ro0, T[1], T[0], &aX[0], &aX[2] )
 	@ aX[0] = (ro2*T[1] - ro0*T[0])>>31 aX[2] = (ro0*T[1] + ro2*T[0])>>31
 	SMULL	r14,r12,r8, r11		@ (r14,r12)  = ro0*T[1]
 	RSB	r8,r8,#0		@ r8 = -ro0
@@ -398,7 +355,7 @@ presymmetry_loop3:
 	MOV	r3, r3, LSL #1
 	STR	r3, [r4],#-16
 
-	@ XNPROD31( ri2, ri0, T[0], T[1], 0xbX[0], &bX[2] )
+	@ XNPROD31( ri2, ri0, T[0], T[1], &bX[0], &bX[2] )
 	@ bX[0] = (ri2*T[0] - ri0*T[1])>>31 bX[2] = (ri0*T[0] + ri2*T[1])>>31
 	SMULL	r14,r12,r6, r10		@ (r14,r12)  = ri0*T[0]
 	RSB	r6,r6,#0		@ r6 = -ri0
@@ -428,10 +385,8 @@ presymmetry_loop3:
 	@ r2 = i
 	@ r3 = shift
 	STMFD	r13!,{r0-r1}
-	ADRL	r4, .Lsincos_lookup
-	LDR	r5, [r4]
-	ADD	r5, r4
 	RSBS	r4,r3,#6		@ r4 = stages = 7-shift then --stages
+	LDR	r5,=sincos_lookup0
 	BLE	no_generics
 	MOV	r14,#4			@ r14= 4               (i=0)
 	MOV	r6, r14,LSL r3		@ r6 = (4<<i)<<shift
@@ -993,7 +948,7 @@ mdct_bufferflies_loop3:
 	LDMFD	r13,{r0-r3}
 
 mdct_bitreverseARM:
-	@ r0 = points = n
+	@ r0 = points
 	@ r1 = in
 	@ r2 = step
 	@ r3 = shift
@@ -1030,10 +985,8 @@ brev_lp:
 	@ r3 = shift
 
 	CMP	r2, #4			@ r5 = T = (step>=4) ?
-	ADR	r7, .Lsincos_lookup	@          sincos_lookup0 +
-	ADDLT	r7, #4			@          sincos_lookup1
-	LDR	r5, [r7]
-	ADD	r5, r7
+	LDRGE	r5, =sincos_lookup0	@          sincos_lookup0 +
+	LDRLT	r5, =sincos_lookup1	@          sincos_lookup0 +
 	ADD	r7, r1, r0, LSL #1	@ r7 = w1 = x + (n>>1)
 	ADDGE	r5, r5, r2, LSL #1	@		            (step>>1)
 	ADD	r8, r5, #1024*4		@ r8 = Ttop
@@ -1124,10 +1077,8 @@ step7_loop2:
 
 	@ step > 1 (default case)
 	CMP	r2, #4			@ r5 = T = (step>=4) ?
-	ADR	r7, .Lsincos_lookup	@          sincos_lookup0 +
-	ADDLT	r7, #4			@          sincos_lookup1
-	LDR	r5, [r7]
-	ADD	r5, r7
+	LDRGE	r5, =sincos_lookup0	@          sincos_lookup0 +
+	LDRLT	r5, =sincos_lookup1	@          sincos_lookup1
 	ADD	r7, r1, r0, LSL #1	@ r7 = iX = x + (n>>1)
 	ADDGE	r5, r5, r2, LSL #1	@		            (step>>1)
 mdct_step8_default:
@@ -1226,9 +1177,3 @@ bitrev:
 	.byte	47
 	.byte	31
 	.byte	63
-
-.Lsincos_lookup:
-	.word	sincos_lookup0-.Lsincos_lookup
-	.word	sincos_lookup1-(.Lsincos_lookup+4)
-
-	@ END

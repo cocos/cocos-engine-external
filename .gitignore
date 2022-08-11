@@ -1,0 +1,4 @@
+# Ignore thumbnails created by windows
+Thumbs.db
+.DS_Store
+config.json

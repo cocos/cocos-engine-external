@@ -1,38 +1,4 @@
-@ Tremolo library
-@-----------------------------------------------------------------------
-@ Copyright (C) 2002-2009, Xiph.org Foundation
-@ Copyright (C) 2010, Robin Watts for Pinknoise Productions Ltd
-@ All rights reserved.
-
-@ Redistribution and use in source and binary forms, with or without
-@ modification, are permitted provided that the following conditions
-@ are met:
-
-@     * Redistributions of source code must retain the above copyright
-@ notice, this list of conditions and the following disclaimer.
-@     * Redistributions in binary form must reproduce the above
-@ copyright notice, this list of conditions and the following disclaimer
-@ in the documentation and/or other materials provided with the
-@ distribution.
-@     * Neither the names of the Xiph.org Foundation nor Pinknoise
-@ Productions Ltd nor the names of its contributors may be used to
-@ endorse or promote products derived from this software without
-@ specific prior written permission.
-@
-@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-@ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-@ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-@ A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-@ OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-@ SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-@ LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-@ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-@ ----------------------------------------------------------------------
-
-    .text
+	.text
 
 	@ low accuracy version
 
@@ -42,9 +8,6 @@
 	.global mdct_unroll_part2
 	.global mdct_unroll_part3
 	.global mdct_unroll_postlap
-
-	.extern	sincos_lookup0
-	.extern	sincos_lookup1
 
 mdct_unroll_prelap:
 	@ r0 = out
@@ -323,7 +286,7 @@ presymmetry_loop1:
 	MOV	r6, r6, ASR #8
 	MOV	r7, r7, ASR #8
 
-	@ XPROD31(s0, s2, T[0], T[1], 0xaX[0], &ax[2])
+	@ XPROD31(s0, s2, T[0], T[1], &aX[0], &ax[2])
 	MUL	r9, r6, r10		@ r9   = s0*T[0]
 	RSB	r6, r6, #0
 	MLA	r9, r7, r11,r9		@ r9  += s2*T[1]
@@ -343,7 +306,7 @@ presymmetry_loop2:
 	MOV	r6, r6, ASR #8
 	MOV	r7, r7, ASR #8
 
-	@ XPROD31(s0, s2, T[1], T[0], 0xaX[0], &ax[2])
+	@ XPROD31(s0, s2, T[1], T[0], &aX[0], &ax[2])
 	MUL	r9, r6, r10		@ r9   = s0*T[1]
 	RSB	r6, r6, #0
 	MLA	r9, r7, r11,r9		@ r9  += s2*T[0]
@@ -374,7 +337,7 @@ presymmetry_loop3:
 	MOV	r9, r9, ASR #8
 	MOV	r6, r6, ASR #8
 
-	@ XNPROD31( ro2, ro0, T[1], T[0], 0xaX[0], &aX[2] )
+	@ XNPROD31( ro2, ro0, T[1], T[0], &aX[0], &aX[2] )
 	@ aX[0] = (ro2*T[1] - ro0*T[0])>>31 aX[2] = (ro0*T[1] + ro2*T[0])>>31
 	MUL	r12,r8, r11		@ r12  = ro0*T[1]
 	MOV	r7, r7, ASR #8
@@ -387,7 +350,7 @@ presymmetry_loop3:
 	STR	r12,[r4,#16+8]
 	STR	r3, [r4,#16]
 
-	@ XNPROD31( ri2, ri0, T[0], T[1], 0xbX[0], &bX[2] )
+	@ XNPROD31( ri2, ri0, T[0], T[1], &bX[0], &bX[2] )
 	@ bX[0] = (ri2*T[0] - ri0*T[1])>>31 bX[2] = (ri0*T[0] + ri2*T[1])>>31
 	MUL	r12,r6, r10		@ r12  = ri0*T[0]
 	RSB	r6, r6, #0		@ r6 = -ri0
@@ -987,7 +950,6 @@ mdct_bitreverseARM:
 	MOV	r4, #0			@ r4 = bit = 0
 	ADD	r5, r1, r0, LSL #1	@ r5 = w = x + (n>>1)
 	ADR	r6, bitrev
-	SUB	r3, r3, #2		@ r3 = shift -= 2
 	SUB	r5, r5, #8
 brev_lp:
 	LDRB	r7, [r6, r4, LSR #6]
@@ -996,7 +958,8 @@ brev_lp:
 	ADD	r4, r4, #1		@ bit++
 	@ stall XScale
 	ORR	r7, r7, r8, LSL #6	@ r7 = bitrev[bit]
-	ADD	r9, r1, r7, LSR r3	@ r9 = xx = x + (b>>shift)
+	MOV	r7, r7, LSR r3
+	ADD	r9, r1, r7, LSL #2	@ r9 = xx = x + (b>>shift)
 	CMP	r5, r9			@ if (w > xx)
 	LDR	r10,[r5],#-8		@   r10 = w[0]		w -= 2
 	LDRGT	r11,[r5,#12]		@   r11 = w[1]
@@ -1013,7 +976,7 @@ brev_lp:
 	@ r0 = points
 	@ r1 = in
 	@ r2 = step
-	@ r3 = shift-2
+	@ r3 = shift
 
 	CMP	r2, #4			@ r5 = T = (step>=4) ?
 	LDRGE	r5, =sincos_lookup0	@          sincos_lookup0 +
@@ -1202,5 +1165,3 @@ bitrev:
 	.byte	47
 	.byte	31
 	.byte	63
-
-	@ END

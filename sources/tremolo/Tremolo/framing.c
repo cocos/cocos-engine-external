@@ -1,35 +1,15 @@
-/************************************************************************
- * Copyright (C) 2002-2009, Xiph.org Foundation
- * Copyright (C) 2010, Robin Watts for Pinknoise Productions Ltd
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *     * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above
- * copyright notice, this list of conditions and the following disclaimer
- * in the documentation and/or other materials provided with the
- * distribution.
- *     * Neither the names of the Xiph.org Foundation nor Pinknoise
- * Productions Ltd nor the names of its contributors may be used to
- * endorse or promote products derived from this software without
- * specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- ************************************************************************
+/********************************************************************
+ *                                                                  *
+ * THIS FILE IS PART OF THE OggVorbis 'TREMOR' CODEC SOURCE CODE.   *
+ *                                                                  *
+ * USE, DISTRIBUTION AND REPRODUCTION OF THIS LIBRARY SOURCE IS     *
+ * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
+ * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
+ *                                                                  *
+ * THE OggVorbis 'TREMOR' SOURCE CODE IS (C) COPYRIGHT 1994-2003    *
+ * BY THE Xiph.Org FOUNDATION http://www.xiph.org/                  *
+ *                                                                  *
+ ********************************************************************
 
  function: decode Ogg streams back into raw packets
 
@@ -37,7 +17,7 @@
  Ross Williams (ross@guest.adelaide.edu.au).  See docs/framing.html
  for details.
 
- ************************************************************************/
+ ********************************************************************/
 
 #include <stdlib.h>
 #include <string.h>
@@ -577,25 +557,11 @@ ogg_uint32_t crc_lookup[256]={
   0xafb010b1,0xab710d06,0xa6322bdf,0xa2f33668,
   0xbcb4666d,0xb8757bda,0xb5365d03,0xb1f740b4};
 
-void ogg_sync_init(ogg_sync_state *oy){
-  memset(oy,0,sizeof(*oy));
-  oy->bufferpool=ogg_buffer_create();
-}
-
 ogg_sync_state *ogg_sync_create(void){
   ogg_sync_state *oy=_ogg_calloc(1,sizeof(*oy));
   memset(oy,0,sizeof(*oy));
   oy->bufferpool=ogg_buffer_create();
   return oy;
-}
-
-int ogg_sync_clear(ogg_sync_state *oy){
-  if(oy){
-    ogg_sync_reset(oy);
-    ogg_buffer_destroy(oy->bufferpool);
-    memset(oy,0,sizeof(*oy));
-  }
-  return OGG_SUCCESS;
 }
 
 int ogg_sync_destroy(ogg_sync_state *oy){
@@ -661,9 +627,7 @@ int ogg_sync_wrote(ogg_sync_state *oy, long bytes){
   return OGG_SUCCESS;
 }
 
-#ifndef ONLY_C
-ogg_uint32_t _checksum(ogg_reference *or, int bytes);
-#else
+#ifdef ONLY_C
 static ogg_uint32_t _checksum(ogg_reference *or, int bytes){
   ogg_uint32_t crc_reg=0;
   int j,post;
@@ -849,26 +813,11 @@ int ogg_sync_reset(ogg_sync_state *oy){
   return OGG_SUCCESS;
 }
 
-void ogg_stream_init(ogg_stream_state *os, int serialno){
-  memset(os, 0, sizeof(*os));
-  os->serialno=serialno;
-  os->pageno=-1;
-}
-
 ogg_stream_state *ogg_stream_create(int serialno){
   ogg_stream_state *os=_ogg_calloc(1,sizeof(*os));
   os->serialno=serialno;
   os->pageno=-1;
   return os;
-}
-
-int ogg_stream_clear(ogg_stream_state *os){
-  if(os){
-    ogg_buffer_release(os->header_tail);
-    ogg_buffer_release(os->body_tail);
-    memset(os,0,sizeof(*os));
-  }
-  return OGG_SUCCESS;
 }
 
 int ogg_stream_destroy(ogg_stream_state *os){
@@ -999,11 +948,11 @@ int ogg_stream_pagein(ogg_stream_state *os, ogg_page *og){
 
   /* check the serial number */
   if(serialno!=os->serialno){
-    //ogg_page_release(og);
+    ogg_page_release(og);
     return OGG_ESERIAL;
   }
   if(version>0){
-    //ogg_page_release(og);
+    ogg_page_release(og);
     return OGG_EVERSION;
   }
 

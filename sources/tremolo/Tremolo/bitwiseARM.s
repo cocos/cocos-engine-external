@@ -1,38 +1,4 @@
-@ Tremolo library
-@-----------------------------------------------------------------------
-@ Copyright (C) 2002-2009, Xiph.org Foundation
-@ Copyright (C) 2010, Robin Watts for Pinknoise Productions Ltd
-@ All rights reserved.
-
-@ Redistribution and use in source and binary forms, with or without
-@ modification, are permitted provided that the following conditions
-@ are met:
-
-@     * Redistributions of source code must retain the above copyright
-@ notice, this list of conditions and the following disclaimer.
-@     * Redistributions in binary form must reproduce the above
-@ copyright notice, this list of conditions and the following disclaimer
-@ in the documentation and/or other materials provided with the
-@ distribution.
-@     * Neither the names of the Xiph.org Foundation nor Pinknoise
-@ Productions Ltd nor the names of its contributors may be used to
-@ endorse or promote products derived from this software without
-@ specific prior written permission.
-@
-@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-@ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-@ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-@ A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-@ OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-@ SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-@ LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-@ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-@ ----------------------------------------------------------------------
-
-    .text
+	.text
 
 	.global	oggpack_look
 	.global	oggpack_adv
@@ -125,8 +91,7 @@ look_really_slow:
 	LDMFD	r13!,{r5,r6,r10,r11,PC}
 
 look_out_of_data:
-	@MVN	r0,#0			; return -1
-	MOV	r0,#0
+	MVN	r0,#0			@ return -1
 	LDMFD	r13!,{r5,r6,r10,r11,PC}
 
 look_overrun:
@@ -169,7 +134,7 @@ oggpack_adv:
 	ADDLE	r12,r12,#32
 	ADDLE	r3,r3,#4
 	STMIA	r0,{r2,r3,r12}
-	BX      LR
+	MOV	PC,R14
 adv_slow:
 	STMFD	r13!,{r10,r14}
 
@@ -203,8 +168,6 @@ adv_slow_loop:
 
 	LDMFD	r13!,{r10,PC}
 adv_end:
-	MOV	r2, #0
-	MOV	r12,#0
 	STMIA	r0,{r2,r3,r12}
 
 	LDMFD	r13!,{r10,PC}
@@ -227,7 +190,7 @@ oggpack_readinit:
 	RSB	r3,r3,#32		@ r3 = BitsInWord
 	STMIA	r0,{r1,r2,r3}
 	STR	r12,[r0,#20]
-	BX      LR
+	MOV	PC,R14
 
 oggpack_read:
 	@ r0 = oggpack_buffer *b
@@ -365,8 +328,7 @@ read_out_of_data:
 	RSBS	r3,r3,#32		@ r3 = bitsLeftInWord
 	MVN	r1,#0			@ r1 = -1 = bitsLeftInSegment
 	STMIA	r0,{r1,r2,r3}
-	@MVN	r0,#0			; return -1
-	MOV	r0,#0
+	MVN	r0,#0			@ return -1
 	LDMFD	r13!,{r5,r6,r10,r11,PC}
 
 read_overrun:
@@ -395,5 +357,3 @@ read_overrun_next_segment:
 	ADD	r6,r10,r10,LSR #3	@ r6 = pointer to data
 	MOV	r10,#0
 	B	read_slow_loop
-
-	@ END

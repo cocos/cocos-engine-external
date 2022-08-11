@@ -1,54 +1,57 @@
 websockets
     mac: 2.1.0
-    win32: 2.1.0 
+    win32: 2.4.2
     ios: 2.1.0
     android: 2.1.0
+    win64: 2.4.2
 
 openssl
-    mac: 1.1.0c
-    win32: 1.1.0c
-    ios: 1.1.0c
-    android: 1.1.0c
-    
+    mac: 1.1.1g
+    win32: 1.1.1g
+    ios: 1.1.1g
+    android: 1.1.1g
+    win64: 1.1.1k
+
+mpg123
+    win32: 40
+    win64: 45
+
 curl
     mac: 7.52.1
     win32: 7.52.1
+    win64: 7.74.0
 
 png
-    mac: 1.6.21
-    win32: 1.6.16
-    ios: --
-    android: 1.6.21
+    mac: 1.6.37
+    win32: 1.6.37
+    ios: 1.6.37
+    android: 1.6.37
+    win64: 1.6.37
+sdl
+    win32: 2.0.10
+    win64: 2.0.14
 
 jpeg
-    mac: v9
-    win32: v9
-    ios: --
-    android: v9
-
-tiff
-    mac: 4.0.6
-    win32: 4.0.3
-    ios: 4.0.6
-    android: 4.0.6
+    mac: 9d
+    win32: 9d
+    ios: 9d
+    android: 9d
+    win64: 9d
 
 freetype2
-    mac: 2.6.3
+    mac: 2.10.0
     win32: 2.5.5
-    ios: 2.6.3
-    android: 2.6.3
-
-chipmunk
-    mac: 7.0.1
-    win32: 7.0.1
-    ios: 7.0.1
-    android: 7.0.1
+    ios: 2.10.0
+    android: 2.10.0
+    win64: 2.10.0
 
 libz
-    mac: 1.2.8
-    win32: 1.2.5
+    mac: 1.2.12
+    win32: --
     ios: --
-    android: 1.2.8
+    android: 1.2.12
+    win64: 1.2.12
+    linux: 1.2.12
 
 spidermonkey
     mac: v52
@@ -75,9 +78,40 @@ tinydir
     ios: 1.2.1
 
 v8
-    win32: 6.0.286.52
-    android: 6.0.286.52
+    win32: 9.1.269
+    win64: 9.1.269
+    android: 9.1.269
+    ios: 9.1.269
+    ios-m1-simulator: 9.1.269
+    ohos: 9.1.269
 
 libuv
+    mac: 1.23.1
     win32: 1.13.1
     android: 1.13.1
+    ios: 1.23.1
+    win64: 1.41.0-release
+sqlite3
+    win64: 3.35.4
+    win32: 3.7.15.1
+tbb
+    mac: 2020.2
+    win32: 2020.2
+    android: 2020.2
+    ios: 2020.2
+
+PVRVFrame
+    mac: 10.13
+    win32: 10.13
+
+spirv_cross
+    mac: 2021.1.15
+    ios: 2021.1.15
+
+glslang (Built using https://github.com/YunHsiao/glslang/tree/build)
+    win32:      11.5.0 (commit: 1978c76)
+    win64:      11.5.0 (commit: 1978c76)
+    android:    11.5.0 (commit: 1978c76)
+    mac:        11.5.0 (commit: 1978c76)
+    ios:        11.5.0 (commit: 1978c76)
+    
