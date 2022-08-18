@@ -38,6 +38,11 @@ set_target_properties(webp PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libwebp.a
 )
 
+add_library(websockets STATIC IMPORTED GLOBAL)
+set_target_properties(websockets PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libwebsockets.a
+)
+
 add_library(v8_monolith STATIC IMPORTED GLOBAL)
 set(V8_COMPILE_FLAGS
   V8_TYPED_ARRAY_MAX_SIZE_IN_HEAP=64
@@ -99,6 +104,19 @@ endif()
 if(USE_SE_JSC)
     find_library(JAVASCRIPT_CORE_LIBRARY JavaScriptCore REQUIRED)
     set(se_libs_name ${JAVASCRIPT_CORE_LIBRARY})
+endif()
+
+if(USE_SOCKET)
+  list(APPEND CC_EXTERNAL_LIBS
+      ssl
+      crypto
+      )
+endif()
+
+if(USE_WEBSOCKET_SERVER)
+  list(APPEND CC_EXTERNAL_LIBS
+      websockets
+      )
 endif()
 
 ############################# glslang #############################
@@ -202,8 +220,6 @@ list(APPEND CC_EXTERNAL_LIBS
     jpeg
     png
     webp
-    crypto
-    ssl
     ${glslang_libs_name}
     ${spirv-cross_libs_name}
     ${tbb_libs_name}
