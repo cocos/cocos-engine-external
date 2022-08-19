@@ -67,11 +67,10 @@ set_target_properties(ogg PROPERTIES
   IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/ogg.lib
 )
 
-add_library(png SHARED IMPORTED GLOBAL)
+add_library(png STATIC IMPORTED GLOBAL)
 
 set_target_properties(png PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libpng16.dll
-  IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/libpng16.lib
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libpng16.lib
 )
 
 
