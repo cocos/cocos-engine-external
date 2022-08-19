@@ -95,11 +95,18 @@ elseif(USE_SE_V8)
   endif()
 endif()
 
-# if(USE_SOCKETS)
-#     list(APPEND CC_EXTERNAL_LIBS
-#         websockets
-#     )
-# endif()
+if(USE_SOCKET)
+  list(APPEND CC_EXTERNAL_LIBS
+      ssl
+      crypto
+      )
+endif()
+
+if(USE_WEBSOCKET_SERVER)
+  list(APPEND CC_EXTERNAL_LIBS
+      websockets
+      )
+endif()
 
 ############################# glslang #############################
 
@@ -198,8 +205,6 @@ list(APPEND CC_EXTERNAL_LIBS
     png
     webp
     curl
-    crypto
-    ssl
     ${glslang_libs_name}
     ${spirv-cross_libs_name}
     ${tbb_libs_name}
