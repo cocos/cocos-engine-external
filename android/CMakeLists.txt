@@ -76,6 +76,7 @@ if(USE_SE_V8)
     add_library(v8_monolith STATIC IMPORTED GLOBAL)
     set_target_properties(v8_monolith PROPERTIES
       IMPORTED_LOCATION ${platform_spec_path}/v8/libv8_monolith.a
+      INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/v8
     )
 
     if(ANDROID_ABI STREQUAL "arm64-v8a" OR ANDROID_ABI STREQUAL "x86_64")
@@ -92,7 +93,7 @@ if(USE_SE_V8)
     set(se_libs_name v8_monolith v8_inspector)
 endif()
 
-if(USE_SOCKET)
+if(USE_WEBSOCKET_SERVER)
     list(APPEND CC_EXTERNAL_LIBS
         websockets
         ssl
@@ -100,19 +101,19 @@ if(USE_SOCKET)
     )
 endif()
 
-if(USE_SE_V8 AND USE_V8_DEBUGGER)
+if(USE_SE_V8 AND USE_V8_DEBUGGER )
     list(APPEND CC_EXTERNAL_LIBS
         v8_inspector
     )
 endif()
 
 ############################# glslang #############################
-
 set(glslang_libs_name glslang glslang-default-resource-limits MachineIndependent OGLCompiler OSDependent SPIRV SPIRV-Tools-opt SPIRV-Tools GenericCodeGen)
 foreach(lib IN LISTS glslang_libs_name)
   add_library(${lib} STATIC IMPORTED GLOBAL)
   set_target_properties(${lib} PROPERTIES
     IMPORTED_LOCATION ${platform_spec_path}/glslang/lib${lib}.a
+    # INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/glslang
   )
 endforeach()
 
@@ -145,13 +146,23 @@ endif()
 list(APPEND CC_EXTERNAL_LIBS
     jpeg
     png
-    uv
     webp
+    uv
     android_platform
-    ${glslang_libs_name}
-    ${tbb_libs_name}
     ${PhysXSDK}
 )
+
+if(USE_JOB_SYSTEM_TBB OR CC_USE_VULKAN) ## VKDevice.cpp use tbb_allocator.h
+  list(APPEND CC_EXTERNAL_LIBS
+    ${tbb_libs_name}
+  )
+endif()
+
+if(CC_USE_VULKAN)
+  list(APPEND CC_EXTERNAL_LIBS
+    ${glslang_libs_name}
+  )
+endif()
 
 set(ZLIB z)
 if(NOT USE_MODULES)
@@ -162,8 +173,5 @@ endif()
 
 list(APPEND CC_EXTERNAL_INCLUDES
   ${platform_spec_path}/include
-  ${platform_spec_path}/include/v8
-  ${platform_spec_path}/include/uv
-  ${platform_spec_path}/include/glslang
   ${CMAKE_ANDROID_NDK}/sources/android/native_app_glue
 )
