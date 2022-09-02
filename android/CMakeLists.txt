@@ -64,6 +64,7 @@ target_include_directories(android_platform PUBLIC
 # )
 
 if(USE_XR)
+  include(${CMAKE_CURRENT_LIST_DIR}/xr.cmake)
   if(BUILD_XR_NATIVE)
     list(APPEND XR_EXTERNAL_SOURCES ${CMAKE_CURRENT_LIST_DIR}/../../cocos/xr/Xr.h)
     list(APPEND XR_EXTERNAL_SOURCES ${CMAKE_CURRENT_LIST_DIR}/../../cocos/platform/interfaces/modules/XRCommon.h)
