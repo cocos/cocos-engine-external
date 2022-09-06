@@ -10,6 +10,7 @@ if (USE_DEBUG_RENDERER)
 add_library(freetype STATIC IMPORTED GLOBAL)
 set_target_properties(freetype PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libfreetype.a
+  INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/freetype
 )
 endif()
 
