@@ -200,13 +200,13 @@ list(APPEND CC_EXTERNAL_LIBS
     jpeg
     png
     sqlite3
+    webp
     ${PhysXSDK}
     ${glslang_libs_name}
 )
 
 if(NOT OPENHARMONY)
 list(APPEND CC_EXTERNAL_LIBS
-webp
 ${se_libs_name}
 OpenALSoft
 mpg123
