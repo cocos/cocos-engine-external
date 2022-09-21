@@ -145,6 +145,18 @@ set_target_properties(glslang-default-resource-limits PROPERTIES
 )
 set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits MachineIndependent GenericCodeGen)
 
+if(USE_PHYSICS_PHYSX)
+  set(PhysXSDK PhysXCooking PhysXCharacterKinematic PhysXVehicle PhysXExtensions PhysX PhysXPvdSDK PhysXCommon PhysXFoundation)
+  foreach(PX IN LISTS PhysXSDK)
+    add_library(${PX} STATIC IMPORTED GLOBAL)
+    set_target_properties(${PX} PROPERTIES
+      IMPORTED_LOCATION ${ohos_lib_dir}/PhysX/lib${PX}_static.a
+    )
+  endforeach()
+else()
+  set(PhysXSDK)
+endif()
+
 if(OPENHARMONY)
 add_library(MachineIndependent STATIC IMPORTED GLOBAL)
 set_target_properties(MachineIndependent PROPERTIES
@@ -188,12 +200,13 @@ list(APPEND CC_EXTERNAL_LIBS
     jpeg
     png
     sqlite3
+    webp
+    ${PhysXSDK}
     ${glslang_libs_name}
 )
 
 if(NOT OPENHARMONY)
 list(APPEND CC_EXTERNAL_LIBS
-webp
 ${se_libs_name}
 OpenALSoft
 mpg123
