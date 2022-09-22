@@ -590,11 +590,11 @@ static jlong loadNativeCode_native(JNIEnv *env, jobject javaGameActivity,
     }
     code->createActivityFunc(code, rawSavedState, rawSavedSize);
 
-    code->gameTextInput = GameTextInput_init(env, 0);
-    GameTextInput_setEventCallback(code->gameTextInput,
-                                   reinterpret_cast<GameTextInputEventCallback>(
-                                       code->callbacks.onTextInputEvent),
-                                   code);
+//    code->gameTextInput = GameTextInput_init(env, 0);
+//    GameTextInput_setEventCallback(code->gameTextInput,
+//                                   reinterpret_cast<GameTextInputEventCallback>(
+//                                       code->callbacks.onTextInputEvent),
+//                                   code);
 
     if (rawSavedState != NULL) {
         env->ReleaseByteArrayElements(savedState, rawSavedState, 0);
@@ -848,9 +848,9 @@ extern "C" void GameActivity_setImeEditorInfo(GameActivity *activity,
                                               int imeOptions) {
     JNIEnv *env;
     if (activity->vm->AttachCurrentThread(&env, NULL) == JNI_OK) {
-        env->CallVoidMethod(activity->javaGameActivity,
-                            gGameActivityClassInfo.setImeEditorInfoFields,
-                            inputType, actionId, imeOptions);
+//        env->CallVoidMethod(activity->javaGameActivity,
+//                            gGameActivityClassInfo.setImeEditorInfoFields,
+//                            inputType, actionId, imeOptions);
     }
 }
 
@@ -1189,14 +1189,14 @@ static const JNINativeMethod g_methods[] = {
     {"onKeyDownNative", "(JLandroid/view/KeyEvent;)Z",
      (void *)onKeyDown_native},
     {"onKeyUpNative", "(JLandroid/view/KeyEvent;)Z", (void *)onKeyUp_native},
-    {"onTextInputEventNative",
+/*    {"onTextInputEventNative",
      "(JLcom/google/androidgamesdk/gametextinput/State;)V",
      (void *)onTextInput_native},
     {"onWindowInsetsChangedNative", "(J)V",
      (void *)onWindowInsetsChanged_native},
     {"setInputConnectionNative",
      "(JLcom/google/androidgamesdk/gametextinput/InputConnection;)V",
-     (void *)setInputConnection_native},
+     (void *)setInputConnection_native},*/
 };
 
 static const char *const kGameActivityPathName =
@@ -1255,7 +1255,7 @@ extern "C" int GameActivity_register(JNIEnv *env) {
                   "()V");
     GET_METHOD_ID(gGameActivityClassInfo.setWindowFlags, activity_class,
                   "setWindowFlags", "(II)V");
-    GET_METHOD_ID(gGameActivityClassInfo.getWindowInsets, activity_class,
+/*    GET_METHOD_ID(gGameActivityClassInfo.getWindowInsets, activity_class,
                   "getWindowInsets", "(I)Landroidx/core/graphics/Insets;");
     GET_METHOD_ID(gGameActivityClassInfo.getWaterfallInsets, activity_class,
                   "getWaterfallInsets", "()Landroidx/core/graphics/Insets;");
@@ -1288,7 +1288,7 @@ extern "C" int GameActivity_register(JNIEnv *env) {
         GET_STATIC_METHOD_ID(gWindowInsetsCompatTypeClassInfo.methods[i],
                              windowInsetsCompatType_class, methodNames[i],
                              "()I");
-    }
+    }*/
     return jniRegisterNativeMethods(env, kGameActivityPathName, g_methods,
                                     NELEM(g_methods));
 }
