@@ -8,7 +8,7 @@ openssl
     mac: 1.1.0c
     win32: 1.1.0c
     ios: 1.1.0c
-    android: 1.1.0c
+    android: 1.1.0q
     
 curl
     mac: 7.52.1
