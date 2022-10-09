@@ -157,19 +157,6 @@ else()
   set(PhysXSDK)
 endif()
 
-if(OPENHARMONY)
-add_library(MachineIndependent STATIC IMPORTED GLOBAL)
-set_target_properties(MachineIndependent PROPERTIES
-  IMPORTED_LOCATION ${ohos_lib_dir}/libMachineIndependent.a
-)
-add_library(GenericCodeGen STATIC IMPORTED GLOBAL)
-set_target_properties(GenericCodeGen PROPERTIES
-  IMPORTED_LOCATION ${ohos_lib_dir}/libGenericCodeGen.a
-)
-list(APPEND glslang_libs_name MachineIndependent GenericCodeGen)
-endif()
-
-
 ############################# TBB #############################
 if(USE_JOB_SYSTEM_TBB)
   add_library(tbb STATIC IMPORTED GLOBAL)
@@ -205,7 +192,6 @@ list(APPEND CC_EXTERNAL_LIBS
     ${glslang_libs_name}
 )
 
-if(NOT OPENHARMONY)
 list(APPEND CC_EXTERNAL_LIBS
 ${se_libs_name}
 OpenALSoft
@@ -216,9 +202,6 @@ set(ZLIB z)
 if(NOT USE_MODULES)
   list(APPEND CC_EXTERNAL_LIBS ${ZLIB})
 endif()
-
-endif()
-
 
 if(USE_V8_DEBUGGER OR USE_WEBSOCKET_SERVER)
   list(APPEND CC_EXTERNAL_LIBS
