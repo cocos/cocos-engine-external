@@ -5,10 +5,10 @@ websockets
     android: 2.1.0
 
 openssl
-    mac: 1.1.0c
-    win32: 1.1.0c
-    ios: 1.1.0c
-    android: 1.1.0c
+    mac: 1.1.1k
+    win32: 1.1.1k
+    ios: 1.1.1k
+    android: 1.1.1k
     
 curl
     mac: 7.52.1
