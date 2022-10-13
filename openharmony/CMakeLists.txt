@@ -62,6 +62,11 @@ set_target_properties(mpg123 PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libmpg123.a
 )
 
+add_library(curl SHARED IMPORTED GLOBAL)
+set_target_properties(curl PROPERTIES
+  IMPORTED_LOCATION ${ohos_lib_dir}/libcurl.so
+)
+
 set(se_libs_name)
 
 if(USE_SE_V8)
@@ -199,6 +204,7 @@ list(APPEND CC_EXTERNAL_LIBS
     png
     sqlite3
     webp
+    curl
     ${PhysXSDK}
     ${glslang_libs_name}
 )
