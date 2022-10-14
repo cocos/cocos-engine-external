@@ -6,7 +6,7 @@
 	#endif
 #endif
 
-#define LWS_INSTALL_DATADIR "E:/work/harmonyos_data/third_libs2/20220210/build_libwebsockets_armeabi-v7a/output/share"
+#define LWS_INSTALL_DATADIR "E:/work/harmonyos_data/third_libs2/20220210/build_libwebsockets_arm64-v8a/output/share"
 
 /* Define to 1 to use wolfSSL/CyaSSL as a replacement for OpenSSL.
  * LWS_OPENSSL_SUPPORT needs to be set also for this to work. */
