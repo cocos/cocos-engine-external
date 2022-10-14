@@ -4,6 +4,7 @@ websockets
     ios: 2.1.0
     android: 2.1.0
     win64: 2.4.2
+    openharmony: v2.4.2
 
 openssl
     mac: 1.1.1g
@@ -11,6 +12,9 @@ openssl
     ios: 1.1.1g
     android: 1.1.1g
     win64: 1.1.1k
+
+mbedtls
+    openharmony: v2.28.1
 
 mpg123
     win32: 40
@@ -27,6 +31,7 @@ png
     ios: 1.6.37
     android: 1.6.37
     win64: 1.6.37
+    openharmony: 1.6.37
 sdl
     win32: 2.0.10
     win64: 2.0.14
@@ -37,6 +42,7 @@ jpeg
     ios: 9d
     android: 9d
     win64: 9d
+    openharmony: 9d
 
 freetype2
     mac: 2.10.0
@@ -44,6 +50,7 @@ freetype2
     ios: 2.10.0
     android: 2.10.0
     win64: 2.10.0
+    openharmony: 2.10.0
 
 libz
     mac: 1.2.12
@@ -114,4 +121,5 @@ glslang (Built using https://github.com/YunHsiao/glslang/tree/build)
     android:    11.5.0 (commit: 1978c76)
     mac:        11.5.0 (commit: 1978c76)
     ios:        11.5.0 (commit: 1978c76)
+    openharmony:11.5.0 (commit: 1978c76)
     
