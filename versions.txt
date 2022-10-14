@@ -9,7 +9,7 @@ openssl
     mac: 1.1.1g
     win32: 1.1.1g
     ios: 1.1.1g
-    android: 1.1.1g
+    android: 1.1.1q
     win64: 1.1.1k
 
 mpg123
