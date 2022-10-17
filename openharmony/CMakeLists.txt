@@ -1,9 +1,13 @@
 
 set(ohos_lib_dir ${platform_spec_path}/lib)
+add_library(mbedcrypto STATIC IMPORTED GLOBAL)
+set_target_properties(mbedcrypto PROPERTIES
+  IMPORTED_LOCATION ${ohos_lib_dir}/libmbedcrypto.a
+)
 
-add_library(crypto STATIC IMPORTED GLOBAL)
-set_target_properties(crypto PROPERTIES
-  IMPORTED_LOCATION ${ohos_lib_dir}/libcrypto.a
+add_library(mbedtls STATIC IMPORTED GLOBAL)
+set_target_properties(mbedtls PROPERTIES
+  IMPORTED_LOCATION ${ohos_lib_dir}/libmbedtls.a
 )
 
 if (USE_DEBUG_RENDERER)
@@ -24,11 +28,6 @@ set_target_properties(png PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libpng16.a
 )
 
-add_library(ssl STATIC IMPORTED GLOBAL)
-set_target_properties(ssl PROPERTIES
-  IMPORTED_LOCATION ${ohos_lib_dir}/libssl.a
-)
-
 add_library(uv STATIC IMPORTED GLOBAL)
 set_target_properties(uv PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libuv_a.a
@@ -42,6 +41,7 @@ set_target_properties(webp PROPERTIES
 add_library(websockets STATIC IMPORTED GLOBAL)
 set_target_properties(websockets PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libwebsockets.a
+  INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/websockets
 )
 add_library(sqlite3 STATIC IMPORTED GLOBAL)
 set_target_properties(sqlite3 PROPERTIES
@@ -117,8 +117,8 @@ endif()
 if(USE_SOCKET)
     list(APPEND CC_EXTERNAL_LIBS
         websockets
-        ssl
-        crypto
+        mbedtls
+        mbedcrypto
     )
 endif()
 
@@ -214,6 +214,7 @@ list(APPEND CC_EXTERNAL_INCLUDES
   ${platform_spec_path}/include/sqlite
   ${platform_spec_path}/include/png16
   ${platform_spec_path}/include/uv
+  ${platform_spec_path}/include/mbedtls_wrapper
 )
 
 #TODO: remove in future version
