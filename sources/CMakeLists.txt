@@ -70,13 +70,13 @@ endif()
 
 if(ANDROID OR OHOS OR NX)
 
-  include(${CMAKE_CURRENT_LIST_DIR}/pvmp3dec/CMakeLists.txt)
-  include(${CMAKE_CURRENT_LIST_DIR}/tremolo/CMakeLists.txt)
+  # include(${CMAKE_CURRENT_LIST_DIR}/pvmp3dec/CMakeLists.txt)
+  # include(${CMAKE_CURRENT_LIST_DIR}/tremolo/CMakeLists.txt)
 
-  list(APPEND CC_EXTERNAL_LIBS
-    pvmp3dec
-    vorbisidec
-  )
+  # list(APPEND CC_EXTERNAL_LIBS
+  #   pvmp3dec
+  #   vorbisidec
+  # )
 
 elseif(WINDOWS)
   set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/ConvertUTF/ConvertUTF.c PROPERTIES
@@ -106,3 +106,12 @@ if(USE_PHYSICS_PHYSX)
     ${CMAKE_CURRENT_LIST_DIR}/PhysX/PxShared/include
   )
 endif()
+
+include(${CMAKE_CURRENT_LIST_DIR}/LabSound/CMakeLists.txt)
+list(APPEND CC_EXTERNAL_SOURCES
+  ${LABSOUND_SOURCES}
+)
+
+list(APPEND CC_EXTERNAL_INCLUDES
+  ${LABSOUND_INCLUDE}
+)
