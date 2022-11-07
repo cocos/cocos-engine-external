@@ -1,0 +1,10 @@
+^E:\ENGINE\ENV_DEVELOP\COCOS-ENGINE\NATIVE\EXTERNAL\SOURCES\LABSOUND\THIRD_PARTY\LIBNYQUIST\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SE:/Engine/env_develop/cocos-engine/native/external/sources/LabSound/third_party/libnyquist -BE:/Engine/env_develop/cocos-engine/native/external/sources/LabSound/third_party/libnyquist --check-stamp-file E:/Engine/env_develop/cocos-engine/native/external/sources/LabSound/third_party/libnyquist/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
