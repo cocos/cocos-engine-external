@@ -8,6 +8,7 @@ cc_set_if_undefined(XR_OEM_HUAWEIVR               OFF)
 cc_set_if_undefined(XR_OEM_PICO                   OFF)
 cc_set_if_undefined(XR_OEM_ROKID                  OFF)
 cc_set_if_undefined(XR_OEM_SEED                   OFF)
+cc_set_if_undefined(XR_OEM_SNAPDRAGON_SPACES      OFF)
 cc_set_if_undefined(XR_USE_GRAPHICS_API_OPENGL_ES ON)
 cc_set_if_undefined(XR_USE_GRAPHICS_API_VULKAN    ON)
 cc_set_if_undefined(XR_USE_GRAPHICS_API_OPENGL    OFF)
@@ -37,6 +38,7 @@ cc_inspect_values(
     XR_OEM_PICO
     XR_OEM_ROKID
     XR_OEM_SEED
+    XR_OEM_SNAPDRAGON_SPACES
     XR_USE_GRAPHICS_API_OPENGL_ES
     XR_USE_GRAPHICS_API_VULKAN
     XR_USE_GRAPHICS_API_OPENGL
@@ -58,6 +60,7 @@ function(cc_xr_apply_definations target)
         $<IF:$<BOOL:${XR_OEM_PICO}>,XR_OEM_PICO=1,XR_OEM_PICO=0>
         $<IF:$<BOOL:${XR_OEM_ROKID}>,XR_OEM_ROKID=1,XR_OEM_ROKID=0>
         $<IF:$<BOOL:${XR_OEM_SEED}>,XR_OEM_SEED=1,XR_OEM_SEED=0>
+        $<IF:$<BOOL:${XR_OEM_SNAPDRAGON_SPACES}>,XR_OEM_SNAPDRAGON_SPACES=1,XR_OEM_SNAPDRAGON_SPACES=0>
         $<$<BOOL:${XR_USE_GRAPHICS_API_OPENGL_ES}>:XR_USE_GRAPHICS_API_OPENGL_ES=1>
         $<$<BOOL:${XR_USE_GRAPHICS_API_VULKAN}>:XR_USE_GRAPHICS_API_VULKAN=1>
         $<$<BOOL:${XR_USE_GRAPHICS_API_OPENGL}>:XR_USE_GRAPHICS_API_OPENGL=1>
@@ -96,6 +99,9 @@ elseif(XR_OEM_ROKID)
 elseif(XR_OEM_SEED)
     set(XR_OEM_FOLDER monado)
     set(XR_FOLDER seed)
+elseif(XR_OEM_SNAPDRAGON_SPACES)
+    set(XR_OEM_FOLDER spaces)
+    set(XR_FOLDER spaces)
 else()
     set(XR_OEM_FOLDER monado)
     set(XR_FOLDER monado)
