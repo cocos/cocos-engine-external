@@ -43,6 +43,21 @@ set_target_properties(websockets PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libwebsockets.a
 )
 
+add_library(libsamplerate STATIC IMPORTED GLOBAL)
+set_target_properties(libsamplerate PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libsamplerate.a
+)
+
+add_library(libwavpack STATIC IMPORTED GLOBAL)
+set_target_properties(libwavpack PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/liblibwavpack.a
+)
+
+add_library(libnyquist STATIC IMPORTED GLOBAL)
+set_target_properties(libnyquist PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/liblibnyquist.a
+)
+
 add_library(v8_monolith STATIC IMPORTED GLOBAL)
 set(V8_COMPILE_FLAGS
   V8_TYPED_ARRAY_MAX_SIZE_IN_HEAP=64
@@ -231,6 +246,9 @@ list(APPEND CC_EXTERNAL_LIBS
     jpeg
     png
     webp
+    libsamplerate
+    libnyquist
+    libwavpack
     ${glslang_libs_name}
     ${spirv-cross_libs_name}
     ${tbb_libs_name}
