@@ -4,6 +4,7 @@ websockets
     ios: 2.1.0
     android: 2.1.0
     win64: 2.4.2
+    linux: 4.3.0
 
 openssl
     mac: 1.1.1g
@@ -11,15 +12,18 @@ openssl
     ios: 1.1.1g
     android: 1.1.1g
     win64: 1.1.1k
+    linux: 1.1.1o
 
 mpg123
     win32: 40
     win64: 45
+    linux: 1.29.3
 
 curl
     mac: 7.52.1
     win32: 7.52.1
     win64: 7.74.0
+    linux: 7.83.1
 
 png
     mac: 1.6.37
@@ -27,9 +31,12 @@ png
     ios: 1.6.37
     android: 1.6.37
     win64: 1.6.37
+    linux: 1.6.37
+
 sdl
     win32: 2.0.10
     win64: 2.0.14
+    linux: 2.0.20
 
 jpeg
     mac: 9d
@@ -37,6 +44,7 @@ jpeg
     ios: 9d
     android: 9d
     win64: 9d
+    linux: 9c
 
 freetype2
     mac: 2.10.0
@@ -44,6 +52,7 @@ freetype2
     ios: 2.10.0
     android: 2.10.0
     win64: 2.10.0
+    linux: 2.12.1
 
 libz
     mac: 1.2.12
@@ -84,6 +93,7 @@ v8
     ios: 9.1.269
     ios-m1-simulator: 9.1.269
     ohos: 9.1.269
+    linux: 9.1.269
 
 libuv
     mac: 1.23.1
@@ -91,14 +101,19 @@ libuv
     android: 1.13.1
     ios: 1.23.1
     win64: 1.41.0-release
+    linux: 1.44.1
+
 sqlite3
     win64: 3.35.4
     win32: 3.7.15.1
+    linux: 3.38.5
+
 tbb
     mac: 2020.2
     win32: 2020.2
     android: 2020.2
     ios: 2020.2
+    linux: 2020.3
 
 PVRVFrame
     mac: 10.13
@@ -114,4 +129,5 @@ glslang (Built using https://github.com/YunHsiao/glslang/tree/build)
     android:    11.5.0 (commit: 1978c76)
     mac:        11.5.0 (commit: 1978c76)
     ios:        11.5.0 (commit: 1978c76)
+    linux:      11.5.0
     
