@@ -5,6 +5,11 @@ set_target_properties(mbedcrypto PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libmbedcrypto.a
 )
 
+add_library(mbedx509 STATIC IMPORTED GLOBAL)
+set_target_properties(mbedx509 PROPERTIES
+  IMPORTED_LOCATION ${ohos_lib_dir}/libmbedx509.a
+)
+
 add_library(mbedtls STATIC IMPORTED GLOBAL)
 set_target_properties(mbedtls PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libmbedtls.a
@@ -62,9 +67,9 @@ set_target_properties(mpg123 PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libmpg123.a
 )
 
-add_library(curl SHARED IMPORTED GLOBAL)
+add_library(curl STATIC IMPORTED GLOBAL)
 set_target_properties(curl PROPERTIES
-  IMPORTED_LOCATION ${ohos_lib_dir}/libcurl.so
+  IMPORTED_LOCATION ${ohos_lib_dir}/libcurl.a
 )
 
 set(se_libs_name)
@@ -119,6 +124,7 @@ if(USE_SOCKET)
         websockets
         mbedtls
         mbedcrypto
+        mbedx509
     )
 endif()
 
