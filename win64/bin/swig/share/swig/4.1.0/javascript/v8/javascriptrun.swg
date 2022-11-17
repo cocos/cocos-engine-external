@@ -96,6 +96,11 @@ SWIGINTERN void SWIG_V8_Raise(const char *msg) {
   SWIGV8_THROW_EXCEPTION(v8::Exception::Error(SWIGV8_STRING_NEW(msg)));
 }
 
+SWIGINTERN void SWIG_V8_Raise(SWIGV8_VALUE obj, const char *msg) {
+  SWIGV8_THROW_EXCEPTION(v8::Exception::Error(SWIGV8_TO_STRING(obj)));
+}
+
+
 /*
   Note: There are two contexts for handling errors.
   A static V8ErrorHandler is used in not overloaded methods.
@@ -194,8 +199,15 @@ SWIGRUNTIME int SWIG_V8_ConvertInstancePtr(SWIGV8_OBJECT objRef, void **ptr, swi
     *ptr = cdata->swigCObject;
   }
 
-  if(flags & SWIG_POINTER_DISOWN) {
-    cdata->swigCMemOwn = false;
+  if (((flags & SWIG_POINTER_RELEASE) == SWIG_POINTER_RELEASE) && !cdata->swigCMemOwn) {
+    return SWIG_ERROR_RELEASE_NOT_OWNED;
+  } else {
+    if (flags & SWIG_POINTER_DISOWN) {
+      cdata->swigCMemOwn = false;
+    }
+    if (flags & SWIG_POINTER_CLEAR) {
+      cdata->swigCObject = 0;
+    }
   }
   return SWIG_OK;
 }

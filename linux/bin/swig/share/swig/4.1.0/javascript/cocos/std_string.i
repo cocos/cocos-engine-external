@@ -32,71 +32,71 @@ assert(s==s2)
 
 namespace std {
 
-%naturalvar string;
+// %naturalvar string;
 
-%typemap(in) string
-%{// string
-     ok &= sevalue_to_native($input, &$1);
-   SE_PRECONDITION2(ok, false, "$symname,$argnum,$descriptor"); %}
+// %typemap(in) string
+// %{// string
+//      ok &= sevalue_to_native($input, &$1);
+//    SE_PRECONDITION2(ok, false, "Error processing arguments"); %}
 
-%typemap(out) string
-%{ lua_pushlstring(L,$1.data(),$1.size()); SWIG_arg++;%}
+// %typemap(out) string
+// %{ lua_pushlstring(L,$1.data(),$1.size()); SWIG_arg++;%}
 
-%typemap(in) string *self 
-%{ $1 = SE_THIS_OBJECT<$*ltype>(s);
-   SE_PRECONDITION2($1, false, "%s: Invalid Native Object", __FUNCTION__); %}
+// %typemap(in) string *self 
+// %{ $1 = SE_THIS_OBJECT<$*ltype>(s);
+//    SE_PRECONDITION2($1, false, "Invalid Native Object"); %}
 
-%typemap(in,checkfn="lua_isstring") string*
-%{// string*
-    std::string
-    ok &= sevalue_to_native($input, &$1);
-    SE_PRECONDITION2(ok, false, "$symname,$argnum,$descriptor");
-    $1.assign(lua_tostringxxx(L,$input),lua_rawlen(L,$input));%}
+// %typemap(in,checkfn="lua_isstring") string*
+// %{// string*
+//     std::string
+//     ok &= sevalue_to_native($input, &$1);
+//     SE_PRECONDITION2(ok, false, "Error processing arguments");
+//     $1.assign(lua_tostringxxx(L,$input),lua_rawlen(L,$input));%}
 
-%typemap(out) string*
-%{// out string*
-     lua_pushlstringxxx(L,$1.data(),$1.size()); SWIG_arg++;%}
+// %typemap(out) string*
+// %{// out string*
+//      lua_pushlstringxxx(L,$1.data(),$1.size()); SWIG_arg++;%}
 
-%typemap(in,checkfn="lua_isstring") const string& ($*1_ltype temp)
-%{ // const std::string&
-    temp.assign(lua_tostring(L,$input),lua_rawlen(L,$input)); $1=&temp;%}
+// %typemap(in,checkfn="lua_isstring") const string& ($*1_ltype temp)
+// %{ // const std::string&
+//     temp.assign(lua_tostring(L,$input),lua_rawlen(L,$input)); $1=&temp;%}
 
-%typemap(out) const string&
-%{ // out const string&
-    lua_pushlstring(L,$1->data(),$1->size()); SWIG_arg++;%}
+// %typemap(out) const string&
+// %{ // out const string&
+//     lua_pushlstring(L,$1->data(),$1->size()); SWIG_arg++;%}
 
-// %typecheck(SWIG_TYPECHECK_STRING) string, const string& {
-//   $1 = lua_isstring(L,$input);
-// }
+// // %typecheck(SWIG_TYPECHECK_STRING) string, const string& {
+// //   $1 = lua_isstring(L,$input);
+// // }
 
-/*
-std::string& can be wrapped, but you must inform SWIG if it is in or out
+// /*
+// std::string& can be wrapped, but you must inform SWIG if it is in or out
 
-eg:
-void fn(std::string& str);
-Is this an in/out/inout value?
+// eg:
+// void fn(std::string& str);
+// Is this an in/out/inout value?
 
-Therefore you need the usual
-%apply (std::string& INOUT) {std::string& str};
-or
-%apply std::string& INOUT {std::string& str};
-typemaps to tell SWIG what to do.
-*/
+// Therefore you need the usual
+// %apply (std::string& INOUT) {std::string& str};
+// or
+// %apply std::string& INOUT {std::string& str};
+// typemaps to tell SWIG what to do.
+// */
 
-%typemap(in) string &INPUT=const string &;
+// %typemap(in) string &INPUT=const string &;
 
-%typemap(in, numinputs=0) string &OUTPUT ($*1_ltype temp)
-%{ $1 = &temp; %}
+// %typemap(in, numinputs=0) string &OUTPUT ($*1_ltype temp)
+// %{ $1 = &temp; %}
 
-%typemap(argout) string &OUTPUT
-%{ lua_pushlstring(L,$1->data(),$1->size()); SWIG_arg++;%}
+// %typemap(argout) string &OUTPUT
+// %{ lua_pushlstring(L,$1->data(),$1->size()); SWIG_arg++;%}
 
-%typemap(in) string &INOUT =const string &;
-%typemap(in) string *INOUT %{
-    // inout ... string*
-%};
+// %typemap(in) string &INOUT =const string &;
+// %typemap(in) string *INOUT %{
+//     // inout ... string*
+// %};
 
-%typemap(argout) string &INOUT = string &OUTPUT;
+// %typemap(argout) string &INOUT = string &OUTPUT;
 
 /*
 A really cut down version of the string class

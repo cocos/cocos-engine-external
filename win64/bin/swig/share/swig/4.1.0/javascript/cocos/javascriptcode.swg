@@ -1,6 +1,6 @@
 %fragment ("js_check_arg_count", "templates") %{
     if (argc != $jsargcount) {
-        SE_REPORT_ERROR("$jswrapper: wrong number of arguments: %d, was expecting %d", (int)argc, $jsargcount);
+        SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, $jsargcount);
         return false;
     }%}
 
@@ -14,7 +14,6 @@
  * ----------------------------------------------------------------------------- */
 %fragment ("js_ctor", "templates")
 %{
-// js_ctor
 static bool $jswrapper(se::State& s) // NOLINT(readability-identifier-naming)
 {
     CC_UNUSED bool ok = true;
@@ -39,14 +38,9 @@ SE_BIND_CTOR($jswrapper, __jsb_$jsmangledname_class, js_delete_$jsdtor)%}
 %{
 static bool $jswrapper(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    // js_ctor_dispatcher
     size_t argc = s.args().size();
     bool ret = false;
-
-    // switch all cases by means of series of if-returns.
     $jsdispatchcases
-
-    // default:
     SE_REPORT_ERROR("Illegal arguments for construction of $jsname");
     return false;
 }
@@ -64,7 +58,6 @@ SE_BIND_CTOR($jswrapper, __jsb_$jsmangledname_class, js_delete_$jsdtor)%}
 %{
 static bool $jswrapper(se::State& s) // NOLINT(readability-identifier-naming)
 {
-    // js_overloaded_ctor
     const auto& args = s.args();
     CC_UNUSED bool ok = true;
     $jslocals
@@ -84,7 +77,6 @@ static bool $jswrapper(se::State& s) // NOLINT(readability-identifier-naming)
  * ----------------------------------------------------------------------------- */
 %fragment ("js_ctor_dispatch_case", "templates")
 %{
-  // js_ctor_dispatch_case
   if(argc == $jsargcount) {
     ret = $jswrapper(s);
     if (ret) { return ret; } /* reset exception and return */
@@ -99,7 +91,6 @@ static bool $jswrapper(se::State& s) // NOLINT(readability-identifier-naming)
  * ----------------------------------------------------------------------------- */
 %fragment ("js_dtor", "templates")
 %{
-// js_dtor
 static bool $jswrapper(se::State& s) {
   return true;
 }
@@ -114,7 +105,7 @@ SE_BIND_FINALIZE_FUNC($jswrapper) %}
 %fragment ("js_dtoroverride", "templates")
 %{
 static bool $jswrapper(se::State& s)
-{// js_dtoroverride
+{
   return true;
 }
 SE_BIND_FINALIZE_FUNC($jswrapper) %}
@@ -169,7 +160,6 @@ SE_BIND_PROP_SET($jswrapper) %}
 %{
 static bool $jswrapper(se::State& s)
 {
-  // js_function
   $js_func_begin
   CC_UNUSED bool ok = true;
   const auto& args = s.args();
@@ -196,7 +186,6 @@ SE_BIND_FUNC($jswrapper) %}
 %{
 static bool $jswrapper(se::State& s)
 {
-  // js_function_dispatcher
   CC_UNUSED bool ok = true;
   const auto& args = s.args();
   size_t argc = args.size();
@@ -216,7 +205,7 @@ SE_BIND_FUNC($jswrapper) %}
 %fragment ("js_overloaded_function", "templates")
 %{
 static bool $jswrapper(se::State& s)
-{// js_overloaded_function
+{
   $js_func_begin
   CC_UNUSED bool ok = true;
   const auto& args = s.args();
@@ -233,7 +222,7 @@ static bool $jswrapper(se::State& s)
  *   - $jscode:     code part of wrapper
  * ----------------------------------------------------------------------------- */
 %fragment ("js_function_dispatch_case", "templates")
-%{// js_function_dispatch_case
+%{
   if (argc == $jsargcount) {
      ok = $jswrapper(s);
      if (ok) { return true; }

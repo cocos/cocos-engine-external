@@ -151,11 +151,17 @@ SWIGINTERN int SWIG_lua_isnilstring(lua_State *L, int idx) {
   }
 %}
 
-%typemap(in,checkfn="lua_isuserdata") SWIGTYPE&&
-%{
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,$input,(void**)&$1,$descriptor,$disown))){
-    SWIG_fail_ptr("$symname",$argnum,$descriptor);
+%typemap(in,checkfn="lua_isuserdata",fragment="<memory>") SWIGTYPE&& (void *argp = 0, int res = 0, std::unique_ptr<$*1_ltype> rvrdeleter) %{
+  res = SWIG_ConvertPtr(L, $input, &argp, $descriptor, SWIG_POINTER_RELEASE);
+  if (!SWIG_IsOK(res)) {
+    if (res == SWIG_ERROR_RELEASE_NOT_OWNED) {
+      lua_pushfstring(L, "Cannot release ownership as memory is not owned for argument $argnum of type '$1_type' in $symname"); SWIG_fail;
+    } else {
+      SWIG_fail_ptr("$symname", $argnum, $descriptor);
+    }
   }
+  $1 = ($1_ltype)argp;
+  rvrdeleter.reset($1);
 %}
 
 // out is simple
@@ -217,7 +223,7 @@ $1=($1_ltype)&temp;%}
 #ifdef __cplusplus
 %typemap(out) SWIGTYPE
 {
-  $&1_ltype resultptr = new $1_ltype((const $1_ltype &) $1);
+  $&1_ltype resultptr = new $1_ltype($1);
   SWIG_NewPointerObj(L,(void *) resultptr,$&1_descriptor,1); SWIG_arg++;
 }
 #else
@@ -248,7 +254,7 @@ $1=($1_ltype)&temp;%}
 
 
 // void (must be empty without the SWIG_arg++)
-%typemap(out) void "";
+%typemap(out) void ""
 
 /* void* is a special case
 A function void fn(void*) should take any kind of pointer as a parameter (just like C/C++ does)
