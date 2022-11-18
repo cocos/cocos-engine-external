@@ -10,8 +10,6 @@
 extern "C" {
 #endif
 
-#include "php.h"
-
 #if PHP_MAJOR_VERSION < 7
 # error These bindings need PHP 7 or later - to generate PHP5 bindings use: SWIG < 4.0.0 and swig -php5
 #endif
@@ -195,7 +193,7 @@ SWIG_ConvertPtrAndOwn(zval *z, void **ptr, swig_type_info *ty, int flags, swig_o
 	/* They don't care about the target type, so just pass on the pointer! */
 	*ptr = value->ptr;
       } else {
-	swig_cast_info *tc = SWIG_TypeCheckStruct(value->type, ty);
+	swig_cast_info *tc = SWIG_TypeCheck(value->type->name, ty);
 	if (tc) {
 	  int newmemory = 0;
 	  *ptr = SWIG_TypeCast(tc, value->ptr, &newmemory);
@@ -208,10 +206,20 @@ SWIG_ConvertPtrAndOwn(zval *z, void **ptr, swig_type_info *ty, int flags, swig_o
 	  *ptr = NULL;
 	}
       }
-      if (*ptr == NULL) return SWIG_ERROR;
-      if (flags & SWIG_POINTER_DISOWN) {
-	value->newobject = 0;
+
+      if (((flags & SWIG_POINTER_RELEASE) == SWIG_POINTER_RELEASE) && !value->newobject) {
+        return SWIG_ERROR_RELEASE_NOT_OWNED;
+      } else {
+        if (*ptr == NULL)
+          return SWIG_ERROR; /* should be SWIG_NullReferenceError?? */
+        if (flags & SWIG_POINTER_DISOWN) {
+          value->newobject = 0;
+        }
+        if (flags & SWIG_POINTER_CLEAR) {
+          value->ptr = 0;
+        }
       }
+
       return SWIG_OK;
     }
     case IS_NULL:

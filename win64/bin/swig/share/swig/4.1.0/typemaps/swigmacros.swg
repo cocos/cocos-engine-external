@@ -109,17 +109,6 @@ nocppval
 #endif
 %enddef
 
-#ifndef SWIG_JAVASCRIPT_COCOS
-/* insert the SWIGVERSION in the interface and the wrapper code */
-#if SWIG_VERSION
-%insert("header") {
-%define_as(SWIGVERSION,  SWIG_VERSION)
-%#define SWIG_VERSION SWIGVERSION
-}
-#endif
-#endif // #ifndef SWIG_JAVASCRIPT_COCOS
-
-
 /* -----------------------------------------------------------------------------
  * Casting operators
  * ----------------------------------------------------------------------------- */

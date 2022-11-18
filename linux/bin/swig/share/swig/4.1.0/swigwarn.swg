@@ -4,7 +4,7 @@
  * terms also apply to certain portions of SWIG. The full details of the SWIG
  * license and copyrights can be found in the LICENSE and COPYRIGHT files
  * included with the SWIG source code as distributed by the SWIG developers
- * and at http://www.swig.org/legal.html.
+ * and at https://www.swig.org/legal.html.
  *
  * swigwarn.h
  *
@@ -22,8 +22,8 @@
  * This file is used as the input for generating Lib/swigwarn.swg.
  * ----------------------------------------------------------------------------- */
 
-#ifndef SWIGWARN_H_
-#define SWIGWARN_H_
+#ifndef SWIG_SWIGWARN_H
+#define SWIG_SWIGWARN_H
 
 %define SWIGWARN_NONE 0 %enddef
 
@@ -147,6 +147,7 @@
 %define SWIGWARN_IGNORE_OPERATOR_NEWARR 394 %enddef	/* new [] */
 %define SWIGWARN_IGNORE_OPERATOR_DELARR 395 %enddef	/* delete [] */
 %define SWIGWARN_IGNORE_OPERATOR_REF 396 %enddef	/* operator *() */
+%define SWIGWARN_IGNORE_OPERATOR_LTEQUALGT 397 %enddef	/* <=> */
 
 /* please leave 350-399 free for WARN_IGNORE_OPERATOR_* */
 
@@ -163,6 +164,7 @@
 %define SWIGWARN_TYPEMAP_SWIGTYPE 452 %enddef /* No longer issued */
 %define SWIGWARN_TYPEMAP_APPLY_UNDEF 453 %enddef
 %define SWIGWARN_TYPEMAP_SWIGTYPELEAK 454 %enddef
+%define SWIGWARN_TYPEMAP_WCHARLEAK 455 %enddef
 
 %define SWIGWARN_TYPEMAP_IN_UNDEF 460 %enddef
 %define SWIGWARN_TYPEMAP_OUT_UNDEF 461 %enddef
