@@ -23,8 +23,8 @@ elseif (APPLE)
     option(LABSOUND_USE_MINIAUDIO "Use miniaudio" OFF)
     option(LABSOUND_USE_RTAUDIO "Use RtAudio" ON)
 elseif (WIN32)
-    option(LABSOUND_USE_MINIAUDIO "Use miniaudio" ON)
-    option(LABSOUND_USE_RTAUDIO "Use RtAudio" OFF)
+    option(LABSOUND_USE_MINIAUDIO "Use miniaudio" OFF)
+    option(LABSOUND_USE_RTAUDIO "Use RtAudio" ON)
 elseif (ANDROID)
     option(LABSOUND_USE_MINIAUDIO "Use miniaudio" ON)
     option(LABSOUND_USE_RTAUDIO "Use RtAudio" OFF)
@@ -97,4 +97,5 @@ list(APPEND LABSOUND_INCLUDE
     ${LABSOUND_ROOT}/third_party/ooura
     ${LABSOUND_ROOT}/third_party/ooura/src
     ${LABSOUND_ROOT}/third_party/kissfft/src
+    ${LABSOUND_ROOT}/third_party/miniaudio
 )
