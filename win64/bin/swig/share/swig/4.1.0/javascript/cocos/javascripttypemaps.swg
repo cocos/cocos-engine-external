@@ -273,7 +273,14 @@ parameters match which function
 %}
 
 %typemap(out) cc::Float32Array %{
-    ok &= nativevalue_to_se($1, s.rval(), s.thisObject() /*ctx*/);
+    ok &= nativevalue_to_se($1, s.rval(), s.thisObject());
     SE_PRECONDITION2(ok, false, "Error processing arguments");
     SE_HOLD_RETURN_VALUE($1, s.thisObject(), s.rval());
+%}
+
+%typemap(out, func_only=1) cc::Vec4 ($ltype* temp), cc::Vec3 ($ltype* temp), cc::Vec2 ($ltype* temp), cc::Mat4 ($ltype* temp), cc::Mat3 ($ltype* temp), cc::Quaternion ($ltype* temp), cc::Color ($ltype* temp) %{
+  temp = ccnew $ltype($1);
+  ok &= nativevalue_to_se(temp, s.rval(), s.thisObject());
+  SE_PRECONDITION2(ok, false, "Error processing arguments");
+  s.rval().toObject()->getPrivateObject()->tryAllowDestroyInGC();
 %}
