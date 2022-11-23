@@ -160,6 +160,17 @@ else()
   set(PhysXSDK)
 endif()
 
+if(USE_AR_MODULE)
+  set(ARSDK libAR)
+  add_library(libAR STATIC IMPORTED GLOBAL)
+  set_target_properties(libAR PROPERTIES
+    IMPORTED_LOCATION ${platform_spec_path}/ar/libar.a
+    INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/../../cocos/xr
+  )
+else()
+  set(ARSDK)
+endif()
+
 if (USE_DEBUG_RENDERER)
 list(APPEND CC_EXTERNAL_LIBS
     freetype
@@ -173,6 +184,7 @@ list(APPEND CC_EXTERNAL_LIBS
     uv
     android_platform
     ${PhysXSDK}
+    ${ARSDK}
 )
 
 if(USE_JOB_SYSTEM_TBB OR CC_USE_VULKAN) ## VKDevice.cpp use tbb_allocator.h
