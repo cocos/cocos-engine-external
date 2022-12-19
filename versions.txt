@@ -132,6 +132,6 @@ glslang (Built using https://github.com/YunHsiao/glslang/tree/build)
     linux:      11.5.0
     
 swig ( Built using https://github.com/cocos/swig/tree/cocos-se, executable files downloaded from https://github.com/cocos/swig/releases/tag/cocos-v1.1.1 )
-    win64:      cocos-v1.1.0 (commit: fac0dbb)
-    mac:        cocos-v1.1.0 (commit: fac0dbb)
-    linux:      cocos-v1.1.0 (commit: fac0dbb)
+    win64:      cocos-v1.1.1 (commit: 7736311)
+    mac:        cocos-v1.1.1 (commit: 7736311)
+    linux:      cocos-v1.1.1 (commit: 7736311)
