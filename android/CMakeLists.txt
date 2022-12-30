@@ -43,10 +43,10 @@ set_target_properties(libwavpack PROPERTIES
   IMPORTED_LOCATION ${platform_spec_path}/liblibwavpack.a
 )
 
-# add_library(libnyquist STATIC IMPORTED GLOBAL)
-# set_target_properties(libnyquist PROPERTIES
-#   IMPORTED_LOCATION ${platform_spec_path}/liblibnyquist.a
-# )
+add_library(libnyquist STATIC IMPORTED GLOBAL)
+set_target_properties(libnyquist PROPERTIES
+  IMPORTED_LOCATION ${platform_spec_path}/liblibnyquist.a
+)
 
 add_library(webp STATIC IMPORTED GLOBAL)
 set_target_properties(webp PROPERTIES
@@ -198,7 +198,7 @@ list(APPEND CC_EXTERNAL_LIBS
     webp
     uv
     libsamplerate
-    # libnyquist
+    libnyquist
     libwavpack
     android_platform
     ${PhysXSDK}

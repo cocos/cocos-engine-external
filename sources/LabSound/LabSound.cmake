@@ -66,7 +66,7 @@ endif()
 # FFT
 if (APPLE)
     set(labsnd_fft_src "${LABSOUND_ROOT}/src/backends/FFTFrameAppleAcclerate.cpp")
-elseif (WIN32 OR LINUX)
+else()
     file(GLOB labsnd_fft_src "${LABSOUND_ROOT}/third_party/kissfft/src/*")
 endif()
 

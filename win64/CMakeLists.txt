@@ -261,8 +261,6 @@ list(APPEND CC_EXTERNAL_LIBS
     png
     ssl
     uv
-    vorbis
-    vorbisfile
     webp
     OpenAL32
     sqlite3
