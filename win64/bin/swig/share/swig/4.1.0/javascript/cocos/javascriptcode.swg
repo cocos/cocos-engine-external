@@ -278,6 +278,7 @@ SE_DECLARE_FINALIZE_FUNC(js_delete_$jsdtor) %}
 %{
 bool js_register_$jsmangledname(se::Object* obj) {
     $jsclass_inheritance
+    cls->defineStaticProperty("__isJSB", se::Value(true), se::PropertyAttribute::READ_ONLY | se::PropertyAttribute::DONT_ENUM | se::PropertyAttribute::DONT_DELETE);
     $jsclassvariables
     $jsclassfunctions
     $jsstaticclassvariables
