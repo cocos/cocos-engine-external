@@ -28,36 +28,6 @@ static bool $jswrapper(se::State& s) // NOLINT(readability-identifier-naming)
 }
 SE_BIND_CTOR($jswrapper, __jsb_$jsmangledname_class, js_delete_$jsdtor)%}
 
-%fragment ("js_ctor_for_struct_default_constructor", "templates")
-%{
-static bool $jswrapper(se::State& s) // NOLINT(readability-identifier-naming)
-{
-    CC_UNUSED bool ok = true;
-    const auto& args = s.args();
-    size_t argc = args.size();
-    $jslocals
-    $jscode
-    auto *ptr = JSB_MAKE_PRIVATE_OBJECT_WITH_INSTANCE(result);
-    if (argc == 0) {
-        s.thisObject()->setPrivateObject(ptr);
-        return true;
-    }
-    $assign_struct_default_args
-    if (argc > 0 && !ok) {
-        delete ptr;
-        SE_REPORT_ERROR("Argument convertion error");
-        return false;
-    }
-    s.thisObject()->setPrivateObject(ptr);
-    return true;
-}
-SE_BIND_CTOR($jswrapper, __jsb_$jsmangledname_class, js_delete_$jsdtor)%}
-
-%fragment ("js_struct_default_constructor_args", "templates") %{
-  if (argc > $js_arg_index && !args[$js_arg_index].isUndefined()) {
-      ok &= sevalue_to_native(args[$js_arg_index], &(result->$field_name), nullptr);
-  }%}
-
 /* -----------------------------------------------------------------------------
  * js_ctor_dispatcher:  dispatcher for overloaded constructors
  *   - $jswrapper:        name of wrapper
