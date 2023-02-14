@@ -127,8 +127,7 @@ void android_app_pre_exec_cmd(struct android_app* android_app, int8_t cmd) {
             break;
 
         case APP_CMD_DESTROY:
-            LOGV("APP_CMD_DESTROY");
-            android_app->destroyRequested = 1;
+            // ts call to destroy
             break;
     }
 }
