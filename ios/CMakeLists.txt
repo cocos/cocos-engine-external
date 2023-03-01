@@ -206,17 +206,6 @@ else()
   set(PhysXSDK)
 endif()
 
-if(USE_AR_MODULE)
-  set(ARSDK libAR)
-  add_library(libAR STATIC IMPORTED GLOBAL)
-  set_target_properties(libAR PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/ar/libar.a
-    INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/../../cocos/xr
-  )
-else()
-  set(ARSDK)
-endif()
-
 list(APPEND CC_EXTERNAL_INCLUDES
     ${CMAKE_CURRENT_LIST_DIR}/include
 )
@@ -235,7 +224,6 @@ list(APPEND CC_EXTERNAL_LIBS
     ${spirv-cross_libs_name}
     ${tbb_libs_name}
     ${PhysXSDK}
-    ${ARSDK}
 )
 
 set(ZLIB z)
