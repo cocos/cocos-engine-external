@@ -63,35 +63,6 @@ target_include_directories(android_platform PUBLIC
 #   android log dl
 # )
 
-if(USE_XR)
-  include(${CMAKE_CURRENT_LIST_DIR}/xr.cmake)
-  if(BUILD_XR_NATIVE)
-    list(APPEND XR_EXTERNAL_SOURCES ${CMAKE_CURRENT_LIST_DIR}/../../cocos/xr/Xr.h)
-    list(APPEND XR_EXTERNAL_SOURCES ${CMAKE_CURRENT_LIST_DIR}/../../cocos/platform/interfaces/modules/XRCommon.h)
-    list(APPEND XR_EXTERNAL_INCLUDES ${CMAKE_CURRENT_LIST_DIR}/../../cocos/xr)
-    list(APPEND XR_EXTERNAL_INCLUDES ${CMAKE_CURRENT_LIST_DIR}/../../cocos/platform/interfaces/modules)
-    include(${CMAKE_CURRENT_LIST_DIR}/../../../../CCOpenXR/internal/CMakeLists.txt)
-  else()
-    add_library(xr STATIC IMPORTED GLOBAL)
-    set_target_properties(xr PROPERTIES
-      IMPORTED_LOCATION ${platform_spec_path}/xr/${XR_FOLDER}/libxr.a
-      INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/../../cocos/xr
-    )
-
-    set_property(TARGET xr APPEND PROPERTY
-      INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/../../cocos/platform/interfaces/modules
-    )
-
-    target_link_libraries(xr INTERFACE
-      ${XR_EXTERNAL_LIBS}
-    )
-  endif()
-
-  list(APPEND CC_EXTERNAL_LIBS
-      xr
-  )
-endif()
-
 set(se_libs_name)
 
 if(USE_SE_V8)
@@ -160,17 +131,6 @@ else()
   set(PhysXSDK)
 endif()
 
-if(USE_AR_MODULE)
-  set(ARSDK libAR)
-  add_library(libAR STATIC IMPORTED GLOBAL)
-  set_target_properties(libAR PROPERTIES
-    IMPORTED_LOCATION ${platform_spec_path}/ar/libar.a
-    INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/../../cocos/xr
-  )
-else()
-  set(ARSDK)
-endif()
-
 if (USE_DEBUG_RENDERER)
 list(APPEND CC_EXTERNAL_LIBS
     freetype
@@ -184,7 +144,6 @@ list(APPEND CC_EXTERNAL_LIBS
     uv
     android_platform
     ${PhysXSDK}
-    ${ARSDK}
 )
 
 if(USE_JOB_SYSTEM_TBB OR CC_USE_VULKAN) ## VKDevice.cpp use tbb_allocator.h
