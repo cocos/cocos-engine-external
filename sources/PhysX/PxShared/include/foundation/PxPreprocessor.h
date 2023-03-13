@@ -96,6 +96,9 @@ Operating system defines, see http://sourceforge.net/p/predef/wiki/OperatingSyst
 #define PX_WIN32 1
 #elif defined(__ANDROID__)
 #define PX_ANDROID 1
+#elif defined(__OPENHARMONY__)//openharmony
+#define PX_ANDROID 1
+#define PX_OPENHARMONY 1
 #elif defined(__linux__) || defined (__EMSCRIPTEN__) // note: __ANDROID__ implies __linux__
 #define PX_LINUX 1
 #elif defined(__APPLE__) && (defined(__arm__) || defined(__arm64__))
