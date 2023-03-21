@@ -137,6 +137,7 @@ typedef struct GameActivity {
  */
 typedef struct GameActivityPointerAxes {
     int32_t id;
+    int32_t toolType;
     float axisValues[GAME_ACTIVITY_POINTER_INFO_AXIS_COUNT];
     float rawX;
     float rawY;
@@ -240,6 +241,12 @@ typedef struct GameActivityMotionEvent {
 
     float precisionX;
     float precisionY;
+
+    int historySize;
+    long* historicalEventTimesMillis;
+    long* historicalEventTimesNanos;
+    float* historicalAxisValues;
+
 } GameActivityMotionEvent;
 
 /**
@@ -421,8 +428,12 @@ typedef struct GameActivityCallbacks {
  * activity.
  * Ownership of out_event is maintained by the caller.
  */
-void GameActivityMotionEvent_fromJava(JNIEnv* env, jobject motionEvent,
-                                      GameActivityMotionEvent* out_event);
+void GameActivityMotionEvent_fromJava(
+    JNIEnv *env, jobject motionEvent, GameActivityMotionEvent *out_event,
+    int pointerCount, int historySize, int deviceId, int source, int action,
+    int64_t eventTime, int64_t downTime, int flags, int metaState,
+    int actionButton, int buttonState, int classification, int edgeFlags,
+    float precisionX, float precisionY);
 
 /**
  * \brief Convert a Java `KeyEvent` to a `GameActivityKeyEvent`.

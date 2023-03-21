@@ -33,6 +33,7 @@ namespace paddleboat {
 
 typedef struct Paddleboat_GameActivityPointerInfo {
     int32_t id;
+    int32_t toolType; // added in newer version
     float axisValues[PADDLEBOAT_GAME_ACTIVITY_POINTER_INFO_AXIS_COUNT];
     float rawX;
     float rawY;
