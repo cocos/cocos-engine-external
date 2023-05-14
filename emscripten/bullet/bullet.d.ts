@@ -10,7 +10,7 @@ declare namespace Bullet {
         _free(p: ptr): void;
         _read_f32(p: ptr): void;
         _write_f32(p: ptr, v: number): void;
-        _safe_delete(p: ptr, bulletType: number):void;
+        _safe_delete(p: ptr, bulletType: number): void;
 
         Vec3_new(x: number, y: number, z: number): ptr;
         Vec3_x(p: ptr): number;
@@ -44,12 +44,31 @@ declare namespace Bullet {
         TypedConstraint_getFixedBody(): ptr;
         HingeConstraint_new(ptr0: ptr, ptr1: ptr, ptr2: ptr, ptr3: ptr): ptr;
         HingeConstraint_setFrames(ptr0: ptr, ptr1: ptr, ptr2: ptr): void;
+        HingeConstraint_setLimit(ptr: ptr, low: number, upper: number, softness: number, biasFactor: number, relaxationFactor: number): void;
+        HingeConstraint_setAngularOnly(ptr: ptr, angular: number): void;
+        HingeConstraint_enableMotor(ptr: ptr, enable: boolean): void;
+        HingeConstraint_setMotorVelocity(ptr: ptr, velocity: number): void;
+        HingeConstraint_setMaxMotorImpulse(ptr: ptr, maxImpulse: number): void;
+        HingeConstraint_setMotorTarget(ptr: ptr, target: number, dt: number): void;
         P2PConstraint_new(ptr0: ptr, ptr1: ptr, ptr2: ptr, ptr3: ptr): ptr;
         P2PConstraint_setPivotA(ptr0: ptr, ptr1: ptr): void;
         P2PConstraint_setPivotB(ptr0: ptr, ptr1: ptr): void;
         TypedConstraint_setMaxImpulseThreshold(ptr0: ptr, maxImpulse: number): void;
         FixedConstraint_new(ptr0: ptr, ptr1: ptr, ptr2: ptr, ptr3: ptr): ptr;
         FixedConstraint_setFrames(ptr0: ptr, ptr1: ptr, ptr2: ptr): void;
+        Generic6DofSpring2Constraint_new(ptr0: ptr, ptr1: ptr, ptr2: ptr, ptr3: ptr, rotateOrder: number): ptr;
+        Generic6DofSpring2Constraint_setFrames(ptr0: ptr, ptr1: ptr, ptr2: ptr): void;
+        Generic6DofSpring2Constraint_setLimit(ptr0: ptr, index: number, lo: number, hi: number): void;
+        Generic6DofSpring2Constraint_enableSpring(ptr0: ptr, index: number, onOff: boolean): void;
+        Generic6DofSpring2Constraint_setStiffness(ptr0: ptr, index: number, stiffness: number): void;
+        Generic6DofSpring2Constraint_setDamping(ptr0: ptr, index: number, damping: number): void;
+        Generic6DofSpring2Constraint_setBounce(ptr0: ptr, index: number, bounce: number): void;
+        Generic6DofSpring2Constraint_setEquilibriumPoint(ptr0: ptr, index: number, val: number): void;
+        Generic6DofSpring2Constraint_enableMotor(ptr0: ptr, index: number, onOff: boolean): void;
+        Generic6DofSpring2Constraint_setMaxMotorForce(ptr0: ptr, index: number, force: number): void;
+        Generic6DofSpring2Constraint_setTargetVelocity(ptr0: ptr, index: number, velocity: number): void;
+        Generic6DofSpring2Constraint_setServo(ptr0: ptr, index: number, onOff: boolean): number;
+        Generic6DofSpring2Constraint_setServoTarget(ptr0: ptr, index: number, target: number): number;
 
         // shapes
 
@@ -180,6 +199,7 @@ declare namespace Bullet {
         ManifoldPoint_get_m_positionWorldOnA(p: ptr): ptr;
         ManifoldPoint_get_m_positionWorldOnB(p: ptr): ptr;
         ManifoldPoint_get_m_normalWorldOnB(p: ptr): ptr;
+        ManifoldPoint_get_m_positionWorldOnB(p: ptr): ptr;
 
         DbvtBroadphase_new(): ptr;
         SequentialImpulseConstraintSolver_new(): ptr;
@@ -187,6 +207,7 @@ declare namespace Bullet {
         CollisionWorld_addCollisionObject(p: ptr, body: ptr, g: number, m: number): void;
         CollisionWorld_removeCollisionObject(p: ptr, body: ptr): void;
         CollisionWorld_rayTest(p: ptr, p0: ptr, p1: ptr, p2: ptr): void;
+        CollisionWorld_convexSweepTest(p: ptr, castShape: ptr, from: ptr, to: ptr, resultCallback: ptr, allowedCcdPenetration: ptr): void;
 
         ccDiscreteDynamicsWorld_new(dispatcher: ptr, pairCache: ptr, solver: ptr): ptr;
         ccDiscreteDynamicsWorld_setAllowSleep(p: ptr, v: boolean): void;
@@ -196,8 +217,11 @@ declare namespace Bullet {
         DynamicsWorld_removeRigidBody(p: ptr, body: ptr): void;
         DynamicsWorld_addConstraint(p: ptr, p2: ptr, v: boolean): void;
         DynamicsWorld_removeConstraint(p: ptr, p2: ptr): void;
+        DynamicsWorld_addAction(p: ptr, action: ptr): void;
+        DynamicsWorld_removeAction(p: ptr, action: ptr): void;
 
         RayCallback_hasHit(p: ptr): boolean;
+        ConvexCallback_hasHit(p: ptr): boolean;
 
         ccAllRayCallback_static(): ptr;
         ccAllRayCallback_setFlags(p: ptr, flag: number): void;
@@ -213,7 +237,48 @@ declare namespace Bullet {
         ccClosestRayCallback_getHitNormalWorld(p: ptr): ptr;
         ccClosestRayCallback_getCollisionShapePtr(p: ptr): ptr;
 
+        ccAllConvexCallback_static(): ptr;
+        ccAllConvexCallback_reset(p: ptr, p0: ptr, p1: ptr, m: number, q: boolean): void;
+        ccAllConvexCallback_getHitPointWorld(p: ptr): ptr;
+        ccAllConvexCallback_getHitNormalWorld(p: ptr): ptr;
+        ccAllConvexCallback_getCollisionShapePtrs(p: ptr): ptr;
+
+        ccClosestConvexCallback_static(): ptr;
+        ccClosestConvexCallback_reset(p: ptr, p0: ptr, p1: ptr, m: number, q: boolean): void;
+        ccClosestConvexCallback_getHitPointWorld(p: ptr): ptr;
+        ccClosestConvexCallback_getHitNormalWorld(p: ptr): ptr;
+        ccClosestConvexCallback_getCollisionShapePtr(p: ptr): ptr;
+
         ccMaterial_new(): ptr;
         ccMaterial_set(p: ptr, r: number, f: number, rf: number, sf: number): void;
+
+        // CharacterController
+        ControllerHitReport_new(): ptr;
+        CharacterController_getGhostObject(ptrCCT: ptr): ptr;
+        ControllerHit_getCurrentController(ptr: ptr): ptr;
+        ControllerHit_getHitWorldPos(ptr: ptr): ptr;
+        ControllerHit_getHitWorldNormal(ptr: ptr): ptr;
+        ControllerHit_getHitMotionDir(ptr: ptr): ptr;         //CCT hit Motion direction
+        ControllerHit_getHitMotionLength(ptr: ptr): number;   //CCT hit Motion length
+        ControllerShapeHit_getHitShape(ptr: ptr): ptr;
+        ControllerShapeHit_getHitCollisionObject(ptr: ptr): ptr;
+        CharacterController_move(ptrCCT: ptr, ptrMovement: ptr, minDist: number, deltaTime: number):number;
+        CharacterController_getPosition(ptrCCT: ptr);
+        CharacterController_setContactOffset(ptrCCT: ptr, v: number);
+        CharacterController_setStepOffset(ptrCCT: ptr, v: number);
+        CharacterController_setSlopeLimit(ptrCCT: ptr, v: number);
+        CharacterController_setCollision(ptrCCT: ptr, collision: boolean);
+        CharacterController_setOverlapRecovery(ptrCCT: ptr, value: boolean);
+        CapsuleCharacterControllerDesc_new(maxSlopeRadians: number, stepHeight: number, contactOffset: number, 
+            ptrUpAxis: ptr, ptrInitPos: ptr, ptruUserControllerHitReport: ptr, radius: number, height: number): ptr;
+        CapsuleCharacterController_new(collisionWorld: ptr, ptrBtCapsuleCharacterControllerDesc: ptr, userObjectPointer: ptr): ptr;
+        CapsuleCharacterController_setRadius(ptrCCT: ptr, radius: number): void;
+        CapsuleCharacterController_setHeight(ptrCCT: ptr, height: number): void;
+        BoxCharacterControllerDesc_new(maxSlopeRadians: number, stepHeight: number, contactOffset: number, 
+            ptrUpAxis: ptr, ptrInitPos: ptr, ptruUserControllerHitReport: ptr, halfHeight: number, halfSideExtent: number, halfForwardExtent: number): ptr;
+        BoxCharacterController_new(collisionWorld: ptr, ptrBtBoxCharacterControllerDesc: ptr, userObjectPointer: ptr): ptr;
+        BoxCharacterController_setHalfHeight(ptrCCT: ptr, v: number): void;
+        BoxCharacterController_setHalfSideExtent(ptrCCT: ptr, v: number): void;
+        BoxCharacterController_setHalfForwardExtent(ptrCCT: ptr, v: number): void;
     }
 }
