@@ -60,10 +60,16 @@ var quit_ = function(status, toThrow) {
 // Determine the runtime environment we are in. You can customize this by
 // setting the ENVIRONMENT setting at compile time (see settings.js).
 
-var ENVIRONMENT_IS_WEB = true;
+var ENVIRONMENT_IS_WEB = false;
 var ENVIRONMENT_IS_WORKER = false;
 var ENVIRONMENT_IS_NODE = false;
 var ENVIRONMENT_IS_SHELL = false;
+ENVIRONMENT_IS_WEB = typeof window === 'object';
+ENVIRONMENT_IS_WORKER = typeof importScripts === 'function';
+// N.b. Electron.js environment is simultaneously a NODE-environment, but
+// also a web environment.
+ENVIRONMENT_IS_NODE = typeof process === 'object' && typeof process.versions === 'object' && typeof process.versions.node === 'string';
+ENVIRONMENT_IS_SHELL = !ENVIRONMENT_IS_WEB && !ENVIRONMENT_IS_NODE && !ENVIRONMENT_IS_WORKER;
 
 
 
@@ -575,8 +581,8 @@ var wasmMemory;
 // In the wasm backend, we polyfill the WebAssembly object,
 // so this creates a (non-native-wasm) table for us.
 var wasmTable = new WebAssembly.Table({
-  'initial': 5437,
-  'maximum': 5437 + 0,
+  'initial': 5024,
+  'maximum': 5024 + 0,
   'element': 'anyfunc'
 });
 
@@ -1198,11 +1204,11 @@ function updateGlobalBufferAndViews(buf) {
 }
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 5608208,
+    STACK_BASE = 5607968,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 365328,
-    DYNAMIC_BASE = 5608208,
-    DYNAMICTOP_PTR = 365168;
+    STACK_MAX = 365088,
+    DYNAMIC_BASE = 5607968,
+    DYNAMICTOP_PTR = 364928;
 
 
 
@@ -1678,7 +1684,7 @@ var ASM_CONSTS = {
 
 
 
-// STATICTOP = STATIC_BASE + 364304;
+// STATICTOP = STATIC_BASE + 364064;
 /* global initializers */  __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 
 
@@ -3903,7 +3909,7 @@ var ASM_CONSTS = {
     }
 
   function _emscripten_get_sbrk_ptr() {
-      return 365168;
+      return 364928;
     }
 
   function _emscripten_memcpy_big(dest, src, num) {
@@ -4311,6 +4317,11 @@ var dynCall_viii = Module["dynCall_viii"] = function() {
 };
 
 /** @type {function(...*):?} */
+var dynCall_i = Module["dynCall_i"] = function() {
+  return (dynCall_i = Module["dynCall_i"] = Module["asm"]["dynCall_i"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
 var dynCall_fii = Module["dynCall_fii"] = function() {
   return (dynCall_fii = Module["dynCall_fii"] = Module["asm"]["dynCall_fii"]).apply(null, arguments);
 };
@@ -4326,11 +4337,6 @@ var dynCall_iiiii = Module["dynCall_iiiii"] = function() {
 };
 
 /** @type {function(...*):?} */
-var dynCall_i = Module["dynCall_i"] = function() {
-  return (dynCall_i = Module["dynCall_i"] = Module["asm"]["dynCall_i"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
 var dynCall_iiiiiii = Module["dynCall_iiiiiii"] = function() {
   return (dynCall_iiiiiii = Module["dynCall_iiiiiii"] = Module["asm"]["dynCall_iiiiiii"]).apply(null, arguments);
 };
@@ -4338,26 +4344,6 @@ var dynCall_iiiiiii = Module["dynCall_iiiiiii"] = function() {
 /** @type {function(...*):?} */
 var dynCall_vii = Module["dynCall_vii"] = function() {
   return (dynCall_vii = Module["dynCall_vii"] = Module["asm"]["dynCall_vii"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
-var dynCall_iiff = Module["dynCall_iiff"] = function() {
-  return (dynCall_iiff = Module["dynCall_iiff"] = Module["asm"]["dynCall_iiff"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
-var dynCall_iifff = Module["dynCall_iifff"] = function() {
-  return (dynCall_iifff = Module["dynCall_iifff"] = Module["asm"]["dynCall_iifff"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
-var dynCall_iiiff = Module["dynCall_iiiff"] = function() {
-  return (dynCall_iiiff = Module["dynCall_iiiff"] = Module["asm"]["dynCall_iiiff"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
-var dynCall_iiifff = Module["dynCall_iiifff"] = function() {
-  return (dynCall_iiifff = Module["dynCall_iiifff"] = Module["asm"]["dynCall_iiifff"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -4376,13 +4362,13 @@ var dynCall_viifi = Module["dynCall_viifi"] = function() {
 };
 
 /** @type {function(...*):?} */
-var dynCall_iifffi = Module["dynCall_iifffi"] = function() {
-  return (dynCall_iifffi = Module["dynCall_iifffi"] = Module["asm"]["dynCall_iifffi"]).apply(null, arguments);
+var dynCall_dii = Module["dynCall_dii"] = function() {
+  return (dynCall_dii = Module["dynCall_dii"] = Module["asm"]["dynCall_dii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
-var dynCall_viiiii = Module["dynCall_viiiii"] = function() {
-  return (dynCall_viiiii = Module["dynCall_viiiii"] = Module["asm"]["dynCall_viiiii"]).apply(null, arguments);
+var dynCall_viid = Module["dynCall_viid"] = function() {
+  return (dynCall_viid = Module["dynCall_viid"] = Module["asm"]["dynCall_viid"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -4411,13 +4397,13 @@ var dynCall_iiiiiifiiiiif = Module["dynCall_iiiiiifiiiiif"] = function() {
 };
 
 /** @type {function(...*):?} */
-var dynCall_iiiiiifiiiiiif = Module["dynCall_iiiiiifiiiiiif"] = function() {
-  return (dynCall_iiiiiifiiiiiif = Module["dynCall_iiiiiifiiiiiif"] = Module["asm"]["dynCall_iiiiiifiiiiiif"]).apply(null, arguments);
+var dynCall_iiiif = Module["dynCall_iiiif"] = function() {
+  return (dynCall_iiiif = Module["dynCall_iiiif"] = Module["asm"]["dynCall_iiiif"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
-var dynCall_iiiif = Module["dynCall_iiiif"] = function() {
-  return (dynCall_iiiif = Module["dynCall_iiiif"] = Module["asm"]["dynCall_iiiif"]).apply(null, arguments);
+var dynCall_iiifff = Module["dynCall_iiifff"] = function() {
+  return (dynCall_iiifff = Module["dynCall_iiifff"] = Module["asm"]["dynCall_iiifff"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -4436,6 +4422,11 @@ var dynCall_iif = Module["dynCall_iif"] = function() {
 };
 
 /** @type {function(...*):?} */
+var dynCall_iiff = Module["dynCall_iiff"] = function() {
+  return (dynCall_iiff = Module["dynCall_iiff"] = Module["asm"]["dynCall_iiff"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
 var dynCall_iiiifff = Module["dynCall_iiiifff"] = function() {
   return (dynCall_iiiifff = Module["dynCall_iiiifff"] = Module["asm"]["dynCall_iiiifff"]).apply(null, arguments);
 };
@@ -4443,16 +4434,6 @@ var dynCall_iiiifff = Module["dynCall_iiiifff"] = function() {
 /** @type {function(...*):?} */
 var dynCall_iiffff = Module["dynCall_iiffff"] = function() {
   return (dynCall_iiffff = Module["dynCall_iiffff"] = Module["asm"]["dynCall_iiffff"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
-var dynCall_viiif = Module["dynCall_viiif"] = function() {
-  return (dynCall_viiif = Module["dynCall_viiif"] = Module["asm"]["dynCall_viiif"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
-var dynCall_iiiiffii = Module["dynCall_iiiiffii"] = function() {
-  return (dynCall_iiiiffii = Module["dynCall_iiiiffii"] = Module["asm"]["dynCall_iiiiffii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -4481,13 +4462,8 @@ var dynCall_iiiifiiiiii = Module["dynCall_iiiifiiiiii"] = function() {
 };
 
 /** @type {function(...*):?} */
-var dynCall_iiiiifiiiiif = Module["dynCall_iiiiifiiiiif"] = function() {
-  return (dynCall_iiiiifiiiiif = Module["dynCall_iiiiifiiiiif"] = Module["asm"]["dynCall_iiiiifiiiiif"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
-var dynCall_iiiiifiiiiiif = Module["dynCall_iiiiifiiiiiif"] = function() {
-  return (dynCall_iiiiifiiiiiif = Module["dynCall_iiiiifiiiiiif"] = Module["asm"]["dynCall_iiiiifiiiiiif"]).apply(null, arguments);
+var dynCall_viiif = Module["dynCall_viiif"] = function() {
+  return (dynCall_viiif = Module["dynCall_viiif"] = Module["asm"]["dynCall_viiif"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -4498,11 +4474,6 @@ var dynCall_iiiiiiii = Module["dynCall_iiiiiiii"] = function() {
 /** @type {function(...*):?} */
 var dynCall_vif = Module["dynCall_vif"] = function() {
   return (dynCall_vif = Module["dynCall_vif"] = Module["asm"]["dynCall_vif"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
-var dynCall_iiiffii = Module["dynCall_iiiffii"] = function() {
-  return (dynCall_iiiffii = Module["dynCall_iiiffii"] = Module["asm"]["dynCall_iiiffii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -4538,6 +4509,11 @@ var dynCall_viiiiiiiiii = Module["dynCall_viiiiiiiiii"] = function() {
 /** @type {function(...*):?} */
 var dynCall_viiiiiiiiiiifii = Module["dynCall_viiiiiiiiiiifii"] = function() {
   return (dynCall_viiiiiiiiiiifii = Module["dynCall_viiiiiiiiiiifii"] = Module["asm"]["dynCall_viiiiiiiiiiifii"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
+var dynCall_viiiii = Module["dynCall_viiiii"] = function() {
+  return (dynCall_viiiii = Module["dynCall_viiiii"] = Module["asm"]["dynCall_viiiii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -4621,6 +4597,11 @@ var dynCall_viifffi = Module["dynCall_viifffi"] = function() {
 };
 
 /** @type {function(...*):?} */
+var dynCall_iifff = Module["dynCall_iifff"] = function() {
+  return (dynCall_iifff = Module["dynCall_iifff"] = Module["asm"]["dynCall_iifff"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
 var dynCall_viiifiiiii = Module["dynCall_viiifiiiii"] = function() {
   return (dynCall_viiifiiiii = Module["dynCall_viiifiiiii"] = Module["asm"]["dynCall_viiifiiiii"]).apply(null, arguments);
 };
@@ -4628,6 +4609,11 @@ var dynCall_viiifiiiii = Module["dynCall_viiifiiiii"] = function() {
 /** @type {function(...*):?} */
 var dynCall_viiiifiiiiif = Module["dynCall_viiiifiiiiif"] = function() {
   return (dynCall_viiiifiiiiif = Module["dynCall_viiiifiiiiif"] = Module["asm"]["dynCall_viiiifiiiiif"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
+var dynCall_iiiiifiiiiif = Module["dynCall_iiiiifiiiiif"] = function() {
+  return (dynCall_iiiiifiiiiif = Module["dynCall_iiiiifiiiiif"] = Module["asm"]["dynCall_iiiiifiiiiif"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -4683,11 +4669,6 @@ var dynCall_iiiiiiiiiii = Module["dynCall_iiiiiiiiiii"] = function() {
 /** @type {function(...*):?} */
 var dynCall_iiiiiiiiii = Module["dynCall_iiiiiiiiii"] = function() {
   return (dynCall_iiiiiiiiii = Module["dynCall_iiiiiiiiii"] = Module["asm"]["dynCall_iiiiiiiiii"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
-var dynCall_viiiffii = Module["dynCall_viiiffii"] = function() {
-  return (dynCall_viiiffii = Module["dynCall_viiiffii"] = Module["asm"]["dynCall_viiiffii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */

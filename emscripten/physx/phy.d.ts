@@ -182,51 +182,6 @@ declare namespace phy {
         getRigidDynamicLockFlags (): number
     }
 
-    /// Character Controller ///
-
-    interface ControllerShapeHit {
-    }
-
-    interface ControllersHit {
-    }
-
-    abstract class Controller {
-        release (): void
-        move (disp: Vec3, minDist: number, elapsedTime: number,
-            filterData: FilterData, cb: number): number
-        setPosition (pos: any): void
-        getPosition (): any
-        setStepOffset (val: number): void
-        getStepOffset (): number
-        setContactOffset (val: number): void
-        getContactOffset (): number
-        setSlopeLimit (val: number): void
-        getSlopeLimit (): number
-        setCollision (val: boolean): void
-        setSimulationFilterData (val: FilterData): void
-        setQueryFilterData (val: FilterData): void
-    }
-
-    class CapsuleController extends Controller {
-        constructor ()
-        setRadius (val: number): void
-        getRadius (): number
-        setHeight (val: number): void
-        getHeight (): number
-        setClimbingMode (val: number): void
-        getClimbingMode (): number
-    }
-
-    class BoxController extends Controller {
-        constructor ()
-        setHalfHeight (val: number): void
-        getHalfHeight (): number
-        setHalfSideExtent(val: number): void
-        getHalfSideExtent (): number
-        setHalfForwardExtent (val: number): void
-        getHalfForwardExtent (): number
-    }
-
     /// Geometry ///
 
     interface Geometry {
