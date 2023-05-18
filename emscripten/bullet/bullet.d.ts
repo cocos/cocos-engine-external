@@ -1,7 +1,5 @@
-declare module 'external:emscripten/bullet/bullet.asm.js' {
-    function factory (env: any, wasmMemory: ArrayBuffer): Bullet.instance;
-    export default factory;
-}
+// tslint:disable
+declare function instantiate(env: any, buffer: ArrayBuffer): Bullet.instance;
 
 declare namespace Bullet {
     type ptr = number;
@@ -44,12 +42,12 @@ declare namespace Bullet {
         TypedConstraint_getFixedBody(): ptr;
         HingeConstraint_new(ptr0: ptr, ptr1: ptr, ptr2: ptr, ptr3: ptr): ptr;
         HingeConstraint_setFrames(ptr0: ptr, ptr1: ptr, ptr2: ptr): void;
-        HingeConstraint_setLimit(ptr: ptr, low: number, upper: number, softness: number, biasFactor: number, relaxationFactor: number): void;
-        HingeConstraint_setAngularOnly(ptr: ptr, angular: number): void;
-        HingeConstraint_enableMotor(ptr: ptr, enable: boolean): void;
-        HingeConstraint_setMotorVelocity(ptr: ptr, velocity: number): void;
-        HingeConstraint_setMaxMotorImpulse(ptr: ptr, maxImpulse: number): void;
-        HingeConstraint_setMotorTarget(ptr: ptr, target: number, dt: number): void;
+        HingeConstraint_setLimit(p: ptr, low: number, upper: number, softness: number, biasFactor: number, relaxationFactor: number): void;
+        HingeConstraint_setAngularOnly(p: ptr, angular: number): void;
+        HingeConstraint_enableMotor(p: ptr, enable: boolean): void;
+        HingeConstraint_setMotorVelocity(p: ptr, velocity: number): void;
+        HingeConstraint_setMaxMotorImpulse(p: ptr, maxImpulse: number): void;
+        HingeConstraint_setMotorTarget(p: ptr, target: number, dt: number): void;
         P2PConstraint_new(ptr0: ptr, ptr1: ptr, ptr2: ptr, ptr3: ptr): ptr;
         P2PConstraint_setPivotA(ptr0: ptr, ptr1: ptr): void;
         P2PConstraint_setPivotB(ptr0: ptr, ptr1: ptr): void;
@@ -255,13 +253,13 @@ declare namespace Bullet {
         // CharacterController
         ControllerHitReport_new(): ptr;
         CharacterController_getGhostObject(ptrCCT: ptr): ptr;
-        ControllerHit_getCurrentController(ptr: ptr): ptr;
-        ControllerHit_getHitWorldPos(ptr: ptr): ptr;
-        ControllerHit_getHitWorldNormal(ptr: ptr): ptr;
-        ControllerHit_getHitMotionDir(ptr: ptr): ptr;         //CCT hit Motion direction
-        ControllerHit_getHitMotionLength(ptr: ptr): number;   //CCT hit Motion length
-        ControllerShapeHit_getHitShape(ptr: ptr): ptr;
-        ControllerShapeHit_getHitCollisionObject(ptr: ptr): ptr;
+        ControllerHit_getCurrentController(p: ptr): ptr;
+        ControllerHit_getHitWorldPos(p: ptr): ptr;
+        ControllerHit_getHitWorldNormal(p: ptr): ptr;
+        ControllerHit_getHitMotionDir(p: ptr): ptr;         //CCT hit Motion direction
+        ControllerHit_getHitMotionLength(p: ptr): number;   //CCT hit Motion length
+        ControllerShapeHit_getHitShape(p: ptr): ptr;
+        ControllerShapeHit_getHitCollisionObject(p: ptr): ptr;
         CharacterController_move(ptrCCT: ptr, ptrMovement: ptr, minDist: number, deltaTime: number):number;
         CharacterController_getPosition(ptrCCT: ptr);
         CharacterController_setContactOffset(ptrCCT: ptr, v: number);
