@@ -1,5 +1,7 @@
-// tslint:disable
-declare function instantiate(env: any, buffer: ArrayBuffer): Bullet.instance;
+declare module 'external:emscripten/bullet/bullet.asm.js' {
+    function factory (env: any, wasmMemory: ArrayBuffer): Bullet.instance;
+    export default factory;
+}
 
 declare namespace Bullet {
     type ptr = number;
