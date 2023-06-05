@@ -143,8 +143,19 @@ add_library(glslang-default-resource-limits STATIC IMPORTED GLOBAL)
 set_target_properties(glslang-default-resource-limits PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libglslang-default-resource-limits.a
 )
-set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits)
+set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits MachineIndependent GenericCodeGen)
 
+if(USE_PHYSICS_PHYSX)
+  set(PhysXSDK PhysXCooking PhysXCharacterKinematic PhysXVehicle PhysXExtensions PhysX PhysXPvdSDK PhysXCommon PhysXFoundation)
+  foreach(PX IN LISTS PhysXSDK)
+    add_library(${PX} STATIC IMPORTED GLOBAL)
+    set_target_properties(${PX} PROPERTIES
+      IMPORTED_LOCATION ${ohos_lib_dir}/PhysX/lib${PX}_static.a
+    )
+  endforeach()
+else()
+  set(PhysXSDK)
+endif()
 
 ############################# TBB #############################
 if(USE_JOB_SYSTEM_TBB)
@@ -175,19 +186,22 @@ endif()
 list(APPEND CC_EXTERNAL_LIBS
     jpeg
     png
-    webp
     sqlite3
-    ${se_libs_name}
+    webp
+    ${PhysXSDK}
     ${glslang_libs_name}
-    OpenALSoft
-    mpg123
+)
+
+list(APPEND CC_EXTERNAL_LIBS
+${se_libs_name}
+OpenALSoft
+mpg123
 )
 
 set(ZLIB z)
 if(NOT USE_MODULES)
   list(APPEND CC_EXTERNAL_LIBS ${ZLIB})
 endif()
-
 
 if(USE_V8_DEBUGGER OR USE_WEBSOCKET_SERVER)
   list(APPEND CC_EXTERNAL_LIBS
@@ -198,6 +212,9 @@ endif()
 list(APPEND CC_EXTERNAL_INCLUDES
   ${platform_spec_path}/include
   ${platform_spec_path}/include/v8
+  ${platform_spec_path}/include/sqlite
+  ${platform_spec_path}/include/png16
+  ${platform_spec_path}/include/uv
 )
 
 #TODO: remove in future version
