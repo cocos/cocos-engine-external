@@ -143,7 +143,8 @@ add_library(glslang-default-resource-limits STATIC IMPORTED GLOBAL)
 set_target_properties(glslang-default-resource-limits PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libglslang-default-resource-limits.a
 )
-set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits MachineIndependent GenericCodeGen)
+# Unable to link MachineIndependent with GenericCodeGen
+set(glslang_libs_name glslang OGLCompiler OSDependent SPIRV glslang-default-resource-limits)
 
 if(USE_PHYSICS_PHYSX)
   set(PhysXSDK PhysXCooking PhysXCharacterKinematic PhysXVehicle PhysXExtensions PhysX PhysXPvdSDK PhysXCommon PhysXFoundation)
@@ -214,7 +215,8 @@ list(APPEND CC_EXTERNAL_INCLUDES
   ${platform_spec_path}/include/v8
   ${platform_spec_path}/include/sqlite
   ${platform_spec_path}/include/png16
-  ${platform_spec_path}/include/uv
+  # Will conflict with the header file of harmonyos' standard library (error.h).
+  # ${platform_spec_path}/include/uv
 )
 
 #TODO: remove in future version
