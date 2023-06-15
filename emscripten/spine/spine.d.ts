@@ -2,7 +2,7 @@ declare module 'external:emscripten/spine/spine.asm.js' {
     export default SpineWasm;
 }
 
-declare module 'external:emscripten/spine/spine.js' {
+declare module 'external:emscripten/spine/spine.wasm.js' {
     export default SpineWasm;
 }
 
@@ -10,10 +10,7 @@ declare module 'external:emscripten/spine/spine.js' {
 declare function SpineWasm (moduleOptions?: any): Promise<void>;
 
 declare namespace SpineWasm {
-    type ptr = number;
     interface instance {
-        spine: any;
-        memory: any;
         spineWasmInit(): void;
         spineWasmDestroy(): void;
     }
