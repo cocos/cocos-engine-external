@@ -39,7 +39,7 @@ if(NOT USE_MODULES)
 endif()
 
 # add dependent boost libs
-if(NOT NX)
+if((NOT NX) AND (NOT EMSCRIPTEN))
   include(${CMAKE_CURRENT_LIST_DIR}/boost-source/boost.cmake)
 endif()
 
