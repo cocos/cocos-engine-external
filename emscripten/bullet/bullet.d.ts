@@ -255,6 +255,7 @@ declare namespace Bullet {
         // CharacterController
         ControllerHitReport_new(): ptr;
         CharacterController_getGhostObject(ptrCCT: ptr): ptr;
+        CharacterController_getCollisionShape(ptrCCT: ptr): ptr;
         ControllerHit_getCurrentController(p: ptr): ptr;
         ControllerHit_getHitWorldPos(p: ptr): ptr;
         ControllerHit_getHitWorldNormal(p: ptr): ptr;
