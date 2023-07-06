@@ -33,6 +33,21 @@ set_target_properties(uv PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/uv
 )
 
+add_library(libsamplerate STATIC IMPORTED GLOBAL)
+set_target_properties(libsamplerate PROPERTIES
+  IMPORTED_LOCATION ${platform_spec_path}/libsamplerate.a
+)
+
+add_library(libwavpack STATIC IMPORTED GLOBAL)
+set_target_properties(libwavpack PROPERTIES
+  IMPORTED_LOCATION ${platform_spec_path}/liblibwavpack.a
+)
+
+add_library(libnyquist STATIC IMPORTED GLOBAL)
+set_target_properties(libnyquist PROPERTIES
+  IMPORTED_LOCATION ${platform_spec_path}/liblibnyquist.a
+)
+
 add_library(webp STATIC IMPORTED GLOBAL)
 set_target_properties(webp PROPERTIES
   IMPORTED_LOCATION ${platform_spec_path}/libwebp.a
@@ -142,6 +157,9 @@ list(APPEND CC_EXTERNAL_LIBS
     png
     webp
     uv
+    libsamplerate
+    libnyquist
+    libwavpack
     android_platform
     ${PhysXSDK}
 )

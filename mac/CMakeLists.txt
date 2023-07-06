@@ -80,6 +80,20 @@ add_library(GLESv2 SHARED IMPORTED GLOBAL)
 set_target_properties(GLESv2 PROPERTIES
     IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libGLESv2.dylib
 )
+add_library(libsamplerate STATIC IMPORTED GLOBAL)
+set_target_properties(libsamplerate PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libsamplerate.a
+)
+
+add_library(libwavpack STATIC IMPORTED GLOBAL)
+set_target_properties(libwavpack PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/liblibwavpack.a
+)
+
+add_library(libnyquist STATIC IMPORTED GLOBAL)
+set_target_properties(libnyquist PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/liblibnyquist.a
+)
 
 set(se_libs_name)
 
@@ -205,6 +219,9 @@ list(APPEND CC_EXTERNAL_LIBS
     png
     webp
     curl
+    libsamplerate
+    libwavpack
+    libnyquist
     ${glslang_libs_name}
     ${spirv-cross_libs_name}
     ${tbb_libs_name}

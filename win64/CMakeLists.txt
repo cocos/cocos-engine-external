@@ -38,6 +38,19 @@ set_target_properties(crypto PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libcrypto.lib
 )
 
+add_library(libnyquist STATIC IMPORTED GLOBAL)
+set_target_properties(libnyquist PROPERTIES 
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libnyquist_d.lib
+)
+add_library(sampleRate STATIC IMPORTED GLOBAL)
+set_target_properties(sampleRate PROPERTIES 
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/samplerate.lib
+)
+
+add_library(libwavpack STATIC IMPORTED GLOBAL)
+set_target_properties(libwavpack PROPERTIES 
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libwavpack_d.lib
+)
 
 add_library(curl SHARED IMPORTED GLOBAL)
 
@@ -248,14 +261,15 @@ list(APPEND CC_EXTERNAL_LIBS
     png
     ssl
     uv
-    vorbis
-    vorbisfile
     webp
     OpenAL32
     sqlite3
     zlib
     websockets
     SDL2
+    libnyquist
+    libwavpack
+    sampleRate
     SDL2Main
     tcmalloc
     ${glslang_libs_name}

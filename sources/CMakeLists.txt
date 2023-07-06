@@ -76,7 +76,7 @@ if(ANDROID OR OHOS OR NX)
 
   list(APPEND CC_EXTERNAL_LIBS
     pvmp3dec
-    vorbisidec
+    # vorbisidec
   )
 
 elseif(WINDOWS)
@@ -105,5 +105,22 @@ if(USE_PHYSICS_PHYSX)
     ${CMAKE_CURRENT_LIST_DIR}/PhysX/PhysX/include
     ${CMAKE_CURRENT_LIST_DIR}/PhysX/PhysX/source
     ${CMAKE_CURRENT_LIST_DIR}/PhysX/PxShared/include
+  )
+endif()
+
+set(CC_USE_AUDIO_DEBUG ON)
+if (OHOS)
+elseif(CC_USE_AUDIO_DEBUG)
+  include(${CMAKE_CURRENT_LIST_DIR}/LabSound/CMakeLists.txt)
+  list(APPEND CC_EXTERNAL_SOURCES
+    ${LABSOUND_SOURCES}
+  )
+  list(APPEND CC_EXTERNAL_INCLUDES
+  ${LABSOUND_INCLUDE}
+  )
+else()
+  include(${CMAKE_CURRENT_LIST_DIR}/LabSound/CMakeLists.txt)
+  list(APPEND CC_EXTERNAL_INCLUDES
+    ${LABSOUND_INCLUDE}
   )
 endif()
