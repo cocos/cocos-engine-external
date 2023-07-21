@@ -72,6 +72,13 @@ set_target_properties(curl PROPERTIES
   IMPORTED_LOCATION ${ohos_lib_dir}/libcurl.a
 )
 
+# curl needs to link the following libraries.  
+list(APPEND CC_EXTERNAL_LIBS
+    mbedtls
+    mbedcrypto
+    mbedx509
+)
+
 set(se_libs_name)
 
 if(USE_SE_V8)
@@ -122,9 +129,6 @@ endif()
 if(USE_SOCKET)
     list(APPEND CC_EXTERNAL_LIBS
         websockets
-        mbedtls
-        mbedcrypto
-        mbedx509
     )
 endif()
 
