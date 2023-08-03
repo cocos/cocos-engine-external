@@ -40,7 +40,7 @@ png
     openharmony: 1.6.37
 sdl
     win32: 2.0.10
-    win64: 2.0.14
+    win64: 2.28.1
     linux: 2.0.20
 
 jpeg
@@ -139,7 +139,7 @@ glslang (Built using https://github.com/YunHsiao/glslang/tree/build)
     linux:      11.5.0
     openharmony:11.5.0 (commit: 1978c76)
     
-swig ( Built using https://github.com/cocos/swig/tree/cocos-se, executable files are downloaded from https://github.com/cocos/swig/releases/tag/cocos-v1.1.5 )
-    win64:      cocos-v1.1.5 (commit: 42543c0)
-    mac:        cocos-v1.1.5 (commit: 42543c0)
-    linux:      cocos-v1.1.5 (commit: 42543c0)
+swig ( Built using https://github.com/cocos/swig/tree/cocos-se, executable files are downloaded from https://github.com/cocos/swig/releases/tag/cocos-v1.1.6 )
+    win64:      cocos-v1.1.6 (commit: f52be17)
+    mac:        cocos-v1.1.6 (commit: f52be17)
+    linux:      cocos-v1.1.6 (commit: f52be17)
