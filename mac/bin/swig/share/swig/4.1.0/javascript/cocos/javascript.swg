@@ -22,3 +22,10 @@
 
 #define %module_macro(m) %feature("module_macro","m")
 #define %release_returned_cpp_object_in_gc(method)  %feature("release_returned_cpp_object_in_gc", "1") method
+
+%define %virtual_inherit(klass) 
+%feature("virtual_inherit", "1") klass;
+%typemap(in) klass *self
+%{ $1 = SE_THIS_OBJECT_VIRTUAL<$*ltype, cc::VirtualInheritBase>(s);
+if (nullptr == $1) return true;%}
+%enddef
