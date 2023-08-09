@@ -22,8 +22,7 @@ static bool $jswrapper(se::State& s) // NOLINT(readability-identifier-naming)
     $js_check_arg_count
     $jslocals
     $jscode
-    auto *ptr = JSB_MAKE_PRIVATE_OBJECT_WITH_INSTANCE(result);
-    s.thisObject()->setPrivateObject(ptr);
+    $js_set_private_object
     return true;
 }
 SE_BIND_CTOR($jswrapper, __jsb_$jsmangledname_class, js_delete_$jsdtor)%}
@@ -62,8 +61,7 @@ static bool $jswrapper(se::State& s) // NOLINT(readability-identifier-naming)
     CC_UNUSED bool ok = true;
     $jslocals
     $jscode
-    auto *ptr = JSB_MAKE_PRIVATE_OBJECT_WITH_INSTANCE(result);
-    s.thisObject()->setPrivateObject(ptr);
+    $js_set_private_object
     return true;
 }
 %}
@@ -86,19 +84,20 @@ static bool $jswrapper(se::State& s) // NOLINT(readability-identifier-naming)
 
 /* -----------------------------------------------------------------------------
  * js_dtor:  template for a destructor wrapper
- *   - $jsmangledname:  mangled class name
+ *   - $classname_mangled:  mangled class name
  *   - $jstype:         class type
  * ----------------------------------------------------------------------------- */
 %fragment ("js_dtor", "templates")
 %{
 static bool $jswrapper(se::State& s) {
+  cc::invokeOnGarbageCollectMethod<$jsclass_type>(s);
   return true;
 }
 SE_BIND_FINALIZE_FUNC($jswrapper) %}
 
 /* -----------------------------------------------------------------------------
  * js_dtor:  template for a destructor wrapper
- *   - $jsmangledname:  mangled class name
+ *   - $classname_mangled:  mangled class name
  *   - $jstype:         class type
  *   - ${destructor_action}: The custom destructor action to invoke.
  * ----------------------------------------------------------------------------- */
@@ -106,6 +105,7 @@ SE_BIND_FINALIZE_FUNC($jswrapper) %}
 %{
 static bool $jswrapper(se::State& s)
 {
+  cc::invokeOnGarbageCollectMethod<$jsclass_type>(s);
   return true;
 }
 SE_BIND_FINALIZE_FUNC($jswrapper) %}
