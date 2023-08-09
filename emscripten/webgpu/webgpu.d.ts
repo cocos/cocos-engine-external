@@ -8,12 +8,7 @@ declare module 'external:emscripten/webgpu/glslang.js' {
     export default factory;
 }
 
-declare module 'external:emscripten/webgpu/spirv-tools.js' {
-    function factory (gfx: any): Promise<any>;
-    export default factory;
-}
-
-declare module 'external:emscripten/webgpu/naga_wasm.js' {
+declare module 'external:emscripten/webgpu/twgsl.js' {
     function factory (gfx: any): Promise<any>;
     export default factory;
 }
