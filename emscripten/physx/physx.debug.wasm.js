@@ -575,8 +575,8 @@ var wasmMemory;
 // In the wasm backend, we polyfill the WebAssembly object,
 // so this creates a (non-native-wasm) table for us.
 var wasmTable = new WebAssembly.Table({
-  'initial': 5437,
-  'maximum': 5437 + 0,
+  'initial': 5439,
+  'maximum': 5439 + 0,
   'element': 'anyfunc'
 });
 
@@ -1198,11 +1198,11 @@ function updateGlobalBufferAndViews(buf) {
 }
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 5608208,
+    STACK_BASE = 5618720,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 365328,
-    DYNAMIC_BASE = 5608208,
-    DYNAMICTOP_PTR = 365168;
+    STACK_MAX = 375840,
+    DYNAMIC_BASE = 5618720,
+    DYNAMICTOP_PTR = 375680;
 
 
 
@@ -1678,7 +1678,7 @@ var ASM_CONSTS = {
 
 
 
-// STATICTOP = STATIC_BASE + 364304;
+// STATICTOP = STATIC_BASE + 374816;
 /* global initializers */  __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 
 
@@ -1751,14 +1751,10 @@ var ASM_CONSTS = {
       }
     }function createNamedFunction(name, body) {
       name = makeLegalFunctionName(name);
-      /*jshint evil:true*/
-      return new Function(
-          "body",
-          "return function " + name + "() {\n" +
-          "    \"use strict\";" +
-          "    return body.apply(this, arguments);\n" +
-          "};\n"
-      )(body);
+      return function() {
+        "use strict";
+        return body.apply(this, arguments);
+      };
     }
   
   
@@ -2763,17 +2759,14 @@ var ASM_CONSTS = {
       signature = readLatin1String(signature);
   
       function makeDynCaller(dynCall) {
-          var args = [];
-          for (var i = 1; i < signature.length; ++i) {
-              args.push('a' + i);
-          }
-  
-          var name = 'dynCall_' + signature + '_' + rawFunction;
-          var body = 'return function ' + name + '(' + args.join(', ') + ') {\n';
-          body    += '    return dynCall(rawFunction' + (args.length ? ', ' : '') + args.join(', ') + ');\n';
-          body    += '};\n';
-  
-          return (new Function('dynCall', 'rawFunction', body))(dynCall, rawFunction);
+        var argCache = [rawFunction];
+        return function() {
+            argCache.length = arguments.length + 1;
+            for (var i = 0; i < arguments.length; i++) {
+              argCache[i + 1] = arguments[i];
+            }
+            return dynCall.apply(null, argCache);
+        };
       }
   
       var dc = Module['dynCall_' + signature];
@@ -2921,6 +2914,9 @@ var ASM_CONSTS = {
       if (!(constructor instanceof Function)) {
           throw new TypeError('new_ called with constructor type ' + typeof(constructor) + " which is not a function");
       }
+      if (constructor === Function) {
+        throw new Error('new_ cannot create a new Function with DYNAMIC_EXECUTION == 0.');
+      }
   
       /*
        * Previously, the following line was just:
@@ -2975,71 +2971,47 @@ var ASM_CONSTS = {
   
       var returns = (argTypes[0].name !== "void");
   
-      var argsList = "";
-      var argsListWired = "";
-      for(var i = 0; i < argCount - 2; ++i) {
-          argsList += (i!==0?", ":"")+"arg"+i;
-          argsListWired += (i!==0?", ":"")+"arg"+i+"Wired";
-      }
+      var expectedArgCount = argCount - 2;
+      var argsWired = new Array(expectedArgCount);
+      var invokerFuncArgs = [];
+      var destructors = [];
+      return function() {
+        if (arguments.length !== expectedArgCount) {
+          throwBindingError('function ' + humanName + ' called with ' +
+            arguments.length + ' arguments, expected ' + expectedArgCount +
+            ' args!');
+        }
+        destructors.length = 0;
+        var thisWired;
+        invokerFuncArgs.length = isClassMethodFunc ? 2 : 1;
+        invokerFuncArgs[0] = cppTargetFunc;
+        if (isClassMethodFunc) {
+          thisWired = argTypes[1].toWireType(destructors, this);
+          invokerFuncArgs[1] = thisWired;
+        }
+        for (var i = 0; i < expectedArgCount; ++i) {
+          argsWired[i] = argTypes[i + 2].toWireType(destructors, arguments[i]);
+          invokerFuncArgs.push(argsWired[i]);
+        }
   
-      var invokerFnBody =
-          "return function "+makeLegalFunctionName(humanName)+"("+argsList+") {\n" +
-          "if (arguments.length !== "+(argCount - 2)+") {\n" +
-              "throwBindingError('function "+humanName+" called with ' + arguments.length + ' arguments, expected "+(argCount - 2)+" args!');\n" +
-          "}\n";
+        var rv = cppInvokerFunc.apply(null, invokerFuncArgs);
   
-  
-      if (needsDestructorStack) {
-          invokerFnBody +=
-              "var destructors = [];\n";
-      }
-  
-      var dtorStack = needsDestructorStack ? "destructors" : "null";
-      var args1 = ["throwBindingError", "invoker", "fn", "runDestructors", "retType", "classParam"];
-      var args2 = [throwBindingError, cppInvokerFunc, cppTargetFunc, runDestructors, argTypes[0], argTypes[1]];
-  
-  
-      if (isClassMethodFunc) {
-          invokerFnBody += "var thisWired = classParam.toWireType("+dtorStack+", this);\n";
-      }
-  
-      for(var i = 0; i < argCount - 2; ++i) {
-          invokerFnBody += "var arg"+i+"Wired = argType"+i+".toWireType("+dtorStack+", arg"+i+"); // "+argTypes[i+2].name+"\n";
-          args1.push("argType"+i);
-          args2.push(argTypes[i+2]);
-      }
-  
-      if (isClassMethodFunc) {
-          argsListWired = "thisWired" + (argsListWired.length > 0 ? ", " : "") + argsListWired;
-      }
-  
-      invokerFnBody +=
-          (returns?"var rv = ":"") + "invoker(fn"+(argsListWired.length>0?", ":"")+argsListWired+");\n";
-  
-      if (needsDestructorStack) {
-          invokerFnBody += "runDestructors(destructors);\n";
-      } else {
-          for(var i = isClassMethodFunc?1:2; i < argTypes.length; ++i) { // Skip return value at index 0 - it's not deleted here. Also skip class type if not a method.
-              var paramName = (i === 1 ? "thisWired" : ("arg"+(i - 2)+"Wired"));
-              if (argTypes[i].destructorFunction !== null) {
-                  invokerFnBody += paramName+"_dtor("+paramName+"); // "+argTypes[i].name+"\n";
-                  args1.push(paramName+"_dtor");
-                  args2.push(argTypes[i].destructorFunction);
-              }
+        if (needsDestructorStack) {
+          runDestructors(destructors);
+        } else {
+          for (var i = isClassMethodFunc ? 1 : 2; i < argTypes.length; i++) {
+            var param = i === 1 ? thisWired : argsWired[i - 2];
+            if (argTypes[i].destructorFunction !== null) {
+              argTypes[i].destructorFunction(param);
+            }
           }
-      }
+        }
   
-      if (returns) {
-          invokerFnBody += "var ret = retType.fromWireType(rv);\n" +
-                           "return ret;\n";
-      } else {
-      }
-      invokerFnBody += "}\n";
   
-      args1.push(invokerFnBody);
-  
-      var invokerFunction = new_(Function, args1).apply(null, args2);
-      return invokerFunction;
+        if (returns) {
+          return argTypes[0].fromWireType(rv);
+        }
+      };
     }
   
   function heap32VectorToArray(count, firstElement) {
@@ -3811,45 +3783,23 @@ var ASM_CONSTS = {
       var types = __emval_lookupTypes(argCount, argTypes);
   
       var retType = types[0];
-      var signatureName = retType.name + "_$" + types.slice(1).map(function (t) { return t.name; }).join("_") + "$";
-  
-      var params = ["retType"];
-      var args = [retType];
-  
-      var argsList = ""; // 'arg0, arg1, arg2, ... , argN'
-      for (var i = 0; i < argCount - 1; ++i) {
-          argsList += (i !== 0 ? ", " : "") + "arg" + i;
-          params.push("argType" + i);
-          args.push(types[1 + i]);
-      }
-  
-      var functionName = makeLegalFunctionName("methodCaller_" + signatureName);
-      var functionBody =
-          "return function " + functionName + "(handle, name, destructors, args) {\n";
-  
-      var offset = 0;
-      for (var i = 0; i < argCount - 1; ++i) {
-          functionBody +=
-          "    var arg" + i + " = argType" + i + ".readValueFromPointer(args" + (offset ? ("+"+offset) : "") + ");\n";
-          offset += types[i + 1]['argPackAdvance'];
-      }
-      functionBody +=
-          "    var rv = handle[name](" + argsList + ");\n";
-      for (var i = 0; i < argCount - 1; ++i) {
-          if (types[i + 1]['deleteObject']) {
-              functionBody +=
-              "    argType" + i + ".deleteObject(arg" + i + ");\n";
+      var argN = new Array(argCount - 1);
+      var invokerFunction = function(handle, name, destructors, args) {
+        var offset = 0;
+        for (var i = 0; i < argCount - 1; ++i) {
+          argN[i] = types[i + 1].readValueFromPointer(args + offset);
+          offset += types[i + 1].argPackAdvance;
+        }
+        var rv = handle[name].apply(handle, argN);
+        for (var i = 0; i < argCount - 1; ++i) {
+          if (types[i + 1].deleteObject) {
+            types[i + 1].deleteObject(argN[i]);
           }
-      }
-      if (!retType.isVoid) {
-          functionBody +=
-          "    return retType.toWireType(destructors, rv);\n";
-      }
-      functionBody +=
-          "};\n";
-  
-      params.push(functionBody);
-      var invokerFunction = new_(Function, params).apply(null, args);
+        }
+        if (!retType.isVoid) {
+          return retType.toWireType(destructors, rv);
+        }
+      };
       return __emval_addMethodCaller(invokerFunction);
     }
 
@@ -3903,7 +3853,7 @@ var ASM_CONSTS = {
     }
 
   function _emscripten_get_sbrk_ptr() {
-      return 365168;
+      return 375680;
     }
 
   function _emscripten_memcpy_big(dest, src, num) {
