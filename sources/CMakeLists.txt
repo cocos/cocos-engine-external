@@ -30,11 +30,18 @@ set(CC_EXTERNAL_SOURCES
   ${CMAKE_CURRENT_LIST_DIR}/tommyds/tommy.h
 )
 
+set (CC_MESHOPT_SOURCES
+  ${CMAKE_CURRENT_LIST_DIR}/meshopt/meshoptimizer.h
+  ${CMAKE_CURRENT_LIST_DIR}/meshopt/vertexcodec.cpp
+  ${CMAKE_CURRENT_LIST_DIR}/meshopt/indexcodec.cpp
+)
+
 if(NOT USE_MODULES)
   list(APPEND CC_EXTERNAL_SOURCES
     ${CC_UNZIP_SOURCES}
     ${CC_TINYDIR_SOURCES}
     ${CC_UTILS_SOURCES}
+    ${CC_MESHOPT_SOURCES}
   )
 endif()
 
