@@ -39,10 +39,10 @@ png
 
     openharmony: 1.6.37
 sdl
+    mac: 2.28.1
     win32: 2.0.10
     win64: 2.28.1
     linux: 2.0.20
-
 jpeg
     mac: 9d
     win32: 9d
