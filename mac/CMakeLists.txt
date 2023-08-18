@@ -86,11 +86,6 @@ set_target_properties(SDL2 PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libSDL2-2.0.0.dylib
 )
 
-add_library(SDL2Main STATIC IMPORTED GLOBAL)
-set_target_properties(SDL2Main PROPERTIES
-  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libSDL2main.a
-)
-
 set(se_libs_name)
 
 if(CC_EDITOR)
@@ -216,7 +211,6 @@ list(APPEND CC_EXTERNAL_LIBS
     webp
     curl
     SDL2
-    SDL2Main
     ${glslang_libs_name}
     ${spirv-cross_libs_name}
     ${tbb_libs_name}
