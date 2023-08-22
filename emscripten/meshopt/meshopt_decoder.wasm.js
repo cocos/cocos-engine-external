@@ -4,17 +4,16 @@ var MeshoptDecoder = (function() {
 	"use strict";
 
 	var instance;
-	var supported;
+	var supported = false;
 
 	var ready = (instantiateWasm = {}) => {
 
 		if (typeof instantiateWasm !== 'function') {
-			supported = false;
-
 			return Promise.reject(new Error('No wasm support detected'));
 		}
 
 		return instantiateWasm().then(function(result) {
+			supported = true;
 			instance = result.instance;
 			instance.exports.__wasm_call_ctors();
 		});
