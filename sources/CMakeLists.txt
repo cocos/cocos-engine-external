@@ -33,12 +33,10 @@ list(APPEND CC_EXTERNAL_SOURCES
   ${CC_UTILS_SOURCES}
 )
 
-# add dependent boost libs
 list(APPEND CC_EXTERNAL_INCLUDES 
   ${CMAKE_CURRENT_LIST_DIR}/pvmp3dec/include
   ${CMAKE_CURRENT_LIST_DIR}/pvmp3dec/src
 )
-include(${CMAKE_CURRENT_LIST_DIR}/boost-source/boost.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/pvmp3dec/CMakeLists.txt)
 include(${CMAKE_CURRENT_LIST_DIR}/tremolo/CMakeLists.txt)
 
