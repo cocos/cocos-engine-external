@@ -144,9 +144,6 @@ list(APPEND CC_EXTERNAL_INCLUDES
   ${platform_spec_path}/include/freetype
   ${platform_spec_path}/include/websockets
   ${platform_spec_path}/include/openssl
-  ${platform_spec_path}/include/nghttp2
-  ${platform_spec_path}/include/xz
-  ${platform_spec_path}/include/zstd
   ${platform_spec_path}/include/opengles-api
 )
 
