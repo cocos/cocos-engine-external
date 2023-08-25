@@ -85,30 +85,17 @@ if(USE_SE_V8)
     add_library(v8_monolith STATIC IMPORTED GLOBAL)
     set_target_properties(v8_monolith PROPERTIES
       IMPORTED_LOCATION ${ohos_lib_dir}/libv8_monolith.a
+      INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/v8
     )
 
     set(OHOS_ARM64_MACROS
-        V8_TYPED_ARRAY_MAX_SIZE_IN_HEAP=64
-        ENABLE_MINOR_MC
-        V8_INTL_SUPPORT
-        V8_CONCURRENT_MARKING
-        V8_ENABLE_LAZY_SOURCE_POSITIONS
-        V8_EMBEDDED_BUILTINS
-        V8_WIN64_UNWINDING_INFO
-        V8_ENABLE_REGEXP_INTERPRETER_THREADED_DISPATCH
-        V8_SNAPSHOT_COMPRESSION
         V8_31BIT_SMIS_ON_64BIT_ARCH
         V8_DEPRECATION_WARNINGS
         V8_IMMINENT_DEPRECATION_WARNINGS
         V8_TARGET_ARCH_ARM64
         V8_HAVE_TARGET_OS
         V8_TARGET_OS_LINUX
-        DISABLE_UNTRUSTED_CODE_MITIGATIONS
         V8_COMPRESS_POINTERS
-        U_USING_ICU_NAMESPACE=0
-        U_ENABLE_DYLOAD=0
-        USE_CHROMIUM_ICU=1
-        U_STATIC_IMPLEMENTATION
     )
 
     if(OHOS_ARCH STREQUAL "arm64-v8a")
@@ -117,13 +104,7 @@ if(USE_SE_V8)
        )
     endif()
 
-    add_library(v8_inspector STATIC IMPORTED GLOBAL)
-    set_target_properties(v8_inspector PROPERTIES
-      IMPORTED_LOCATION ${ohos_lib_dir}/libinspector.a
-      INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/v8
-    )
-
-    set(se_libs_name v8_monolith v8_inspector)
+    set(se_libs_name v8_monolith)
 endif()
 
 if(USE_SOCKET)
@@ -132,11 +113,6 @@ if(USE_SOCKET)
     )
 endif()
 
-if(USE_SE_V8 AND USE_V8_DEBUGGER)
-    list(APPEND CC_EXTERNAL_LIBS
-        v8_inspector
-    )
-endif()
 
 add_library(glslang STATIC IMPORTED GLOBAL)
 set_target_properties(glslang PROPERTIES
@@ -218,6 +194,10 @@ list(APPEND CC_EXTERNAL_LIBS
     ${PhysXSDK}
     ${glslang_libs_name}
 )
+
+if(NOT USE_MODULES)
+  list(APPEND CC_EXTERNAL_LIBS ${se_libs_name})
+endif()
 
 list(APPEND CC_EXTERNAL_INCLUDES
   ${platform_spec_path}/include
