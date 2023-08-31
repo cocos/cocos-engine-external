@@ -81,6 +81,11 @@ set_target_properties(GLESv2 PROPERTIES
     IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libGLESv2.dylib
 )
 
+add_library(SDL2 SHARED IMPORTED GLOBAL)
+set_target_properties(SDL2 PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/libSDL2.a
+)
+
 set(se_libs_name)
 
 if(CC_EDITOR)
@@ -205,6 +210,10 @@ list(APPEND CC_EXTERNAL_LIBS
     png
     webp
     curl
+    SDL2
+    # sdl2 depends on the following two libraries.
+    "-framework IOKit"
+    "-framework Carbon"
     ${glslang_libs_name}
     ${spirv-cross_libs_name}
     ${tbb_libs_name}
