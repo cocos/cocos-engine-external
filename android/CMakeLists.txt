@@ -84,7 +84,8 @@ if(USE_SE_V8)
       IMPORTED_LOCATION ${platform_spec_path}/v8/libinspector.a
       INTERFACE_INCLUDE_DIRECTORIES ${platform_spec_path}/include/v8
     )
-    set(se_libs_name v8_monolith v8_inspector)
+    set(se_libs_name v8_monolith)
+    set(se_libs_include ${platform_spec_path}/include/v8)
 endif()
 
 if(USE_WEBSOCKET_SERVER)
@@ -160,7 +161,9 @@ endif()
 
 set(ZLIB z)
 if(NOT USE_MODULES)
-  list(APPEND CC_EXTERNAL_LIBS ${ZLIB}  ${se_libs_name})
+  list(APPEND CC_EXTERNAL_LIBS ${ZLIB} 
+   ${se_libs_name}
+   )
 endif()
 
 
