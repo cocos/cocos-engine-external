@@ -1,4 +1,3 @@
-
 interface Vec3 {
     x: number, y: number, z: number
 }
@@ -17,7 +16,7 @@ interface FilterData {
 declare namespace phy {
     /// Base ///
 
-    const physics: Physics
+    const physics: Physics;
     abstract class Physics {
         private constructor ()
         createCooking (cp: CookingParams): Cooking
@@ -350,8 +349,6 @@ declare namespace phy {
 
     /// Joints ///
 
-
-
     /// Extensions ///
 
     interface Spring {
@@ -615,22 +612,22 @@ declare namespace phy {
 
     class SceneQueryHit {
         private constructor ()
-        actor: RigidActor
-        shape: Shape
-        faceIndex: number
+        actor: RigidActor;
+        shape: Shape;
+        faceIndex: number;
     }
 
     class RayCastHit {
         private constructor ()
-        actor: RigidActor
-        shape: Shape
-        faceIndex: number
-        u: number
-        v: number
-        normal: Vec3
-        position: Vec3
-        distance: number
-        flags: number
+        actor: RigidActor;
+        shape: Shape;
+        faceIndex: number;
+        u: number;
+        v: number;
+        normal: Vec3;
+        position: Vec3;
+        distance: number;
+        flags: number;
     }
 
     type preFilter = (filterData: FilterData, shape: Shape, actor: RigidActor, hitFlags: number) => QueryHitType
@@ -695,7 +692,7 @@ declare namespace phy {
         /**
         \brief Internal flag, used by #PxContactPair.extractContacts()
 
-        The applied contact impulses are provided for every contact point. 
+        The applied contact impulses are provided for every contact point.
         This is the case if #PxPairFlag::eSOLVE_CONTACT has been set for the pair.
         */
         eINTERNAL_HAS_IMPULSES = (1 << 4),
@@ -728,9 +725,9 @@ declare namespace phy {
         /**
         \brief Call contact report callback or trigger callback when this collision pair starts to be in contact.
 
-        If one of the two collision objects is a trigger shape (see #PxShapeFlag::eTRIGGER_SHAPE) 
-        then the trigger callback will get called as soon as the other object enters the trigger volume. 
-        If none of the two collision objects is a trigger shape then the contact report callback will get 
+        If one of the two collision objects is a trigger shape (see #PxShapeFlag::eTRIGGER_SHAPE)
+        then the trigger callback will get called as soon as the other object enters the trigger volume.
+        If none of the two collision objects is a trigger shape then the contact report callback will get
         called when the actors of this collision pair start to be in contact.
 
         \note Only takes effect if the colliding actors are rigid bodies.
@@ -744,7 +741,7 @@ declare namespace phy {
         /**
         \brief Call contact report callback while this collision pair is in contact
 
-        If none of the two collision objects is a trigger shape then the contact report callback will get 
+        If none of the two collision objects is a trigger shape then the contact report callback will get
         called while the actors of this collision pair are in contact.
 
         \note Triggers do not support this event. Persistent trigger contacts need to be tracked separately by observing eNOTIFY_TOUCH_FOUND/eNOTIFY_TOUCH_LOST events.
@@ -764,9 +761,9 @@ declare namespace phy {
         /**
         \brief Call contact report callback or trigger callback when this collision pair stops to be in contact
 
-        If one of the two collision objects is a trigger shape (see #PxShapeFlag::eTRIGGER_SHAPE) 
-        then the trigger callback will get called as soon as the other object leaves the trigger volume. 
-        If none of the two collision objects is a trigger shape then the contact report callback will get 
+        If one of the two collision objects is a trigger shape (see #PxShapeFlag::eTRIGGER_SHAPE)
+        then the trigger callback will get called as soon as the other object leaves the trigger volume.
+        If none of the two collision objects is a trigger shape then the contact report callback will get
         called when the actors of this collision pair stop to be in contact.
 
         \note Only takes effect if the colliding actors are rigid bodies.
@@ -785,7 +782,7 @@ declare namespace phy {
         If CCD with multiple passes is enabled, then a fast moving object might bounce on and off the same
         object multiple times. Hence, the same pair might be in contact multiple times during a simulation step.
         This flag will make sure that all the detected collision during CCD will get reported. For performance
-        reasons, the system can not always tell whether the contact pair lost touch in one of the previous CCD 
+        reasons, the system can not always tell whether the contact pair lost touch in one of the previous CCD
         passes and thus can also not always tell whether the contact is new or has persisted. eNOTIFY_TOUCH_CCD
         just reports when the two collision objects were detected as being in contact during a CCD pass.
 
@@ -850,19 +847,19 @@ declare namespace phy {
         eNOTIFY_CONTACT_POINTS = (1 << 9),
 
         /**
-        \brief This flag is used to indicate whether this pair generates discrete collision detection contacts. 
+        \brief This flag is used to indicate whether this pair generates discrete collision detection contacts.
 
         \note Contacts are only responded to if eSOLVE_CONTACT is enabled.
         */
         eDETECT_DISCRETE_CONTACT = (1 << 10),
 
         /**
-        \brief This flag is used to indicate whether this pair generates CCD contacts. 
+        \brief This flag is used to indicate whether this pair generates CCD contacts.
 
         \note The contacts will only be responded to if eSOLVE_CONTACT is enabled on this pair.
         \note The scene must have PxSceneFlag::eENABLE_CCD enabled to use this feature.
         \note Non-static bodies of the pair should have PxRigidBodyFlag::eENABLE_CCD specified for this feature to work correctly.
-        \note This flag is not supported with trigger shapes. However, CCD trigger events can be emulated using non-trigger shapes 
+        \note This flag is not supported with trigger shapes. However, CCD trigger events can be emulated using non-trigger shapes
         and requesting eNOTIFY_TOUCH_FOUND and eNOTIFY_TOUCH_LOST and not raising eSOLVE_CONTACT on the pair.
 
         @see PxRigidBodyFlag::eENABLE_CCD
@@ -872,40 +869,40 @@ declare namespace phy {
 
         /**
         \brief Provide pre solver velocities in contact reports for this collision pair.
-    	
+
         If the collision pair has contact reports enabled, the velocities of the rigid bodies before contacts have been solved
         will be provided in the contact report callback unless the pair lost touch in which case no data will be provided.
-    	
+
         \note Usually it is not necessary to request these velocities as they will be available by querying the velocity from the provided
         PxRigidActor object directly. However, it might be the case that the velocity of a rigid body gets set while the simulation is running
         in which case the PxRigidActor would return this new velocity in the contact report callback and not the velocity the simulation used.
-    	
+
         @see PxSimulationEventCallback.onContact(), PxContactPairVelocity, PxContactPairHeader.extraDataStream
         */
         ePRE_SOLVER_VELOCITY = (1 << 12),
 
         /**
         \brief Provide post solver velocities in contact reports for this collision pair.
-    	
+
         If the collision pair has contact reports enabled, the velocities of the rigid bodies after contacts have been solved
         will be provided in the contact report callback unless the pair lost touch in which case no data will be provided.
-    	
+
         @see PxSimulationEventCallback.onContact(), PxContactPairVelocity, PxContactPairHeader.extraDataStream
         */
         ePOST_SOLVER_VELOCITY = (1 << 13),
 
         /**
         \brief Provide rigid body poses in contact reports for this collision pair.
-    	
-        If the collision pair has contact reports enabled, the rigid body poses at the contact event will be provided 
+
+        If the collision pair has contact reports enabled, the rigid body poses at the contact event will be provided
         in the contact report callback unless the pair lost touch in which case no data will be provided.
-    	
+
         \note Usually it is not necessary to request these poses as they will be available by querying the pose from the provided
         PxRigidActor object directly. However, it might be the case that the pose of a rigid body gets set while the simulation is running
         in which case the PxRigidActor would return this new pose in the contact report callback and not the pose the simulation used.
-        Another use case is related to CCD with multiple passes enabled, A fast moving object might bounce on and off the same 
+        Another use case is related to CCD with multiple passes enabled, A fast moving object might bounce on and off the same
         object multiple times. This flag can be used to request the rigid body poses at the time of impact for each such collision event.
-    	
+
         @see PxSimulationEventCallback.onContact(), PxContactPairPose, PxContactPairHeader.extraDataStream
         */
         eCONTACT_EVENT_POSE = (1 << 14),
@@ -942,36 +939,40 @@ declare namespace phy {
         */
         eRIGID_DYNAMIC,
 
-
         eARTICULATION_LINK
     }
 
     enum ActorFlag {
         /**
-            /**
-            \brief Disables scene gravity for this actor
-            */
+        \brief Enable debug renderer for this actor
+        @see PxScene.getRenderBuffer() PxRenderBuffer PxVisualizationParameter
+        */
+        eVISUALIZATION = (1 << 0),
+
+        /**
+        \brief Disables scene gravity for this actor
+        */
         eDISABLE_GRAVITY = (1 << 1),
 
         /**
         \brief Enables the sending of SimulationEventCallback::onWake() and SimulationEventCallback::onSleep() notify events
-	
+
         @see SimulationEventCallback::onWake() SimulationEventCallback::onSleep()
         */
         eSEND_SLEEP_NOTIFIES = (1 << 2),
 
         /**
         \brief Disables simulation for the actor.
-    	
+
         \note This is only supported by RigidStatic and RigidDynamic actors and can be used to reduce the memory footprint when rigid actors are
         used for scene queries only.
-	
+
         \note Setting this flag will remove all constraints attached to the actor from the scene.
-	
+
         \note If this flag is set, the following calls are forbidden:
         \li RigidBody: setLinearVelocity(), setAngularVelocity(), addForce(), addTorque(), clearForce(), clearTorque()
         \li RigidDynamic: setKinematicTarget(), setWakeCounter(), wakeUp(), putToSleep()
-	
+
         \par <b>Sleeping:</b>
         Raising this flag will set all velocities and the wake counter to 0, clear all forces, clear the kinematic target, put the actor
         to sleep and wake up all touching actors from the previous frame.
@@ -984,9 +985,9 @@ declare namespace phy {
         /**
         \brief Enables kinematic mode for the actor.
 
-        Kinematic actors are special dynamic actors that are not 
+        Kinematic actors are special dynamic actors that are not
         influenced by forces (such as gravity), and have no momentum. They are considered to have infinite
-        mass and can be moved around the world using the setKinematicTarget() method. They will push 
+        mass and can be moved around the world using the setKinematicTarget() method. They will push
         regular dynamic actors out of the way. Kinematics will not collide with static or other kinematic objects.
 
         Kinematic actors are great for moving platforms or characters, where direct motion control is desired.
@@ -1008,7 +1009,7 @@ declare namespace phy {
         \brief Use the kinematic target transform for scene queries.
 
         If this flag is raised, then scene queries will treat the kinematic target transform as the current pose
-        of the body (instead of using the actual pose). Without this flag, the kinematic target will only take 
+        of the body (instead of using the actual pose). Without this flag, the kinematic target will only take
         effect with respect to scene queries after a simulation step.
 
         @see RigidDynamic.setKinematicTarget()
@@ -1018,9 +1019,9 @@ declare namespace phy {
         /**
         \brief Enables swept integration for the actor.
 
-        If this flag is raised and CCD is enabled on the scene, then this body will be simulated by the CCD system to ensure that collisions are not missed due to 
-        high-speed motion. Note individual shape pairs still need to enable PairFlag::eDETECT_CCD_CONTACT in the collision filtering to enable the CCD to respond to 
-        individual interactions. 
+        If this flag is raised and CCD is enabled on the scene, then this body will be simulated by the CCD system to ensure that collisions are not missed due to
+        high-speed motion. Note individual shape pairs still need to enable PairFlag::eDETECT_CCD_CONTACT in the collision filtering to enable the CCD to respond to
+        individual interactions.
 
         \note kinematic actors are incompatible with CCD so this flag will be cleared automatically when raised on a kinematic actor
 
@@ -1030,8 +1031,8 @@ declare namespace phy {
         /**
         \brief Enabled CCD in swept integration for the actor.
 
-        If this flag is raised and CCD is enabled, CCD interactions will simulate friction. By default, friction is disabled in CCD interactions because 
-        CCD friction has been observed to introduce some simulation artifacts. CCD friction was enabled in previous versions of the SDK. Raising this flag will result in behavior 
+        If this flag is raised and CCD is enabled, CCD interactions will simulate friction. By default, friction is disabled in CCD interactions because
+        CCD friction has been observed to introduce some simulation artifacts. CCD friction was enabled in previous versions of the SDK. Raising this flag will result in behavior
         that is a closer match for previous versions of the SDK.
 
         \note This flag requires RigidBodyFlag::eENABLE_CCD to be raised to have any effect.
@@ -1107,9 +1108,9 @@ declare namespace phy {
         eACCELERATION2 = 512,		//!< a group of acceleration drive constraints with the same stiffness and drive parameters
         eACCELERATION3 = 768,		//!< a group of acceleration drive constraints with the same stiffness and drive parameters
         eROTATIONAL_EQUALITY = 1024,		//!< rotational equality constraints with no force limit and no velocity target
-        eROTATIONAL_INEQUALITY = 1025,		//!< rotational inequality constraints with (0, PX_MAX_FLT) force limits	
+        eROTATIONAL_INEQUALITY = 1025,		//!< rotational inequality constraints with (0, PX_MAX_FLT) force limits
         eEQUALITY = 2048,		//!< equality constraints with no force limit and no velocity target
-        eINEQUALITY = 2049		//!< inequality constraints with (0, PX_MAX_FLT) force limits	
+        eINEQUALITY = 2049		//!< inequality constraints with (0, PX_MAX_FLT) force limits
     }
 
     enum ConvexFlag {
@@ -1123,20 +1124,20 @@ declare namespace phy {
         /**
         Automatically recomputes the hull from the vertices. If this flag is not set, you must provide the entire geometry manually.
 
-        \note There are two different algorithms for hull computation, please see PxConvexMeshCookingType. 
+        \note There are two different algorithms for hull computation, please see PxConvexMeshCookingType.
 
         @see PxConvexMeshCookingType
         */
         eCOMPUTE_CONVEX = (1 << 1),
 
         /**
-        \brief Checks and removes almost zero-area triangles during convex hull computation. 
+        \brief Checks and removes almost zero-area triangles during convex hull computation.
         The rejected area size is specified in PxCookingParams::areaTestEpsilon
 
         \note This flag is only used in combination with eCOMPUTE_CONVEX.
 
-        \note If this flag is used in combination with eINFLATE_CONVEX, the newly added triangles 
-        by the inflation algorithm are not checked (size of the triangles depends on PxCooking::skinWidth).  
+        \note If this flag is used in combination with eINFLATE_CONVEX, the newly added triangles
+        by the inflation algorithm are not checked (size of the triangles depends on PxCooking::skinWidth).
 
         @see PxCookingParams PxCookingParams::areaTestEpsilon
         */
@@ -1146,10 +1147,8 @@ declare namespace phy {
         \brief Inflates the convex points according to skin width.
 
         \note eINFLATE_CONVEX flag has been deprecated. The flag is automatically used when
-        PxConvexMeshCookingType::eINFLATION_INCREMENTAL_HULL is set. The default algorithm 
-        PxConvexMeshCookingType::eQUICK_HULL ignores this flag, inflation is not used. 
-
- 
+        PxConvexMeshCookingType::eINFLATION_INCREMENTAL_HULL is set. The default algorithm
+        PxConvexMeshCookingType::eQUICK_HULL ignores this flag, inflation is not used.
 
         /**
         \brief Quantizes the input vertices using the k-means clustering
@@ -1163,7 +1162,7 @@ declare namespace phy {
         /**
         \brief Disables the convex mesh validation to speed-up hull creation. Please use separate validation
         function in checked/debug builds. Creating a convex mesh with invalid input data without prior validation
-        may result in undefined behavior. 
+        may result in undefined behavior.
 
         @see PxCooking::validateConvexMesh
         */
@@ -1172,32 +1171,31 @@ declare namespace phy {
         /**
         \brief Enables plane shifting vertex limit algorithm.
 
-        Plane shifting is an alternative algorithm for the case when the computed hull has more vertices 
+        Plane shifting is an alternative algorithm for the case when the computed hull has more vertices
         than the specified vertex limit.
 
         The default algorithm computes the full hull, and an OBB around the input vertices. This OBB is then sliced
-        with the hull planes until the vertex limit is reached.The default algorithm requires the vertex limit 
-        to be set to at least 8, and typically produces results that are much better quality than are produced 
+        with the hull planes until the vertex limit is reached.The default algorithm requires the vertex limit
+        to be set to at least 8, and typically produces results that are much better quality than are produced
         by plane shifting.
 
         When plane shifting is enabled, the hull computation stops when vertex limit is reached. The hull planes
-        are then shifted to contain all input vertices, and the new plane intersection points are then used to 
-        generate the final hull with the given vertex limit.Plane shifting may produce sharp edges to vertices 
+        are then shifted to contain all input vertices, and the new plane intersection points are then used to
+        generate the final hull with the given vertex limit.Plane shifting may produce sharp edges to vertices
         very far away from the input cloud, and does not guarantee that all input vertices are inside the resulting
         hull.However, it can be used with a vertex limit as low as 4.
         */
         ePLANE_SHIFTING = (1 << 6),
 
         /**
-        \brief Inertia tensor computation is faster using SIMD code, but the precision is lower, which may result 
+        \brief Inertia tensor computation is faster using SIMD code, but the precision is lower, which may result
         in incorrect inertia for very thin hulls.
         */
         eFAST_INERTIA_COMPUTATION = (1 << 7),
 
-
         /**
         \brief Convex hull input vertices are shifted to be around origin to provide better computation stability.
-        It is recommended to provide input vertices around the origin, otherwise use this flag to improve 
+        It is recommended to provide input vertices around the origin, otherwise use this flag to improve
         numerical stability.
         \note Is used only with eCOMPUTE_CONVEX flag.
         */
@@ -1222,9 +1220,9 @@ declare namespace phy {
         /**
         \brief When set, mesh cleaning is disabled. This makes cooking faster.
 
-        When clean mesh is not performed, mesh welding is also not performed. 
+        When clean mesh is not performed, mesh welding is also not performed.
 
-        It is recommended to use only meshes that passed during validateTriangleMesh. 
+        It is recommended to use only meshes that passed during validateTriangleMesh.
 
         */
         eDISABLE_CLEAN_MESH = 1 << 1,
@@ -1351,7 +1349,6 @@ declare namespace phy {
         */
         eARTICULATION = 4,
 
-
     }
 
     enum FilterObjectFlag {
@@ -1375,10 +1372,10 @@ declare namespace phy {
 
     enum HeightFieldFormat {
         /**
-        \brief Height field height data is 16 bit signed integers, followed by triangle materials. 
-        
+        \brief Height field height data is 16 bit signed integers, followed by triangle materials.
+
         Each sample is 32 bits wide arranged as follows:
-        
+
         \image html heightFieldFormat_S16_TM.png
 
         1) First there is a 16 bit height value.
@@ -1386,8 +1383,8 @@ declare namespace phy {
         (so the material index is only 7 bits).
         The high bit of material0 is the tess-flag.
         The high bit of material1 is reserved for future use.
-        
-        There are zero or more unused bytes before the next sample depending on HeightFieldDesc.sampleStride, 
+
+        There are zero or more unused bytes before the next sample depending on HeightFieldDesc.sampleStride,
         where the application may eventually keep its own data.
 
         This is the only format supported at the moment.
@@ -1400,8 +1397,8 @@ declare namespace phy {
     enum HeightFieldFlag {
         /**
         \brief Disable collisions with height field with boundary edges.
-    	
-        Raise this flag if several terrain patches are going to be placed adjacent to each other, 
+
+        Raise this flag if several terrain patches are going to be placed adjacent to each other,
         to avoid a bump when sliding across.
 
         This flag is ignored in contact generation with sphere and capsule shapes.
@@ -1436,7 +1433,7 @@ declare namespace phy {
     }
 
     enum D6JointDriveFlag {
-        eACCELERATION = 1	//!< drive spring is for the acceleration at the joint (rather than the force) 
+        eACCELERATION = 1	//!< drive spring is for the acceleration at the joint (rather than the force)
     }
 
     enum JointActorIndex {
@@ -1472,7 +1469,7 @@ declare namespace phy {
         hold objects in place (or slow them down) and this is handled in the solver. But since the
         solver is only an approximation, the result of the friction calculation can include a small
         "error" - e.g. a box resting on a slope should not move at all if the static friction is in
-        action, but could slowly glide down the slope because of a small friction error in each 
+        action, but could slowly glide down the slope because of a small friction error in each
         simulation step. The strong friction counter-acts this by remembering the small error and
         taking it to account during the next simulation step.
 
@@ -1526,10 +1523,10 @@ declare namespace phy {
         /**
         \brief Enables a simplified swept integration strategy, which sacrifices some accuracy for improved performance.
 
-        This simplified swept integration approach makes certain assumptions about the motion of objects that are not made when using a full swept integration. 
+        This simplified swept integration approach makes certain assumptions about the motion of objects that are not made when using a full swept integration.
         These assumptions usually hold but there are cases where they could result in incorrect behavior between a set of fast-moving rigid bodies. A key issue is that
-        fast-moving dynamic objects may tunnel through each-other after a rebound. This will not happen if this mode is disabled. However, this approach will be potentially 
-        faster than a full swept integration because it will perform significantly fewer sweeps in non-trivial scenes involving many fast-moving objects. This approach 
+        fast-moving dynamic objects may tunnel through each-other after a rebound. This will not happen if this mode is disabled. However, this approach will be potentially
+        faster than a full swept integration because it will perform significantly fewer sweeps in non-trivial scenes involving many fast-moving objects. This approach
         should successfully resist objects passing through the static environment.
 
         PairFlag::eDETECT_CCD_CONTACT requires this flag to be specified.
@@ -1545,8 +1542,8 @@ declare namespace phy {
         eDISABLE_CCD_RESWEEP = (1 << 3),
 
         /**
-        \brief Enable adaptive forces to accelerate convergence of the solver. 
-        
+        \brief Enable adaptive forces to accelerate convergence of the solver.
+
         \note This flag is not mutable, and must be set in SceneDesc at scene creation.
 
         <b>Default:</b> false
@@ -1555,7 +1552,7 @@ declare namespace phy {
 
         /**
         \brief Enable GJK-based distance collision detection system.
-        
+
         \note This flag is not mutable, and must be set in SceneDesc at scene creation.
 
         <b>Default:</b> true
@@ -1563,18 +1560,18 @@ declare namespace phy {
         eENABLE_PCM = (1 << 9),
 
         /**
-        \brief Disable contact report buffer resize. Once the contact buffer is full, the rest of the contact reports will 
+        \brief Disable contact report buffer resize. Once the contact buffer is full, the rest of the contact reports will
         not be buffered and sent.
 
         \note This flag is not mutable, and must be set in SceneDesc at scene creation.
-        
+
         <b>Default:</b> false
         */
         eDISABLE_CONTACT_REPORT_BUFFER_RESIZE = (1 << 10),
 
         /**
         \brief Disable contact cache.
-        
+
         Contact caches are used internally to provide faster contact generation. You can disable all contact caches
         if memory usage for this feature becomes too high.
 
@@ -1589,14 +1586,14 @@ declare namespace phy {
 
         When set to true this requires that threads accessing the Scene use the
         multi-threaded lock methods.
-        
+
         \note This flag is not mutable, and must be set in SceneDesc at scene creation.
 
         @see Scene::lockRead
         @see Scene::unlockRead
         @see Scene::lockWrite
         @see Scene::unlockWrite
-        
+
         <b>Default:</b> false
         */
         eREQUIRE_RW_LOCK = (1 << 12),
@@ -1635,12 +1632,12 @@ declare namespace phy {
         eEXCLUDE_KINEMATICS_FROM_ACTIVE_ACTORS = (1 << 17),
 
         /**
-        \brief Provides improved determinism at the expense of performance. 
+        \brief Provides improved determinism at the expense of performance.
 
-        By default, we provides limited determinism guarantees. Specifically, we guarantees that the exact scene (same actors created in the same order) and simulated using the same 
+        By default, we provides limited determinism guarantees. Specifically, we guarantees that the exact scene (same actors created in the same order) and simulated using the same
         time-stepping scheme should provide the exact same behaviour.
 
-        However, if additional actors are added to the simulation, this can affect the behaviour of the existing actors in the simulation, even if the set of new actors do not interact with 
+        However, if additional actors are added to the simulation, this can affect the behaviour of the existing actors in the simulation, even if the set of new actors do not interact with
         the existing actors.
 
         This flag provides an additional level of determinism that guarantees that the simulation will not change if additional actors are added to the simulation, provided those actors do not interfere
@@ -1675,14 +1672,14 @@ declare namespace phy {
     enum ShapeFlag {
         /**
         \brief The shape will partake in collision in the physical simulation.
-    
+
         \note It is illegal to raise the eSIMULATION_SHAPE and eTRIGGER_SHAPE flags.
-        In the event that one of these flags is already raised the sdk will reject any 
-        attempt to raise the other.  To raise the eSIMULATION_SHAPE first ensure that 
+        In the event that one of these flags is already raised the sdk will reject any
+        attempt to raise the other.  To raise the eSIMULATION_SHAPE first ensure that
         eTRIGGER_SHAPE is already lowered.
-    
+
         \note This flag has no effect if simulation is disabled for the corresponding actor (see #ActorFlag::eDISABLE_SIMULATION).
-    
+
         @see SimulationEventCallback.onContact() Scene.setSimulationEventCallback() Shape.setFlag(), Shape.setFlags()
         */
         eSIMULATION_SHAPE = (1 << 0),
@@ -1694,20 +1691,20 @@ declare namespace phy {
 
         /**
         \brief The shape is a trigger which can send reports whenever other shapes enter/leave its volume.
-    
+
         \note Triangle meshes and heightfields can not be triggers. Shape creation will fail in these cases.
-    
+
         \note Shapes marked as triggers do not collide with other objects. If an object should act both
-        as a trigger shape and a collision shape then create a rigid body with two shapes, one being a 
-        trigger shape and the other a collision shape. 	It is illegal to raise the eTRIGGER_SHAPE and 
-        eSIMULATION_SHAPE flags on a single Shape instance.  In the event that one of these flags is already 
-        raised the sdk will reject any attempt to raise the other.  To raise the eTRIGGER_SHAPE flag first 
+        as a trigger shape and a collision shape then create a rigid body with two shapes, one being a
+        trigger shape and the other a collision shape. 	It is illegal to raise the eTRIGGER_SHAPE and
+        eSIMULATION_SHAPE flags on a single Shape instance.  In the event that one of these flags is already
+        raised the sdk will reject any attempt to raise the other.  To raise the eTRIGGER_SHAPE flag first
         ensure that eSIMULATION_SHAPE flag is already lowered.
-    
-        \note Shapes marked as triggers are allowed to participate in scene queries, provided the eSCENE_QUERY_SHAPE flag is set. 
-    
+
+        \note Shapes marked as triggers are allowed to participate in scene queries, provided the eSCENE_QUERY_SHAPE flag is set.
+
         \note This flag has no effect if simulation is disabled for the corresponding actor (see #ActorFlag::eDISABLE_SIMULATION).
-    
+
         @see SimulationEventCallback.onTrigger() Scene.setSimulationEventCallback() Shape.setFlag(), Shape.setFlags()
         */
         eTRIGGER_SHAPE = (1 << 2),
