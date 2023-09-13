@@ -42,8 +42,6 @@ declare namespace Bullet {
         // constraints
 
         TypedConstraint_getFixedBody(): ptr;
-        TypedConstraint_getDbgDrawSize(): number;
-        TypedConstraint_setDbgDrawSize(p: ptr, dbgDrawSize: number): void;
         HingeConstraint_new(ptr0: ptr, ptr1: ptr, ptr2: ptr, ptr3: ptr): ptr;
         HingeConstraint_setFrames(ptr0: ptr, ptr1: ptr, ptr2: ptr): void;
         HingeConstraint_setLimit(p: ptr, low: number, upper: number, softness: number, biasFactor: number, relaxationFactor: number): void;
@@ -210,8 +208,6 @@ declare namespace Bullet {
         CollisionWorld_removeCollisionObject(p: ptr, body: ptr): void;
         CollisionWorld_rayTest(p: ptr, p0: ptr, p1: ptr, p2: ptr): void;
         CollisionWorld_convexSweepTest(p: ptr, castShape: ptr, from: ptr, to: ptr, resultCallback: ptr, allowedCcdPenetration: ptr): void;
-        CollisionWorld_setDebugDrawer(p: ptr, drawer: ptr): void;
-        CollisionWorld_debugDrawWorld(p: ptr): void;
 
         ccDiscreteDynamicsWorld_new(dispatcher: ptr, pairCache: ptr, solver: ptr): ptr;
         ccDiscreteDynamicsWorld_setAllowSleep(p: ptr, v: boolean): void;
@@ -223,18 +219,6 @@ declare namespace Bullet {
         DynamicsWorld_removeConstraint(p: ptr, p2: ptr): void;
         DynamicsWorld_addAction(p: ptr, action: ptr): void;
         DynamicsWorld_removeAction(p: ptr, action: ptr): void;
-
-        DebugDraw_new(): ptr;
-        DebugDraw_setDebugMode(p: ptr, debugMode: number): void;
-        DebugDraw_getDebugMode(p: ptr): number;
-        DebugDraw_setActiveObjectColor(p: ptr, r: number, g: number, b: number): void;
-        DebugDraw_setDeactiveObjectColor(p: ptr, r: number, g: number, b: number): void;
-        DebugDraw_setWantsDeactivationObjectColor(p: ptr, r: number, g: number, b: number): void;
-        DebugDraw_setDisabledDeactivationObjectColor(p: ptr, r: number, g: number, b: number): void;
-        DebugDraw_setDisabledSimulationObjectColor(p: ptr, r: number, g: number, b: number): void;
-        DebugDraw_setAABBColor(p: ptr, r: number, g: number, b: number): void;
-        DebugDraw_setContactPointColor(p: ptr, r: number, g: number, b: number): void;
-        DebugDraw_setConstraintLimitColor(p: ptr, r: number, g: number, b: number): void;
 
         RayCallback_hasHit(p: ptr): boolean;
         ConvexCallback_hasHit(p: ptr): boolean;
@@ -279,19 +263,19 @@ declare namespace Bullet {
         ControllerHit_getHitMotionLength(p: ptr): number;   //CCT hit Motion length
         ControllerShapeHit_getHitShape(p: ptr): ptr;
         ControllerShapeHit_getHitCollisionObject(p: ptr): ptr;
-        CharacterController_move(ptrCCT: ptr, ptrMovement: ptr, minDist: number, deltaTime: number): number;
+        CharacterController_move(ptrCCT: ptr, ptrMovement: ptr, minDist: number, deltaTime: number):number;
         CharacterController_getPosition(ptrCCT: ptr);
         CharacterController_setContactOffset(ptrCCT: ptr, v: number);
         CharacterController_setStepOffset(ptrCCT: ptr, v: number);
         CharacterController_setSlopeLimit(ptrCCT: ptr, v: number);
         CharacterController_setCollision(ptrCCT: ptr, collision: boolean);
         CharacterController_setOverlapRecovery(ptrCCT: ptr, value: boolean);
-        CapsuleCharacterControllerDesc_new(maxSlopeRadians: number, stepHeight: number, contactOffset: number,
+        CapsuleCharacterControllerDesc_new(maxSlopeRadians: number, stepHeight: number, contactOffset: number, 
             ptrUpAxis: ptr, ptrInitPos: ptr, ptruUserControllerHitReport: ptr, radius: number, height: number): ptr;
         CapsuleCharacterController_new(collisionWorld: ptr, ptrBtCapsuleCharacterControllerDesc: ptr, userObjectPointer: ptr): ptr;
         CapsuleCharacterController_setRadius(ptrCCT: ptr, radius: number): void;
         CapsuleCharacterController_setHeight(ptrCCT: ptr, height: number): void;
-        BoxCharacterControllerDesc_new(maxSlopeRadians: number, stepHeight: number, contactOffset: number,
+        BoxCharacterControllerDesc_new(maxSlopeRadians: number, stepHeight: number, contactOffset: number, 
             ptrUpAxis: ptr, ptrInitPos: ptr, ptruUserControllerHitReport: ptr, halfHeight: number, halfSideExtent: number, halfForwardExtent: number): ptr;
         BoxCharacterController_new(collisionWorld: ptr, ptrBtBoxCharacterControllerDesc: ptr, userObjectPointer: ptr): ptr;
         BoxCharacterController_setHalfHeight(ptrCCT: ptr, v: number): void;
