@@ -185,6 +185,7 @@ declare namespace B2 {
         GetFilterData(): Filter;
         Refilter(): void;
         GetBody(): Body;
+        GetNext(): Fixture;
         TestPoint(p: Vec2): boolean;
         RayCast(output: RayCastOutput, input: RayCastInput, childIndex: number): boolean;
         GetMassData(massData: MassData): void;
@@ -272,6 +273,8 @@ declare namespace B2 {
         IsEnabled(): boolean;
         SetFixedRotation(flag: boolean): void;
         IsFixedRotation(): boolean;
+        GetFixtureList(): Fixture;
+        GetJointList(): number;
         GetWorld(): World;
         Dump(): void;
     }
@@ -572,4 +575,10 @@ declare namespace B2 {
     function ContactImpulseGetNormalImpulse(contactImpulsePtr: number, index: number): number;
     function ContactImpulseGetTangentImpulse(contactImpulsePtr: number, index: number): number;
     function ContactImpulseGetCount(contactImpulsePtr: number): number;
+
+    //JointEdge
+    function JointEdgeGetOther(jointEdgePtr: number): number;
+    function JointEdgeGetJoint(jointEdgePtr: number): number;
+    function JointEdgeGetPrev(jointEdgePtr: number): number;
+    function JointEdgeGetNext(jointEdgePtr: number): number;
 }

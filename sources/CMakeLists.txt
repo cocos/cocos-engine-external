@@ -46,7 +46,7 @@ if(NOT USE_MODULES)
 endif()
 
 # add dependent boost libs
-if(NOT NX)
+if((NOT NX) AND (NOT EMSCRIPTEN))
   include(${CMAKE_CURRENT_LIST_DIR}/boost-source/boost.cmake)
 endif()
 
@@ -61,7 +61,7 @@ add_definitions(-DCC_SWAPPY_ENABLED)
 endif()
 
 
-if(ANDROID)
+if(ANDROID AND (NOT SURFACE_LESS_SERVICE))
     set(CC_GAME_ACTIVITY_SOURCES
         ${CMAKE_CURRENT_LIST_DIR}/android-gamesdk/GameActivity/game-activity/include/game-activity/GameActivity.cpp
         ${CMAKE_CURRENT_LIST_DIR}/android-gamesdk/GameActivity/game-activity/include/game-activity/system_utils.cpp
