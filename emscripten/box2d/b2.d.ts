@@ -323,8 +323,8 @@ declare namespace B2 {
         localAnchorA: Vec2;
         localAnchorB: Vec2;
         length: number;
-        stiffness: number;
-        damping: number;
+        frequencyHz: number;
+        dampingRatio: number;
     }
 
     class DistanceJoint extends Joint {
@@ -332,10 +332,10 @@ declare namespace B2 {
         GetLocalAnchorB(): Vec2;
         SetLength(length: number): void;
         GetLength(): number;
-        SetStiffness(stiffness: number): void;
-        GetStiffness(): number;
-        SetDamping(damping: number): void;
-        GetDamping(): number;
+        SetFrequency(hz: number): void;
+        GetFrequency(): number;
+        SetDampingRatio(ratio: number): void;
+        GetDampingRatio(): number;
         Dump(): void;
     }
 
@@ -466,7 +466,6 @@ declare namespace B2 {
         GetReactionTorque(inv_dt: number): number;
         SetMaxLength(length: number): void;
         GetMaxLength(): number;
-        GetLength(): number;
         Dump(): void;
     }
 
@@ -475,18 +474,18 @@ declare namespace B2 {
         localAnchorA: Vec2;
         localAnchorB: Vec2;
         referenceAngle: number;
-        stiffness: number;
-        damping: number;
+        frequencyHz: number;
+        dampingRatio: number;
     }
 
     class WeldJoint extends Joint {
         GetLocalAnchorA(): Vec2;
         GetLocalAnchorB(): Vec2;
         GetReferenceAngle(): number;
-        SetStiffness(stiffness: number): void;
-        GetStiffness(): number;
-        SetDamping(damping: number): void;
-        GetDamping(): number;
+        SetFrequency(hz: number): void;
+        GetFrequency(): number;
+        SetDampingRatio(ratio: number): void;
+        GetDampingRatio(): number;
         Dump(): void;
     }
 
@@ -495,14 +494,11 @@ declare namespace B2 {
         localAnchorA: Vec2;
         localAnchorB: Vec2;
         localAxisA: Vec2;
-        enableLimit: boolean;
-        lowerTranslation: number;
-        upperTranslation: number;
         enableMotor: boolean;
         maxMotorTorque: number;
         motorSpeed: number;
-        stiffness: number;
-        damping: number;
+        frequencyHz: number;
+        dampingRatio: number;
     }
 
     class WheelJoint extends Joint {
@@ -517,10 +513,10 @@ declare namespace B2 {
         SetMaxMotorTorque(torque: number): void;
         GetMaxMotorTorque(): number;
         GetMotorTorque(inv_dt: number): number;
-        SetStiffness(stiffness: number): void;
-        GetStiffness(): number;
-        SetDamping(damping: number): void;
-        GetDamping(): number;
+        SetFrequency(hz: number): void;
+        GetFrequency(): number;
+        SetDampingRatio(ratio: number): void;
+        GetDampingRatio(): number;
         Dump(): void;
     }
 
@@ -529,7 +525,6 @@ declare namespace B2 {
     //
     function ConvexPartition(verticesIn: Vec2Vector, trianglesIn: Int32Vector, verticesOut: Vec2Vector, trianglesOut: Int32Vector): void;
     function GetFloat32(memory: number, offset: number): number;
-    function SetLinearFrequencyAndDampingRatio(body: Joint, frequencyHertz: number, dampingRatio: number): void;
 
     //Contact
     function ContactSetEnabled(contactPtr: number, flag: boolean): void;

@@ -1075,38 +1075,6 @@ function dbg(text) {
       abort(`Assertion failed: ${UTF8ToString(condition)}, at: ` + [filename ? UTF8ToString(filename) : 'unknown filename', line, func ? UTF8ToString(func) : 'unknown function']);
     }
 
-  function setErrNo(value) {
-      HEAP32[((___errno_location())>>2)] = value;
-      return value;
-    }
-  
-  var SYSCALLS = {varargs:undefined,get:function() {
-        assert(SYSCALLS.varargs != undefined);
-        SYSCALLS.varargs += 4;
-        var ret = HEAP32[(((SYSCALLS.varargs)-(4))>>2)];
-        return ret;
-      },getStr:function(ptr) {
-        var ret = UTF8ToString(ptr);
-        return ret;
-      }};
-  function ___syscall_fcntl64(fd, cmd, varargs) {
-  SYSCALLS.varargs = varargs;
-  
-      return 0;
-    }
-
-  function ___syscall_ioctl(fd, op, varargs) {
-  SYSCALLS.varargs = varargs;
-  
-      return 0;
-    }
-
-  function ___syscall_openat(dirfd, path, flags, varargs) {
-  SYSCALLS.varargs = varargs;
-  
-  abort('it should not be possible to operate on streams when !SYSCALLS_REQUIRE_FILESYSTEM');
-  }
-
   var char_0 = 48;
   
   var char_9 = 57;
@@ -3650,12 +3618,17 @@ function dbg(text) {
       return false;
     }
 
+  var SYSCALLS = {varargs:undefined,get:function() {
+        assert(SYSCALLS.varargs != undefined);
+        SYSCALLS.varargs += 4;
+        var ret = HEAP32[(((SYSCALLS.varargs)-(4))>>2)];
+        return ret;
+      },getStr:function(ptr) {
+        var ret = UTF8ToString(ptr);
+        return ret;
+      }};
   function _fd_close(fd) {
       abort('fd_close called without SYSCALLS_REQUIRE_FILESYSTEM');
-    }
-
-  function _fd_read(fd, iov, iovcnt, pnum) {
-      abort('fd_read called without SYSCALLS_REQUIRE_FILESYSTEM');
     }
 
   function convertI32PairToI53Checked(lo, hi) {
@@ -3721,9 +3694,6 @@ function checkIncomingModuleAPI() {
 }
 var wasmImports = {
   "__assert_fail": ___assert_fail,
-  "__syscall_fcntl64": ___syscall_fcntl64,
-  "__syscall_ioctl": ___syscall_ioctl,
-  "__syscall_openat": ___syscall_openat,
   "_embind_create_inheriting_constructor": __embind_create_inheriting_constructor,
   "_embind_finalize_value_object": __embind_finalize_value_object,
   "_embind_register_bigint": __embind_register_bigint,
@@ -3757,7 +3727,6 @@ var wasmImports = {
   "emscripten_memcpy_big": _emscripten_memcpy_big,
   "emscripten_resize_heap": _emscripten_resize_heap,
   "fd_close": _fd_close,
-  "fd_read": _fd_read,
   "fd_seek": _fd_seek,
   "fd_write": _fd_write
 };
@@ -3821,6 +3790,7 @@ var missingLibrarySymbols = [
   'ydayFromDate',
   'arraySum',
   'addDays',
+  'setErrNo',
   'inetPton4',
   'inetNtop4',
   'inetPton6',
@@ -4022,7 +3992,6 @@ var unexportedSymbols = [
   'MONTH_DAYS_LEAP_CUMULATIVE',
   'ERRNO_CODES',
   'ERRNO_MESSAGES',
-  'setErrNo',
   'DNS',
   'Protocols',
   'Sockets',
