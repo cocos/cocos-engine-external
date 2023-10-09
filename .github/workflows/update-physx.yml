@@ -1,0 +1,98 @@
+name: Update PhysX
+on:
+  workflow_dispatch:
+    inputs:
+      physx_repo_ref:
+        description: "Git ref of target PhysX repository(https://github.com/cocos/PhysX)."
+        required: true
+        type: string
+        default: cocos-master
+      dest_branch:
+        description: "Branch(of this repository) to update."
+        required: true
+        type: string
+        default: develop
+jobs:
+  release:
+    name: Release
+    runs-on: windows-latest
+    steps:
+      - name: Check This Repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.dest_branch }}
+          path: external
+
+      - name: Checkout PhysX
+        uses: actions/checkout@v4
+        with:
+          repository: cocos/PhysX
+          ref: ${{ inputs.physx_repo_ref }}
+          path: physx
+      
+      - name: Set PhysX Info
+        id: set_physx_info
+        shell: pwsh
+        run: |
+          "TARGET_PHYSX_REF=$(& git -C physx rev-parse HEAD)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Checkout EMSDK
+        uses: actions/checkout@v4
+        with:
+          repository: emscripten-core/emsdk
+          path: emsdk
+
+      - name: Setup EMSDK
+        shell: pwsh
+        run: |
+          cd emsdk
+          ./emsdk install 3.1.41
+          ./emsdk activate 3.1.41
+          # Verify
+          emcc -v
+
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+
+      - name: Build
+        shell: pwsh
+        run: |
+          # Setup EMSDK env
+          & "emsdk/emsdk_env.ps1"
+          try {
+            Push-Location
+            cd physx
+            Write-Host "Start release build"
+            ./build-emscripten.ps1 -Mode Release
+            Write-Host "Start debug build"
+            ./build-emscripten.ps1 -Mode Debug
+            Write-Host "Build finished"
+            Get-ChildItem "builds"
+          } finally {
+            Pop-location
+          }
+          $targetOutPath = "external/emscripten/physx"
+          New-Item -ItemType Directory -Force (Split-Path $targetOutPath -Parent) | Out-Host
+          Copy-Item -Recurse -Force "physx/builds/*.*" $targetOutPath | Out-Host
+      
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          path: external
+          branch: auto/update-physx
+          base: ${{ inputs.dest_branch }}
+          add-paths:
+            emscripten/physx/*.*
+          commit-message: |
+            automated change: update PhysX dependency cocos/PhysX@${{ steps.set_physx_info.outputs.TARGET_PHYSX_REF }}
+          reviewers: |
+            lealzhan
+            yiwenxue
+            shrinktofit
+          title: |
+            Update PhysX emscripten dependency
+          body: |
+            This PR updates PhysX emscripten dependency.
+            
+            Target PhysX source is cocos/PhysX@${{ steps.set_physx_info.outputs.TARGET_PHYSX_REF }}.
+          branch-suffix: timestamp
