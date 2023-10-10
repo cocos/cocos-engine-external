@@ -273,7 +273,7 @@ declare namespace B2 {
         IsEnabled(): boolean;
         SetFixedRotation(flag: boolean): void;
         IsFixedRotation(): boolean;
-        GetFixtureList(): Fixture;
+        GetFixtureList(): number;
         GetJointList(): number;
         GetWorld(): World;
         Dump(): void;
@@ -513,10 +513,10 @@ declare namespace B2 {
         SetMaxMotorTorque(torque: number): void;
         GetMaxMotorTorque(): number;
         GetMotorTorque(inv_dt: number): number;
-        SetFrequency(hz: number): void;
-        GetFrequency(): number;
-        SetDampingRatio(ratio: number): void;
-        GetDampingRatio(): number;
+        SetSpringFrequencyHz(hz: number): void;
+        GetSpringFrequencyHz(): number;
+        SetSpringDampingRatio(ratio: number): void;
+        GetSpringDampingRatio(): number;
         Dump(): void;
     }
 
@@ -537,6 +537,7 @@ declare namespace B2 {
     function ContactSetRestitution(contactPtr: number, restitution: number): void;
     function ContactGetRestitution(contactPtr: number): number;
     function ContactResetRestitution(contactPtr: number): void;
+    function ContactGetFixtureA(contactPtr: number): Vec2;
     function ContactGetFixtureA(contactPtr: number): number;
     function ContactGetFixtureB(contactPtr: number): number;
     function ContactGetWorldManifold(contactPtr: number, worldManifoldPtr: number): number;
@@ -576,4 +577,71 @@ declare namespace B2 {
     function JointEdgeGetJoint(jointEdgePtr: number): number;
     function JointEdgeGetPrev(jointEdgePtr: number): number;
     function JointEdgeGetNext(jointEdgePtr: number): number;
+
+    //FixtureDef
+    function FixtureDefNew(): number;
+    function FixtureDefDelete(fixtureDefPtr: number): void;
+    function FixtureDefSetAll(fixtureDefPtr: number, shapePtr: number, userData: number,
+        friction: number, restitution: number, density: number, isSensor: boolean): void;
+
+    //Fixture
+    function FixtureGetType(fixturePtr: number): number;
+    function FixtureGetShape(fixturePtr: number): number;
+    function FixtureSetSensor(fixturePtr: number, sensor: boolean): void;
+    function FixtureIsSensor(fixturePtr: number): boolean;
+    function FixtureSetFilterData(fixturePtr: number, filterPtr: number): void;
+    function FixtureGetFilterData(fixturePtr: number): number;
+    function FixtureRefilter(fixturePtr: number): void;
+    function FixtureGetBody(fixturePtr: number): number;
+    function FixtureGetNext(fixturePtr: number): number;
+    function FixtureTestPoint(fixturePtr: number, p: Vec2): boolean;
+    // function FixtureRayCast(fixturePtr: number, outputPtr: number, inputPtr: number, childIndex: number): boolean;
+    // function FixtureGetMassData(fixturePtr: number, massDataPtr: number): void;
+    function FixtureSetDensity(fixturePtr: number, density: number): void;
+    function FixtureGetDensity(fixturePtr: number): number;
+    function FixtureGetFriction(fixturePtr: number): number;
+    function FixtureSetFriction(fixturePtr: number, friction: number): void;
+    function FixtureGetRestitution(fixturePtr: number): number;
+    function FixtureSetRestitution(fixturePtr: number, restitution: number): void;
+    function FixtureGetAABB(fixturePtr: number, childIndex: number): number;
+    function FixtureDump(fixturePtr: number, bodyIndex: number): void;
+
+    //Shape
+    function ShapeGetRadius(shapePtr: number): number;
+    function ShapeSetRadius(shapePtr: number, radius: number): void;
+    function ShapeGetType(shapePtr: number): number;
+    function ShapeGetChildCount(shapePtr: number): number;
+    function ShapeTestPoint(shapePtr: number, transformPtr: number, p: Vec2): boolean;
+    // function ShapeRayCast(shapePtr: number, outputPtr: number, inputPtr: number, transformPtr: number, childIndex: number): boolean;
+    // function ShapeComputeAABB(shapePtr: number, aabbPtr: number, transformPtr: number, childIndex: number): void;
+    // function ShapeComputeMass(shapePtr: number, massDataPtr: number, density: number): void;
+
+    //CircleShape
+    function CircleShapeNew(): number;
+    function CircleShapeDelete(circleShapePtr: number): void;
+    function CircleShapeSetPosition(circleShapePtr: number, positionPtr: number): void;
+    function CircleShapeGetPosition(circleShapePtr: number): number;
+
+    //PolygonShape
+    function PolygonShapeNew(): number;
+    function PolygonShapeDelete(polygonShapePtr: number): void;
+    function PolygonShapeSet(polygonShapePtr: number, verticesPtr: number, count: number): void;
+    function PolygonShapeSetAsBox(polygonShapePtr: number, hx: number, hy: number): void;
+    function PolygonShapeSetAsBoxWithCenterAndAngle(polygonShapePtr: number, hx: number, hy: number, centerPtr: number, angle: number): void;
+    function PolygonShapeGetVertexCount(polygonShapePtr: number): number;
+
+    //Body
+    function BodyCreateFixture(bodyPtr: number, fixtureDefPtr: number): number;
+    function BodyCreateFixtureWithShape(bodyPtr: number, shapePtr: number, density: number): number;
+
+    //Vec2Vector
+    function Vec2VectorNew(): number;
+    function Vec2VectorDelete(vec2VectorPtr: number): void;
+    function Vec2VectorPush(vec2VectorPtr: number, vec2Ptr: number): void;
+    function Vec2VectorSize(vec2VectorPtr: number): number;
+    function Vec2VectorGet(vec2VectorPtr: number, index: number): number;
+    function Vec2VectorGetPtr(vec2VectorPtr: number, index: number): number;
+    function Vec2VectorResize(vec2VectorPtr: number, size: number): void;
+    function Vec2VectorClear(vec2VectorPtr: number): void;
+
 }
