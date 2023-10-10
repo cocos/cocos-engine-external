@@ -94,13 +94,14 @@ tinydir
     ios: 1.2.1
 
 v8
-    win32: 9.1.269
-    win64: 9.1.269
-    android: 9.1.269
-    ios: 9.1.269
-    ios-m1-simulator: 9.1.269
+    win64: 11.6.189.22
+    android: 11.6.189.22
+    ios: 11.6.189.22
+    ios-m1-simulator: 11.6.189.22
     ohos: 9.1.269
-    linux: 9.1.269
+    openharmony: 11.6.189.22
+    linux: 11.6.189.22
+    mac: 11.6.189.22
 
 libuv
     mac: 1.23.1
