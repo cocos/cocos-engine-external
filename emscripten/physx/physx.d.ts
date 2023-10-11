@@ -8,6 +8,10 @@ declare module 'external:emscripten/physx/physx.release.wasm.js' {
   export default PhysX;
 }
 
+declare module 'external:emscripten/physx/physx.debug.wasm.js' {
+    export default PhysX;
+}
+
 // tslint:disable
 declare function PhysX (moduleOptions?: any): Promise<void>;
 
