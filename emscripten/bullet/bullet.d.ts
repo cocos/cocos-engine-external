@@ -1,11 +1,31 @@
-declare module 'external:emscripten/bullet/bullet.asm.js' {
-    function factory (env: any, wasmMemory: ArrayBuffer): Bullet.instance;
-    export default factory;
+declare module 'external:emscripten/bullet/bullet.release.asm.js' {
+    export default Bullet;
 }
+
+declare module 'external:emscripten/bullet/bullet.release.wasm.js' {
+    export default Bullet;
+}
+
+// tslint:disable
+declare function Bullet (moduleOptions?: any): Promise<void>;
 
 declare namespace Bullet {
     type ptr = number;
     interface instance {
+        HEAP8: Int8Array;
+        HEAP16: Int16Array;
+        HEAP32: Int32Array;
+        HEAPU8: Uint8Array;
+        HEAPU16: Uint16Array;
+        HEAPU32: Uint32Array;
+        HEAPF32: Float32Array;
+        HEAPF64: Float64Array;
+
+        // class interface
+        DebugDraw: any;
+        ControllerHitReport: any;
+        MotionState: any;
+
         _malloc(bytes: number): ptr;
         _free(p: ptr): void;
         _read_f32(p: ptr): void;
@@ -34,6 +54,7 @@ declare namespace Bullet {
         MotionState_getWorldTransform(p: ptr, transform: ptr): void;
         MotionState_setWorldTransform(p: ptr, transform: ptr): void;
         ccMotionState_new(id: number, initTrans: ptr): ptr;
+        ccMotionState_setup(p: ptr, id: number, initTrans: ptr): void;
 
         int_array_size(p: ptr): number;
         int_array_at(p: ptr, index: number): number;
@@ -113,7 +134,7 @@ declare namespace Bullet {
         TerrainShape_new(i: number, j: number, p: ptr, hs: number, min: number, max: number): ptr;
 
         TriangleMesh_new(): ptr;
-        TriangleMesh_addTriangle(p: ptr, v0: ptr, v1: ptr, v2: ptr): void;
+        TriangleMesh_addTriangle(p: ptr, v0: ptr, v1: ptr, v2: ptr, removeDuplicateVertices: boolean): void;
         BvhTriangleMeshShape_new(p: ptr, c: boolean, bvh: boolean): ptr;
         BvhTriangleMeshShape_getOptimizedBvh(p: ptr): ptr;
         BvhTriangleMeshShape_setOptimizedBvh(p: ptr, p1: ptr, scaleX: number, scaleY: number, scaleZ: number);
@@ -144,6 +165,7 @@ declare namespace Bullet {
         CollisionObject_isKinematicObject(p: ptr): boolean;
         CollisionObject_isStaticObject(p: ptr): boolean;
         CollisionObject_isStaticOrKinematicObject(p: ptr): boolean;
+        CollisionObject_isSleeping(p: ptr): boolean;
         CollisionObject_getWorldTransform(p: ptr): ptr;
         CollisionObject_getCollisionFlags(p: ptr): number;
         CollisionObject_setCollisionFlags(p: ptr, flags: number): void;
@@ -180,6 +202,8 @@ declare namespace Bullet {
         RigidBody_applyTorque(p: ptr, f: ptr): void;
         RigidBody_applyForce(p: ptr, f: ptr, rp: ptr): void;
         RigidBody_applyImpulse(p: ptr, f: ptr, rp: ptr): void;
+        RigidBody_getWorldTransform(p: ptr, transform: ptr): void;
+        Transform_getRotationAndOrigin(transform: ptr, q: ptr): ptr;
 
         // dynamic
 
