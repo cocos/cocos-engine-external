@@ -144,3 +144,6 @@ swig ( Built using https://github.com/cocos/swig/tree/cocos-se, executable files
     win64:      cocos-v1.1.6 (commit: f52be17)
     mac:        cocos-v1.1.6 (commit: f52be17)
     linux:      cocos-v1.1.6 (commit: f52be17)
+
+simdutf
+    all: v5.3.0
