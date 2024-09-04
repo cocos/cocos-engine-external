@@ -137,6 +137,7 @@ constexpr const char *GCM_INIT_METHOD_SIGNATURE =
     "(Landroid/content/Context;Z)V";
 constexpr const char *GCM_ONSTOP_METHOD_NAME = "onStop";
 constexpr const char *GCM_ONSTART_METHOD_NAME = "onStart";
+constexpr const char *GCM_TERMINATE_METHOD_NAME = "terminate";
 constexpr const char *GCM_GETAPILEVEL_METHOD_NAME = "getApiLevel";
 constexpr const char *GCM_GETAPILEVEL_METHOD_SIGNATURE = "()I";
 constexpr const char *GCM_GETBATTERYLEVEL_METHOD_NAME = "getBatteryLevel";
@@ -259,9 +260,12 @@ Paddleboat_ErrorCode GameControllerManager::init(JNIEnv *env,
 }
 
 void GameControllerManager::destroyInstance(JNIEnv *env) {
-    std::lock_guard<std::mutex> lock(sInstanceMutex);
-    sInstance.get()->releaseGlobals(env);
-    sInstance.reset();
+    sInstance.get()->terminate(env);
+    {
+        std::lock_guard<std::mutex> lock(sInstanceMutex);
+        sInstance.get()->releaseGlobals(env);
+        sInstance.reset();
+    }
 }
 
 void GameControllerManager::releaseGlobals(JNIEnv *env) {
@@ -1329,6 +1333,22 @@ void GameControllerManager::onStart(JNIEnv *env) {
                              VOID_METHOD_SIGNATURE);
         if (onResumeID != NULL) {
             env->CallVoidMethod(gcm->mGameControllerObject, onResumeID);
+        }
+    }
+}
+
+void GameControllerManager::terminate(JNIEnv *env) {
+    GameControllerManager *gcm = getInstance();
+    if (!gcm) {
+        return;
+    }
+
+    if (gcm->mGameControllerObject != NULL) {
+        jmethodID terminateID =
+                env->GetMethodID(gcm->mGameControllerClass, GCM_TERMINATE_METHOD_NAME,
+                                 VOID_METHOD_SIGNATURE);
+        if (terminateID != NULL) {
+            env->CallVoidMethod(gcm->mGameControllerObject, terminateID);
         }
     }
 }

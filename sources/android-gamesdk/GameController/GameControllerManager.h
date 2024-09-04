@@ -79,6 +79,8 @@ class GameControllerManager {
 
     static void onStart(JNIEnv *env);
 
+    static void terminate(JNIEnv *env);
+
     static void update(JNIEnv *env);
 
     static Paddleboat_ErrorCode getControllerData(
