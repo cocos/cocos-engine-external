@@ -208,5 +208,5 @@ list(APPEND CC_EXTERNAL_INCLUDES
 )
 
 #TODO: remove in future version
-link_directories(${platform_spec_path}/ext/usr/lib)
-include_directories(${platform_spec_path}/ext/usr/include)
+#link_directories(${platform_spec_path}/ext/usr/lib)
+#include_directories(${platform_spec_path}/ext/usr/include)
