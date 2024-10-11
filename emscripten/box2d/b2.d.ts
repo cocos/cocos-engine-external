@@ -112,6 +112,7 @@ declare namespace B2 {
         GetAllowSleeping(): boolean;
         SetGravity(gravity: Vec2): void;
         GetGravity(): Vec2;
+        IsLocked(): boolean;
         Dump(): void;
     }
 
