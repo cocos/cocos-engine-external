@@ -269,6 +269,7 @@ declare namespace Bullet {
         ccAllRayCallback_getHitPointWorld(p: ptr): ptr;
         ccAllRayCallback_getHitNormalWorld(p: ptr): ptr;
         ccAllRayCallback_getCollisionShapePtrs(p: ptr): ptr;
+        ccAllRayCallback_getClosestHitFraction(p: ptr): number;
 
         ccClosestRayCallback_static(): ptr;
         ccClosestRayCallback_setFlags(p: ptr, flag: number): void;
@@ -282,12 +283,14 @@ declare namespace Bullet {
         ccAllConvexCallback_getHitPointWorld(p: ptr): ptr;
         ccAllConvexCallback_getHitNormalWorld(p: ptr): ptr;
         ccAllConvexCallback_getCollisionShapePtrs(p: ptr): ptr;
+        ccAllConvexCallback_getClosestHitFraction(p: ptr): number;
 
         ccClosestConvexCallback_static(): ptr;
         ccClosestConvexCallback_reset(p: ptr, p0: ptr, p1: ptr, m: number, q: boolean): void;
         ccClosestConvexCallback_getHitPointWorld(p: ptr): ptr;
         ccClosestConvexCallback_getHitNormalWorld(p: ptr): ptr;
         ccClosestConvexCallback_getCollisionShapePtr(p: ptr): ptr;
+        ccClosestConvexCallback_getClosestHitFraction(p: ptr): number;
 
         ccMaterial_new(): ptr;
         ccMaterial_set(p: ptr, r: number, f: number, rf: number, sf: number): void;
