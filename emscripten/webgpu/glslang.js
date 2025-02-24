@@ -43,12 +43,13 @@ if(c.preInit)for("function"==typeof c.preInit&&(c.preInit=[c.preInit]);0<c.preIn
 );
 })();
 
-const initialize = (wasmPath) => {
+const initialize = (options) => {
     return new Promise(resolve => {
         Module({
             locateFile() {
-                return wasmPath;
+                return options.wasmPath;
             },
+            instantiateWasm: options.instantiateWasm,
             onRuntimeInitialized() {
                 resolve({
                     compileGLSLZeroCopy: this.compileGLSLZeroCopy,
@@ -60,9 +61,9 @@ const initialize = (wasmPath) => {
   };
 
   let instance;
-  export default (wasmPath) => {
+  export default (options) => {
       if (!instance) {
-          instance = initialize(wasmPath);
+          instance = initialize(options);
       }
       return instance;
   };
