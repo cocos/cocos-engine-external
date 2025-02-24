@@ -1,8 +1,16 @@
-declare module 'external:emscripten/spine/spine.asm.js' {
+declare module 'external:emscripten/spine/3.8/spine.asm.js' {
     export default SpineWasm;
 }
 
-declare module 'external:emscripten/spine/spine.wasm.js' {
+declare module 'external:emscripten/spine/3.8/spine.wasm.js' {
+    export default SpineWasm;
+}
+
+declare module 'external:emscripten/spine/4.2/spine.asm.js' {
+    export default SpineWasm;
+}
+
+declare module 'external:emscripten/spine/4.2/spine.wasm.js' {
     export default SpineWasm;
 }
 
