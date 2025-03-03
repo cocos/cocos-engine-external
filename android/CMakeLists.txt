@@ -65,8 +65,7 @@ target_include_directories(android_platform PUBLIC
 
 set(se_libs_name)
 
-if(USE_SE_V8)
-
+if(USE_SE_V8 OR USE_SE_JSVM)
     add_library(v8_monolith STATIC IMPORTED GLOBAL)
     set_target_properties(v8_monolith PROPERTIES
       IMPORTED_LOCATION ${platform_spec_path}/v8/libv8_monolith.a
