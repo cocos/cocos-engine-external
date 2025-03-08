@@ -11,7 +11,7 @@
 //    contributors may be used to endorse or promote products derived
 //    from this software without specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ``AS IS'' AND ANY
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ''AS IS'' AND ANY
 // EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 // IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
 // PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
@@ -23,7 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2019 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.
 
@@ -3577,9 +3577,14 @@ PX_FORCE_INLINE Vec4V V4SplatElement(Vec4V a)
 		return vdupq_lane_f32(vget_low_f32(a), 1);
 	}
 #else
-	if(index < 2)
+	//fix compile err : https://github.com/EmbarkStudios/PhysX/commit/dc5059fb1acbf6a710c50f538b727a851c2d1139
+	if(index == 0)
 	{
-		return vdupq_lane_f32(vget_low_f32(a), index);
+		return vdupq_lane_f32(vget_low_f32(a), 0);
+	}
+	else if(index == 1)
+	{
+		return vdupq_lane_f32(vget_low_f32(a), 1);
 	}
 #endif
 	else if(index == 2)
