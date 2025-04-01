@@ -26,6 +26,8 @@ declare namespace Bullet {
         ControllerHitReport: any;
         MotionState: any;
 
+        getVersion(): ptr;
+
         _malloc(bytes: number): ptr;
         _free(p: ptr): void;
         _read_f32(p: ptr): void;
