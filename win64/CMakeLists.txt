@@ -1,4 +1,5 @@
 add_library(dbgcore SHARED IMPORTED GLOBAL)
+set(CMAKE_CXX_STANDARD 20)
 
 set_target_properties(dbgcore PROPERTIES
   IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/dbgcore.dll
@@ -167,7 +168,11 @@ elseif(USE_SE_V8 OR USE_SE_JSVM)
       IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/v8.dll.lib
       IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8.dll
       IMPORTED_IMPLIB_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8.dll.lib
-      INTERFACE_COMPILE_DEFINITIONS V8_COMPRESS_POINTERS
+    )
+
+    target_compile_definitions(v8 INTERFACE
+      V8_COMPRESS_POINTERS
+      $<$<CONFIG:Debug>:V8_ENABLE_CHECKS>
     )
 
     add_library(v8_libbase SHARED IMPORTED GLOBAL)
@@ -186,7 +191,15 @@ elseif(USE_SE_V8 OR USE_SE_JSVM)
       IMPORTED_IMPLIB_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/v8_libplatform.dll.lib
     )
 
-    target_link_libraries(v8 INTERFACE v8_libbase v8_libplatform)
+    add_library(v8_libabseil SHARED IMPORTED GLOBAL)
+    set_target_properties(v8_libabseil PROPERTIES
+      IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/third_party_abseil-cpp_absl.dll
+      IMPORTED_IMPLIB ${CMAKE_CURRENT_LIST_DIR}/libs/v8/release/third_party_abseil-cpp_absl.dll.lib
+      IMPORTED_LOCATION_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/third_party_abseil-cpp_absl.dll
+      IMPORTED_IMPLIB_DEBUG ${CMAKE_CURRENT_LIST_DIR}/libs/v8/debug/third_party_abseil-cpp_absl.dll.lib
+    )
+
+    target_link_libraries(v8 INTERFACE v8_libbase v8_libplatform v8_libabseil)
 
     set_target_properties(v8 PROPERTIES
       INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/include/v8
