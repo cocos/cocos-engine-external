@@ -253,6 +253,7 @@ static struct android_app* android_app_create(GameActivity* activity,
         (struct android_app*)malloc(sizeof(struct android_app));
     memset(android_app, 0, sizeof(struct android_app));
     android_app->activity = activity;
+    android_app->pendingPause = false;
 
     pthread_mutex_init(&android_app->mutex, NULL);
     pthread_cond_init(&android_app->cond, NULL);
@@ -326,6 +327,10 @@ static void android_app_set_window(struct android_app* android_app,
 static void android_app_set_activity_state(struct android_app* android_app,
                                            int8_t cmd) {
     pthread_mutex_lock(&android_app->mutex);
+    if (android_app->pendingPause && cmd != APP_CMD_PAUSE) {
+        android_app->pendingPause = false;
+        android_app_write_cmd(android_app, APP_CMD_PAUSE);
+    }
     android_app_write_cmd(android_app, cmd);
     while (android_app->activityState != cmd) {
         android_app_timed_wait(android_app);
@@ -396,7 +401,8 @@ static void onSaveInstanceState(GameActivity* activity,
 
 static void onPause(GameActivity* activity) {
     LOGV("Pause: %p", activity);
-    android_app_set_activity_state(ToApp(activity), APP_CMD_PAUSE);
+    ToApp(activity)->pendingPause = true;
+//    android_app_set_activity_state(ToApp(activity), APP_CMD_PAUSE);
 }
 
 static void onStop(GameActivity* activity) {
@@ -423,13 +429,23 @@ static void onWindowFocusChanged(GameActivity* activity, bool focused) {
 static void onNativeWindowCreated(GameActivity* activity,
                                   ANativeWindow* window) {
     LOGV("NativeWindowCreated: %p -- %p", activity, window);
-    android_app_set_window(ToApp(activity), window);
+    struct android_app* app = ToApp(activity);
+    if (app->pendingPause) {
+        app->pendingPause = false;
+        android_app_set_activity_state(app, APP_CMD_PAUSE);
+    }
+    android_app_set_window(app, window);
 }
 
 static void onNativeWindowDestroyed(GameActivity* activity,
                                     ANativeWindow* window) {
     LOGV("NativeWindowDestroyed: %p -- %p", activity, window);
-    android_app_set_window(ToApp(activity), NULL);
+    struct android_app* app = ToApp(activity);
+    if (app->pendingPause) {
+        app->pendingPause = false;
+        android_app_set_activity_state(app, APP_CMD_PAUSE);
+    }
+    android_app_set_window(app, NULL);
 }
 
 static void onNativeWindowRedrawNeeded(GameActivity* activity,
