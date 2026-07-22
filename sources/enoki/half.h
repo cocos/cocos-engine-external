@@ -19,11 +19,18 @@ NAMESPACE_BEGIN(enoki)
 struct half;
 NAMESPACE_END(enoki)
 
+#if defined(__clang__) && __clang_major__ >= 20
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winvalid-specialization"
+#endif
 NAMESPACE_BEGIN(std)
 template<> struct is_floating_point<enoki::half> : true_type { };
 template<> struct is_arithmetic<enoki::half> : true_type { };
 template<> struct is_signed<enoki::half> : true_type { };
 NAMESPACE_END(std)
+#if defined(__clang__) && __clang_major__ >= 20
+#pragma clang diagnostic pop
+#endif
 
 NAMESPACE_BEGIN(enoki)
 struct half {
