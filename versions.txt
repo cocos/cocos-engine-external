@@ -1,7 +1,7 @@
 websockets
     mac: 2.1.0
     win32: 2.4.2
-    ios: 2.1.0
+    ios: 2.4.2
     android: 2.1.0
     win64: 2.4.2
     linux: 4.3.0
