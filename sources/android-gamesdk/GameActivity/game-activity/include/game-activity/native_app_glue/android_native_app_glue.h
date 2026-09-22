@@ -220,6 +220,8 @@ struct android_app {
      */
     int activityState;
 
+    bool pendingPause;
+
     /**
      * This is non-zero when the application's GameActivity is being
      * destroyed and waiting for the app thread to complete.
